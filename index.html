@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Học Trắc Nghiệm</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f3f4f6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .quiz-container {
+            background-color: white;
+            width: 100%;
+            max-width: 1200px;
+            height: 80vh;
+            min-height: 600px;
+            display: flex;
+            border: 2px solid #333;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .left-panel {
+            width: 35%;
+            padding: 20px 20px 20px 60px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .divider {
+            width: 2px;
+            background-color: red;
+            height: 100%;
+            flex-shrink: 0;
+        }
+
+        .right-panel {
+            width: 65%;
+            padding: 20px 60px 20px 40px;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            font-size: 3rem;
+            color: #ccc;
+            cursor: pointer;
+            transition: color 0.3s;
+            z-index: 10;
+        }
+
+        .nav-btn:hover {
+            color: #888;
+        }
+
+        .prev-btn {
+            left: 10px;
+        }
+
+        .next-btn {
+            right: 10px;
+        }
+
+        .nav-btn:disabled {
+            color: #eee;
+            cursor: not-allowed;
+        }
+        
+        .jump-container {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .jump-input {
+            width: 60px;
+            padding: 4px 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .question-number-text {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .instruction-text {
+            font-size: 14px;
+            margin-bottom: 30px;
+            color: #555;
+        }
+
+        .question-content-text {
+            font-size: 15px;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            font-weight: bold;
+        }
+
+        .option-text {
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+            display: flex;
+        }
+
+        .option-letter {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .answer-section {
+            margin-top: 20px;
+        }
+
+        .answer-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .answer-row input[type="radio"],
+        .answer-row input[type="checkbox"] {
+            margin-right: 10px;
+            cursor: pointer;
+            width: 16px;
+            height: 16px;
+        }
+
+        .answer-label {
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .result-container {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .result-correct {
+            background-color: #d1fae5;
+            color: #065f46;
+            border: 1px solid #34d399;
+            display: block;
+        }
+
+        .result-incorrect {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #f87171;
+            display: block;
+        }
+
+        .explanation {
+            margin-top: 10px;
+            font-size: 14px;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="quiz-container">
+        <button class="nav-btn prev-btn" id="prevBtn" onclick="prevQuestion()"
+            aria-label="Previous question">&#10094;</button>
+
+        <!-- Panel Trái -->
+        <div class="left-panel">
+            <div class="jump-container">
+                <span class="question-number-text" id="qNumberDisplay">Question: 1</span>
+                <span>/ <span id="totalQuestionsDisplay"></span></span>
+                <input type="number" id="jumpInput" class="jump-input" placeholder="Go..." min="1">
+            </div>
+            <div class="instruction-text" id="instructionDisplay">(Choose 1 answer)</div>
+
+            <div class="answer-section" id="dynamicAnswers">
+                <!-- Radio buttons/Checkboxes render here -->
+            </div>
+
+            <div id="resultBox" class="result-container">
+                <div id="resultStatus" class="font-bold mb-1"></div>
+                <div id="correctAnswerDisplay" class="text-sm"></div>
+                <div id="explanationDisplay" class="explanation"></div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Panel Phải -->
+        <div class="right-panel">
+            <div class="question-content-text" id="qContentDisplay"></div>
+            <div class="options-container" id="dynamicOptions">
+                <!-- Options render here -->
+            </div>
+        </div>
+
+        <button class="nav-btn next-btn" id="nextBtn" onclick="nextQuestion()"
+            aria-label="Next question">&#10095;</button>
+    </div>
+
+    <script src="questions.js"></script>
+    <script>
+        const questionsData = allQuestions.map((q, i) => ({
+            id: i + 1,
+            text: q.question,
+            options: q.options,
+            correctAnswer: q.answer,
+            explanation: q.explanation || ""
+        }));
+
+        let currentIndex = parseInt(localStorage.getItem('quiz_currentIndex')) || 0;
+        let userAnswers = JSON.parse(localStorage.getItem('quiz_userAnswers')) || {};
+
+        function saveState() {
+            localStorage.setItem('quiz_currentIndex', currentIndex);
+            localStorage.setItem('quiz_userAnswers', JSON.stringify(userAnswers));
+        } // Lưu dưới dạng chuỗi các đáp án (VD: "A", "ABC")
+
+        const qNumberDisplay = document.getElementById('qNumberDisplay');
+        const totalQuestionsDisplay = document.getElementById('totalQuestionsDisplay');
+        const instructionDisplay = document.getElementById('instructionDisplay');
+        const qContentDisplay = document.getElementById('qContentDisplay');
+        const dynamicAnswers = document.getElementById('dynamicAnswers');
+        const dynamicOptions = document.getElementById('dynamicOptions');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const jumpInput = document.getElementById('jumpInput');
+
+        const resultBox = document.getElementById('resultBox');
+        const resultStatus = document.getElementById('resultStatus');
+        const correctAnswerDisplay = document.getElementById('correctAnswerDisplay');
+        const explanationDisplay = document.getElementById('explanationDisplay');
+
+        function initQuiz() {
+            totalQuestionsDisplay.textContent = questionsData.length;
+            loadQuestion(currentIndex);
+            updateNavButtons();
+            saveState();
+            
+            jumpInput.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') {
+                    const val = parseInt(this.value);
+                    if (val >= 1 && val <= questionsData.length) {
+                        currentIndex = val - 1;
+                        loadQuestion(currentIndex);
+                        updateNavButtons();
+                        saveState();
+                        this.blur();
+                    } else {
+                        alert("Invalid question number!");
+                    }
+                }
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (document.activeElement === jumpInput) return;
+                
+                if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    prevQuestion();
+                } else if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    nextQuestion();
+                } else if (e.code === 'Space') {
+                    e.preventDefault();
+                    showAnswerImmediately();
+                }
+            });
+        }
+
+        function loadQuestion(index) {
+            const q = questionsData[index];
+            qNumberDisplay.textContent = `Question: ${index + 1}`;
+            jumpInput.value = index + 1;
+            qContentDisplay.textContent = q.text;
+            
+            const numAnswersRequired = q.correctAnswer.length;
+            instructionDisplay.textContent = `(Choose ${numAnswersRequired} answer${numAnswersRequired > 1 ? 's' : ''})`;
+
+            const inputType = numAnswersRequired > 1 ? 'checkbox' : 'radio';
+
+            let leftHTML = '<p class="font-semibold mb-2 text-sm">Select your answer:</p>';
+            let rightHTML = '';
+
+            for (let key in q.options) {
+                leftHTML += `
+                <label class="answer-row">
+                    <input type="${inputType}" name="userAnswer" value="${key}" onchange="checkAnswer()">
+                    <span class="answer-label">${key}</span>
+                </label>`;
+
+                rightHTML += `
+                <div class="option-text">
+                    <span class="option-letter">${key}.</span>
+                    <span>${q.options[key]}</span>
+                </div>`;
+            }
+
+            dynamicAnswers.innerHTML = leftHTML;
+            dynamicOptions.innerHTML = rightHTML;
+
+            resultBox.className = 'result-container';
+            resultBox.style.display = 'none';
+
+        }
+
+        function updateNavButtons() {
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.disabled = currentIndex === questionsData.length - 1;
+        }
+
+        function checkAnswer() {
+            const inputs = document.getElementsByName('userAnswer');
+            let selected = [];
+            for (let input of inputs) {
+                if (input.checked) {
+                    selected.push(input.value);
+                }
+            }
+            
+            selected.sort();
+            const selectedStr = selected.join('');
+            userAnswers[currentIndex] = selectedStr;
+            saveState();
+            
+            const currentQ = questionsData[currentIndex];
+            const numAnswersRequired = currentQ.correctAnswer.length;
+
+            if (selected.length === numAnswersRequired || selected.length > numAnswersRequired) {
+                showResult(selectedStr, currentQ);
+            } else {
+                resultBox.style.display = 'none';
+            }
+        }
+        
+        function showAnswerImmediately() {
+            const currentQ = questionsData[currentIndex];
+            userAnswers[currentIndex] = currentQ.correctAnswer.split('').sort().join('');
+            saveState();
+            
+            const inputs = document.getElementsByName('userAnswer');
+            for (let input of inputs) {
+                input.checked = currentQ.correctAnswer.includes(input.value);
+            }
+            showResult(userAnswers[currentIndex], currentQ);
+        }
+
+        function showResult(userAnsStr, questionObj) {
+            const correctSorted = questionObj.correctAnswer.split('').sort().join('').toUpperCase();
+            const userSorted = userAnsStr.toUpperCase();
+            
+            const isCorrect = userSorted === correctSorted;
+
+            resultBox.style.display = 'block';
+
+            if (isCorrect) {
+                resultBox.className = 'result-container result-correct';
+                resultStatus.textContent = "✓ Correct!";
+                correctAnswerDisplay.innerHTML = `Correct answer is: <strong>${questionObj.correctAnswer}</strong>`;
+            } else {
+                resultBox.className = 'result-container result-incorrect';
+                resultStatus.textContent = "✗ Incorrect";
+                correctAnswerDisplay.innerHTML = `Correct answer is: <strong>${questionObj.correctAnswer}</strong>`;
+            }
+
+            explanationDisplay.textContent = questionObj.explanation ? questionObj.explanation : "";
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                loadQuestion(currentIndex);
+                updateNavButtons();
+                saveState();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentIndex < questionsData.length - 1) {
+                currentIndex++;
+                loadQuestion(currentIndex);
+                updateNavButtons();
+                saveState();
+            }
+        }
+
+        window.onload = initQuiz;
+
+    </script>
+</body>
+
+</html>
