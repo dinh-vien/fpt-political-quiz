@@ -7,8 +7,10 @@
   const state = {
     activeSourceId: '',
     currentIndex: 0,
+    allQuestions: [],
     questions: [],
     answers: {},
+    practiceMode: 'all',
     sourceVersion: ''
   };
 
@@ -19,11 +21,15 @@
     instruction: document.getElementById('instructionDisplay'),
     jump: document.getElementById('jumpInput'),
     next: document.getElementById('nextBtn'),
+    practiceMode: document.getElementById('practiceModeDisplay'),
     previous: document.getElementById('prevBtn'),
     question: document.getElementById('qContentDisplay'),
     questionNumber: document.getElementById('qNumberDisplay'),
     result: document.getElementById('resultBox'),
     resultStatus: document.getElementById('resultStatus'),
+    resetSource: document.getElementById('resetSourceBtn'),
+    retryIncorrect: document.getElementById('retryIncorrectBtn'),
+    showAll: document.getElementById('showAllBtn'),
     source: document.getElementById('sourceSelect'),
     options: document.getElementById('dynamicOptions'),
     total: document.getElementById('totalQuestionsDisplay')
@@ -148,8 +154,8 @@
     if (!source) return;
 
     state.activeSourceId = sourceId;
-    state.questions = getPreparedQuestions(source);
-    state.sourceVersion = createSourceVersion(state.questions);
+    state.allQuestions = getPreparedQuestions(source);
+    state.sourceVersion = createSourceVersion(state.allQuestions);
 
     if (readStorage('source-version', '') === state.sourceVersion) {
       state.currentIndex = Number(readStorage('current-index', 0)) || 0;
@@ -160,11 +166,12 @@
       writeStorage('source-version', state.sourceVersion);
     }
 
+    state.practiceMode = 'all';
+    state.questions = state.allQuestions;
+
     if (state.currentIndex < 0 || state.currentIndex >= state.questions.length) state.currentIndex = 0;
 
     elements.source.value = sourceId;
-    elements.total.textContent = String(state.questions.length);
-    elements.jump.max = String(Math.max(state.questions.length, 1));
     saveGlobalActiveSource();
     renderQuestion();
   }
@@ -189,6 +196,7 @@
     renderAnswerControls(question);
     renderOptions(question);
     renderSavedResult(question);
+    renderPracticeControls();
     updateNavigation();
   }
 
@@ -199,6 +207,32 @@
     elements.result.hidden = true;
     elements.previous.disabled = true;
     elements.next.disabled = true;
+    renderPracticeControls();
+  }
+
+  function isQuestionIncorrect(question) {
+    const answer = state.answers[question.id] || '';
+    const correct = [...question.correctAnswer].sort().join('');
+    return answer.length >= question.correctAnswer.length && answer.toUpperCase() !== correct;
+  }
+
+  function getIncorrectQuestions() {
+    return state.allQuestions.filter(isQuestionIncorrect);
+  }
+
+  function renderPracticeControls() {
+    const incorrectCount = getIncorrectQuestions().length;
+    const isRetryMode = state.practiceMode === 'incorrect';
+
+    elements.retryIncorrect.disabled = incorrectCount === 0;
+    elements.resetSource.disabled = state.allQuestions.length === 0;
+    elements.showAll.hidden = !isRetryMode;
+    elements.practiceMode.hidden = !isRetryMode;
+    elements.practiceMode.textContent = isRetryMode
+      ? `Đang làm lại ${state.questions.length} câu đã sai.`
+      : '';
+    elements.total.textContent = String(state.questions.length);
+    elements.jump.max = String(Math.max(state.questions.length, 1));
   }
 
   function renderAnswerControls(question) {
@@ -244,6 +278,42 @@
     elements.next.disabled = state.currentIndex === state.questions.length - 1;
   }
 
+  function resetCurrentSource() {
+    if (!state.allQuestions.length || !window.confirm('Xóa toàn bộ đáp án đã chọn và làm lại môn này từ đầu?')) return;
+
+    state.answers = {};
+    state.questions = state.allQuestions;
+    state.practiceMode = 'all';
+    state.currentIndex = 0;
+    saveProgress();
+    renderQuestion();
+  }
+
+  function retryIncorrectQuestions() {
+    const incorrectQuestions = getIncorrectQuestions();
+    if (!incorrectQuestions.length) return;
+
+    if (!window.confirm(`Làm lại ${incorrectQuestions.length} câu đã sai? Đáp án sai cũ sẽ được xóa.`)) return;
+
+    for (const question of incorrectQuestions) {
+      delete state.answers[question.id];
+    }
+
+    state.questions = incorrectQuestions;
+    state.practiceMode = 'incorrect';
+    state.currentIndex = 0;
+    saveProgress();
+    renderQuestion();
+  }
+
+  function showAllQuestions() {
+    state.questions = state.allQuestions;
+    state.practiceMode = 'all';
+    state.currentIndex = 0;
+    saveProgress();
+    renderQuestion();
+  }
+
   function getSelectedAnswer() {
     return [...elements.answers.querySelectorAll('input:checked')]
       .map(input => input.value)
@@ -261,6 +331,8 @@
 
     if (answer.length >= question.correctAnswer.length) showResult(answer, question);
     else elements.result.hidden = true;
+
+    renderPracticeControls();
   }
 
   function showResult(answer, question) {
@@ -324,6 +396,9 @@
     elements.answers.addEventListener('change', handleAnswerChange);
     elements.previous.addEventListener('click', () => navigate(-1));
     elements.next.addEventListener('click', () => navigate(1));
+    elements.resetSource.addEventListener('click', resetCurrentSource);
+    elements.retryIncorrect.addEventListener('click', retryIncorrectQuestions);
+    elements.showAll.addEventListener('click', showAllQuestions);
     elements.jump.addEventListener('change', jumpToQuestion);
     elements.jump.addEventListener('keydown', event => {
       if (event.key === 'Enter') {

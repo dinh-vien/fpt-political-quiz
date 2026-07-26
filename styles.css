@@ -79,6 +79,26 @@ button, input, select { font: inherit; }
   font-size: 14px;
 }
 
+.practice-actions { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 15px; }
+
+.practice-btn {
+  padding: 6px 8px;
+  border: 1px solid #9ca3af;
+  border-radius: 4px;
+  background: #fff;
+  color: #1f2937;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.practice-btn:hover:not(:disabled), .practice-btn:focus-visible { border-color: #4b5563; background: #f9fafb; }
+.practice-btn:disabled { opacity: .5; cursor: not-allowed; }
+.practice-btn-danger { color: #991b1b; border-color: #fca5a5; }
+.practice-btn-danger:hover:not(:disabled), .practice-btn-danger:focus-visible { background: #fef2f2; }
+.practice-btn-secondary { color: #1d4ed8; border-color: #93c5fd; }
+.practice-mode { margin: -7px 0 12px; color: #1d4ed8; font-size: 12px; font-weight: 700; }
+
 .jump-container { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
 .question-number-text { font-size: 14px; font-weight: 700; }
 

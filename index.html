@@ -20,6 +20,13 @@
         <select id="sourceSelect" class="source-select" aria-label="Chọn nguồn câu hỏi"></select>
       </div>
 
+      <div class="practice-actions" aria-label="Tùy chọn luyện tập">
+        <button id="retryIncorrectBtn" class="practice-btn" type="button">Làm lại câu sai</button>
+        <button id="resetSourceBtn" class="practice-btn practice-btn-danger" type="button">Làm lại toàn bộ môn</button>
+        <button id="showAllBtn" class="practice-btn practice-btn-secondary" type="button" hidden>Quay lại tất cả câu</button>
+      </div>
+      <p id="practiceModeDisplay" class="practice-mode" hidden></p>
+
       <div class="jump-container">
         <span class="question-number-text" id="qNumberDisplay">Câu: 1</span>
         <span>/ <span id="totalQuestionsDisplay">0</span></span>
