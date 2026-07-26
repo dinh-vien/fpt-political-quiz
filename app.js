@@ -405,8 +405,9 @@
   }
 
   function updateNavigation() {
-    elements.previous.disabled = state.currentIndex === 0;
-    elements.next.disabled = state.currentIndex === state.questions.length - 1;
+    const disabled = state.questions.length < 2;
+    elements.previous.disabled = disabled;
+    elements.next.disabled = disabled;
   }
 
   function updateProgress() {
@@ -443,9 +444,9 @@
   }
 
   function navigate(direction) {
-    const nextIndex = state.currentIndex + direction;
-    if (nextIndex < 0 || nextIndex >= state.questions.length) return;
-    state.currentIndex = nextIndex;
+    const total = state.questions.length;
+    if (total < 2) return;
+    state.currentIndex = (state.currentIndex + direction + total) % total;
     if (state.exam) saveExamSession();
     else savePracticeProgress();
     renderQuestion();
