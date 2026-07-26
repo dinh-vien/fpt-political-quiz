@@ -827,7 +827,7 @@
     elements.retryIncorrect.addEventListener('click', retryIncorrectQuestions);
     elements.showAll.addEventListener('click', showAllQuestions);
     elements.examStart.addEventListener('click', startExam);
-    elements.examSubmit.addEventListener('click', submitExam);
+    elements.examSubmit.addEventListener('click', () => submitExam());
     elements.disableExamTimer.addEventListener('click', toggleExamTimer);
     elements.examRetry.addEventListener('click', retryExamIncorrectQuestions);
     elements.examRetake.addEventListener('click', retakeSameExam);
