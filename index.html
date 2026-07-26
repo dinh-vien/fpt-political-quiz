@@ -320,7 +320,7 @@
                 options: normalizeOptions(q.options),
                 correctAnswer: String(q.answer || '').toUpperCase(),
                 explanation: q.explanation || ''
-            })).filter(q => q.text && q.correctAnswer && q.options && Object.keys(q.options).length >= 2);
+            })).filter(q => q.correctAnswer && q.options && Object.keys(q.options).length >= 1);
         }
 
         function populateSourceSelect() {

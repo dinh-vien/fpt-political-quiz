@@ -19,7 +19,7 @@ def parse_file(filename):
         if not s:
             continue
             
-        m = re.match(r'^([A-Z])\s*[.)]\s*(.*)', s, re.IGNORECASE)
+        m = re.match(r'^([A-Z])[.)](?![A-Z])\s*(.*)', s, re.IGNORECASE)
         if m:
             letter = m.group(1).upper()
             text = m.group(2)

@@ -12,7 +12,7 @@ function parseFile(filename) {
         const s = line.trim();
         if (!s) continue;
         
-        const optionMatch = s.match(/^([A-Z])\s*[.)]\s*(.*)/i);
+        const optionMatch = s.match(/^([A-Z])[.)](?![A-Z])\s*(.*)/i);
         const answerMatch = s.match(/^(?:Đáp án:\s*)?([A-Z]+)(?:\s*\.?)?(?:\s*\((.*)\))?$/i);
         
         if (optionMatch) {
