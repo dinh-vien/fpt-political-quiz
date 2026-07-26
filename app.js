@@ -12,6 +12,8 @@
     currentIndex: 0,
     exam: null,
     practiceMode: 'all',
+    practiceReturnIndex: 0,
+    practiceReturnToStart: false,
     questions: [],
     revealedQuestionId: null,
     sourceVersion: ''
@@ -466,6 +468,8 @@
     state.answers = {};
     state.questions = state.allQuestions;
     state.practiceMode = 'all';
+    state.practiceReturnIndex = 0;
+    state.practiceReturnToStart = false;
     state.currentIndex = 0;
     savePracticeProgress();
     renderQuestion();
@@ -474,7 +478,12 @@
   function retryIncorrectQuestions() {
     const incorrectQuestions = getIncorrectQuestions();
     if (!incorrectQuestions.length || !window.confirm(`Làm lại ${incorrectQuestions.length} câu đã sai? Đáp án sai cũ sẽ được xóa.`)) return;
+    state.practiceReturnToStart = state.allQuestions.every(question => {
+      const answer = state.answers[question.id] || '';
+      return answer.length >= question.correctAnswer.length;
+    });
     for (const question of incorrectQuestions) delete state.answers[question.id];
+    state.practiceReturnIndex = state.currentIndex;
     state.questions = incorrectQuestions;
     state.practiceMode = 'incorrect';
     state.currentIndex = 0;
@@ -485,7 +494,10 @@
   function showAllQuestions() {
     state.questions = state.allQuestions;
     state.practiceMode = 'all';
-    state.currentIndex = 0;
+    state.currentIndex = state.practiceReturnToStart ? 0 : state.practiceReturnIndex;
+    if (state.currentIndex < 0 || state.currentIndex >= state.questions.length) state.currentIndex = 0;
+    state.practiceReturnIndex = 0;
+    state.practiceReturnToStart = false;
     savePracticeProgress();
     renderQuestion();
   }
