@@ -56,6 +56,10 @@ if (requestedFile && !selectedMarkdownFiles.length) {
     throw new Error(`Không tìm thấy ${requestedFile}.`);
 }
 
+if (force && !requestedFile) {
+    throw new Error('Hãy chỉ định file Markdown khi dùng --force, ví dụ: node build_sources.js ten-mon.md --force');
+}
+
 const sourceFiles = [];
 
 for (const markdownFile of selectedMarkdownFiles) {
