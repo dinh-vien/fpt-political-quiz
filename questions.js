@@ -1,4 +1,7 @@
-const allQuestions = [
+window.quizSources = window.quizSources || {};
+window.quizSources["mln122"] = {
+  name: "MLN122 - Kinh tế chính trị",
+  questions: [
   {
     "question": "Biểu hiện mới của sự phân chia thị trường giữa các liên minh độc quyền đó là",
     "options": {
@@ -5698,4 +5701,5 @@ const allQuestions = [
     "answer": "ABC",
     "explanation": ""
   }
-];
+]
+};
