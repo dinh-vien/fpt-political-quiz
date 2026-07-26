@@ -3,6 +3,7 @@
 
   const STORAGE_PREFIX = 'quiz:';
   const EXAM_QUESTION_COUNT = 60;
+  const EXAM_DURATION_MS = 15 * 60 * 1000;
   const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
   const state = {
@@ -19,10 +20,15 @@
     sourceVersion: ''
   };
   const sourceLoadPromises = new Map();
+  let examTimerIntervalId = null;
+  let pendingExamConfirmation = null;
 
   const elements = {
     answers: document.getElementById('dynamicAnswers'),
+    acceptExamConfirm: document.getElementById('acceptExamConfirmBtn'),
+    cancelExamConfirm: document.getElementById('cancelExamConfirmBtn'),
     correctAnswer: document.getElementById('correctAnswerDisplay'),
+    disableExamTimer: document.getElementById('disableExamTimerBtn'),
     examExit: document.getElementById('exitExamBtn'),
     examModal: document.getElementById('examResultModal'),
     examModalExit: document.getElementById('exitExamModalBtn'),
@@ -30,11 +36,15 @@
     examModalScore: document.getElementById('examModalScore'),
     examModalSummary: document.getElementById('examModalSummary'),
     examModalTitle: document.getElementById('examModalTitle'),
+    examConfirm: document.getElementById('examConfirmModal'),
+    examConfirmMessage: document.getElementById('examConfirmMessage'),
     examNew: document.getElementById('newExamBtn'),
     examRetake: document.getElementById('retakeExamBtn'),
     examRetry: document.getElementById('retryExamBtn'),
     examStart: document.getElementById('startExamBtn'),
     examSubmit: document.getElementById('submitExamBtn'),
+    examTimer: document.getElementById('examTimer'),
+    examTimerControls: document.getElementById('examTimerControls'),
     explanation: document.getElementById('explanationDisplay'),
     instruction: document.getElementById('instructionDisplay'),
     jump: document.getElementById('jumpInput'),
@@ -250,6 +260,24 @@
     writeStorage('exam-session', state.exam);
   }
 
+  function getExamQuestionHistory() {
+    const savedHistory = readStorage('exam-correct-question-history', null);
+    if (!savedHistory || savedHistory.sourceVersion !== state.sourceVersion || !Array.isArray(savedHistory.questionIds)) return [];
+    const validIds = new Set(state.allQuestions.map(question => question.id));
+    return [...new Set(savedHistory.questionIds)].filter(id => validIds.has(id));
+  }
+
+  function saveExamQuestionHistory(questionIds) {
+    writeStorage('exam-correct-question-history', {
+      sourceVersion: state.sourceVersion,
+      questionIds: [...new Set(questionIds)]
+    });
+  }
+
+  function addExamQuestionsToHistory(questionIds) {
+    saveExamQuestionHistory([...getExamQuestionHistory(), ...questionIds]);
+  }
+
   function getAnswerStore() {
     return state.exam ? state.exam.answers : state.answers;
   }
@@ -278,6 +306,7 @@
     else renderPracticeResult(question);
     renderPracticeControls();
     renderExamControls();
+    startExamTimer();
     updateNavigation();
     updateProgress();
   }
@@ -359,7 +388,7 @@
     const results = getExamResults();
     if (state.exam.round === 0) {
       const score = ((results.correct / state.questions.length) * 10).toFixed(2);
-      elements.examModalTitle.textContent = 'Kết quả bài thi';
+      elements.examModalTitle.textContent = state.exam.autoSubmitted ? 'Hết giờ — kết quả bài thi' : 'Kết quả bài thi';
       elements.examModalScore.textContent = `${score}/10`;
       elements.examModalSummary.textContent = `Đúng ${results.correct}/${state.questions.length} câu · Sai hoặc chưa làm: ${results.incorrect} câu.`;
     } else {
@@ -402,6 +431,75 @@
     elements.examSubmit.hidden = !active || state.exam.submitted;
     elements.examRetry.hidden = !active || !state.exam.submitted || results.incorrect === 0;
     elements.examExit.hidden = !active;
+    elements.disableExamTimer.hidden = !active || state.exam.submitted || !hasExamTimer(state.exam);
+    elements.disableExamTimer.textContent = state.exam?.timerEnabled ? 'Ơ sao lại tắt' : 'Bật lại đê, sợ à';
+  }
+
+  function hasExamTimer(exam) {
+    return Boolean(exam && (exam.timerEnabled || Number.isFinite(exam.pausedRemainingMs)));
+  }
+
+  function requestExamConfirmation(message, onConfirm) {
+    pendingExamConfirmation = onConfirm;
+    elements.examConfirmMessage.textContent = message;
+    elements.examConfirm.hidden = false;
+  }
+
+  function closeExamConfirmation() {
+    pendingExamConfirmation = null;
+    elements.examConfirm.hidden = true;
+  }
+
+  function stopExamTimer() {
+    if (examTimerIntervalId !== null) {
+      window.clearInterval(examTimerIntervalId);
+      examTimerIntervalId = null;
+    }
+  }
+
+  function formatRemainingTime(remainingMs) {
+    const totalSeconds = Math.max(0, Math.ceil(remainingMs / 1000));
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes}:${String(seconds).padStart(2, '0')}`;
+  }
+
+  function updateExamTimer() {
+    const exam = state.exam;
+    if (!hasExamTimer(exam) || exam.submitted) {
+      elements.examTimerControls.hidden = true;
+      return false;
+    }
+
+    const remainingMs = exam.timerEnabled ? exam.deadline - Date.now() : exam.pausedRemainingMs;
+    elements.examTimerControls.hidden = false;
+    elements.examTimer.textContent = exam.timerEnabled
+      ? `Thời gian còn lại: ${formatRemainingTime(remainingMs)}`
+      : `Thời gian đã dừng: ${formatRemainingTime(remainingMs)}`;
+    elements.examTimer.classList.toggle('timer-critical', remainingMs <= 60 * 1000);
+    return exam.timerEnabled && remainingMs <= 0;
+  }
+
+  function startExamTimer() {
+    stopExamTimer();
+    if (!hasExamTimer(state.exam) || state.exam.submitted) {
+      elements.examTimerControls.hidden = true;
+      return;
+    }
+    if (!state.exam.timerEnabled) {
+      updateExamTimer();
+      return;
+    }
+    if (updateExamTimer()) {
+      submitExam(true);
+      return;
+    }
+    examTimerIntervalId = window.setInterval(() => {
+      if (updateExamTimer()) {
+        stopExamTimer();
+        submitExam(true);
+      }
+    }, 1000);
   }
 
   function updateNavigation() {
@@ -531,7 +629,23 @@
     return shuffleQuestions(selected).map(question => question.id);
   }
 
-  function beginExam(questionIds) {
+  function getNewExamQuestionIds() {
+    const count = Math.min(EXAM_QUESTION_COUNT, state.allQuestions.length);
+    const usedIds = getExamQuestionHistory();
+    const usedSet = new Set(usedIds);
+    const unusedQuestions = state.allQuestions.filter(question => !usedSet.has(question.id));
+
+    if (unusedQuestions.length < count && usedIds.length) {
+      const remaining = unusedQuestions.length;
+      window.alert(`Bạn đã làm đúng gần hết ngân hàng câu hỏi của môn này. Chỉ còn ${remaining} câu bạn chưa làm đúng, không đủ để tạo đề ${count} câu.\n\nHệ thống sẽ tự động reset vòng trộn. Đề mới có thể có lại các câu bạn đã làm đúng.`);
+      saveExamQuestionHistory([]);
+      return createRandomExamQuestionIds();
+    }
+
+    return shuffleQuestions(unusedQuestions).slice(0, count).map(question => question.id);
+  }
+
+  function beginExam(questionIds, timerEnabled = true) {
     state.exam = {
       answers: {},
       currentIndex: 0,
@@ -540,7 +654,11 @@
       questionIds: [...questionIds],
       round: 0,
       sourceVersion: state.sourceVersion,
-      submitted: false
+      submitted: false,
+      autoSubmitted: false,
+      timerEnabled: Boolean(timerEnabled),
+      deadline: timerEnabled ? Date.now() + EXAM_DURATION_MS : null,
+      pausedRemainingMs: timerEnabled ? null : EXAM_DURATION_MS
     };
     state.questions = getQuestionsByIds(state.exam.questionIds);
     state.currentIndex = 0;
@@ -552,13 +670,15 @@
 
   function startExam() {
     if (!state.allQuestions.length) return;
+    const questionIds = getNewExamQuestionIds();
+    if (!questionIds) return;
     const count = Math.min(EXAM_QUESTION_COUNT, state.allQuestions.length);
     const message = count === EXAM_QUESTION_COUNT
       ? 'Bắt đầu bài thi gồm 60 câu ngẫu nhiên?'
       : `Ngân hàng chỉ có ${count} câu. Bắt đầu bài thi với toàn bộ ${count} câu?`;
     if (!window.confirm(message)) return;
 
-    beginExam(createRandomExamQuestionIds());
+    beginExam(questionIds);
   }
 
   function retakeSameExam() {
@@ -569,16 +689,44 @@
 
   function startDifferentExam() {
     if (!state.exam?.submitted) return;
-    const previousIds = state.exam.originalQuestionIds || state.exam.questionIds;
-    beginExam(createRandomExamQuestionIds(previousIds));
+    const questionIds = getNewExamQuestionIds();
+    if (!questionIds) return;
+    beginExam(questionIds);
   }
 
-  function submitExam() {
+  function submitExam(isAutomatic = false, confirmed = false) {
     if (!state.exam || state.exam.submitted) return;
     const unanswered = state.questions.filter(question => !(state.exam.answers[question.id] || '')).length;
     const message = unanswered ? `Bạn còn ${unanswered} câu chưa trả lời. Vẫn nộp bài?` : 'Bạn chắc chắn muốn nộp bài?';
-    if (!window.confirm(message)) return;
+    if (!isAutomatic && !confirmed) {
+      requestExamConfirmation(message, () => submitExam(false, true));
+      return;
+    }
     state.exam.submitted = true;
+    state.exam.autoSubmitted = isAutomatic;
+    addExamQuestionsToHistory(
+      state.questions
+        .filter(question => isQuestionCorrect(question, state.exam.answers[question.id] || ''))
+        .map(question => question.id)
+    );
+    closeExamConfirmation();
+    stopExamTimer();
+    saveExamSession();
+    renderQuestion();
+  }
+
+  function toggleExamTimer() {
+    if (!state.exam || state.exam.submitted) return;
+    if (state.exam.timerEnabled) {
+      state.exam.pausedRemainingMs = Math.max(0, state.exam.deadline - Date.now());
+      state.exam.timerEnabled = false;
+      state.exam.deadline = null;
+      stopExamTimer();
+    } else {
+      state.exam.timerEnabled = true;
+      state.exam.deadline = Date.now() + Math.max(0, state.exam.pausedRemainingMs || 0);
+      state.exam.pausedRemainingMs = null;
+    }
     saveExamSession();
     renderQuestion();
   }
@@ -593,6 +741,10 @@
     state.exam.currentIndex = 0;
     state.exam.round += 1;
     state.exam.submitted = false;
+    state.exam.autoSubmitted = false;
+    state.exam.timerEnabled = false;
+    state.exam.deadline = null;
+    state.exam.pausedRemainingMs = null;
     state.questions = incorrectQuestions;
     state.currentIndex = 0;
     elements.examModal.hidden = true;
@@ -601,6 +753,7 @@
   }
 
   function clearExamSession() {
+    stopExamTimer();
     removeStorage('exam-session');
     state.exam = null;
     state.questions = state.allQuestions;
@@ -613,7 +766,11 @@
 
   function exitExam(shouldConfirm = true) {
     if (!state.exam) return true;
-    if (shouldConfirm && !window.confirm('Thoát chế độ thi? Phiên thi hiện tại sẽ bị xóa.')) return false;
+    if (shouldConfirm) {
+      requestExamConfirmation('Thoát chế độ thi? Phiên thi hiện tại sẽ bị xóa.', () => exitExam(false));
+      return false;
+    }
+    closeExamConfirmation();
     clearExamSession();
     renderQuestion();
     return true;
@@ -671,11 +828,18 @@
     elements.showAll.addEventListener('click', showAllQuestions);
     elements.examStart.addEventListener('click', startExam);
     elements.examSubmit.addEventListener('click', submitExam);
+    elements.disableExamTimer.addEventListener('click', toggleExamTimer);
     elements.examRetry.addEventListener('click', retryExamIncorrectQuestions);
     elements.examRetake.addEventListener('click', retakeSameExam);
     elements.examNew.addEventListener('click', startDifferentExam);
     elements.examExit.addEventListener('click', () => exitExam(true));
     elements.examModalExit.addEventListener('click', () => exitExam(false));
+    elements.cancelExamConfirm.addEventListener('click', closeExamConfirmation);
+    elements.acceptExamConfirm.addEventListener('click', () => {
+      const action = pendingExamConfirmation;
+      closeExamConfirmation();
+      if (action) action();
+    });
     elements.jump.addEventListener('change', jumpToQuestion);
     elements.jump.addEventListener('keydown', event => {
       if (event.key === 'Enter') {

@@ -156,6 +156,14 @@ button, input, select { font: inherit; }
 .exam-mode .question-content-text { margin-top: 4px; }
 .exam-mode .left-panel, .exam-mode .right-panel { padding-bottom: 72px; }
 
+.exam-timer-controls { display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin: 0 0 14px; }
+.exam-timer-controls[hidden] { display: none; }
+.exam-timer { margin: 0; color: #1d4ed8; font-size: 17px; font-weight: 800; }
+.timer-joke { margin: 3px 0 0; color: #6b7280; font-size: 12px; font-style: italic; text-align: right; }
+.exam-timer.timer-critical { color: #b91c1c; }
+.disable-timer-btn { padding: 5px 8px; border: 1px solid #fbbf24; border-radius: 4px; color: #92400e; background: #fffbeb; font-size: 12px; font-weight: 700; cursor: pointer; }
+.disable-timer-btn:hover, .disable-timer-btn:focus-visible { background: #fef3c7; }
+
 .modal-backdrop {
   position: fixed;
   z-index: 50;
@@ -199,6 +207,7 @@ button, input, select { font: inherit; }
 .exam-modal-message { margin: 0 0 20px; color: #6b7280; font-size: 14px; line-height: 1.5; }
 .exam-modal-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
 .exam-modal-actions .exam-btn { padding: 9px 13px; }
+.exam-confirm-modal { max-width: 390px; }
 
 @keyframes modal-enter {
   from { opacity: 0; transform: translateY(8px) scale(.98); }

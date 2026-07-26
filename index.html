@@ -56,6 +56,13 @@
     <div class="divider" aria-hidden="true"></div>
 
     <section class="right-panel" aria-label="Nội dung câu hỏi">
+      <div id="examTimerControls" class="exam-timer-controls" hidden>
+        <div>
+          <p id="examTimer" class="exam-timer" role="timer" aria-live="polite"></p>
+          <p class="timer-joke">15p là quá nhiều với sinh viên FPT.</p>
+        </div>
+        <button id="disableExamTimerBtn" class="disable-timer-btn" type="button">Ơ sao lại tắt</button>
+      </div>
       <div class="question-content-text" id="qContentDisplay"></div>
       <div class="options-container" id="dynamicOptions"></div>
     </section>
@@ -75,6 +82,17 @@
         <button id="retakeExamBtn" class="exam-btn exam-btn-retake" type="button">Thi lại đề này</button>
         <button id="newExamBtn" class="exam-btn exam-btn-new" type="button">Thi đề khác</button>
         <button id="exitExamModalBtn" class="exam-btn exam-btn-exit" type="button">Thoát chế độ thi</button>
+      </div>
+    </section>
+  </div>
+
+  <div id="examConfirmModal" class="modal-backdrop" hidden>
+    <section class="exam-modal exam-confirm-modal" role="dialog" aria-modal="true" aria-labelledby="examConfirmTitle" aria-describedby="examConfirmMessage">
+      <h2 id="examConfirmTitle" class="exam-modal-title">Xác nhận</h2>
+      <p id="examConfirmMessage" class="exam-modal-message"></p>
+      <div class="exam-modal-actions">
+        <button id="cancelExamConfirmBtn" class="exam-btn exam-btn-retake" type="button">Quay lại làm bài</button>
+        <button id="acceptExamConfirmBtn" class="exam-btn exam-btn-submit" type="button">Xác nhận</button>
       </div>
     </section>
   </div>
