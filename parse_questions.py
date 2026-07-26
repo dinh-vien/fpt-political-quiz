@@ -19,16 +19,16 @@ def parse_file(filename):
         if not s:
             continue
             
-        m = re.match(r'^([A-E])\s*[.)]\s*(.*)', s)
+        m = re.match(r'^([A-Z])\s*[.)]\s*(.*)', s, re.IGNORECASE)
         if m:
             letter = m.group(1).upper()
             text = m.group(2)
             options[letter] = text
-        elif re.match(r'^[A-E]{1,5}$', s) and len(options) > 0:
+        elif re.match(r'^(?:Đáp án:\s*)?[A-Z]+\.?$', s, re.IGNORECASE) and len(options) > 0:
             questions.append({
                 "question": "\n".join(q_text).strip(),
                 "options": options.copy(),
-                "answer": s
+                "answer": re.sub(r'^Đáp án:\s*|\.$', '', s, flags=re.IGNORECASE).upper()
             })
             q_text = []
             options = {}

@@ -12,8 +12,8 @@ function parseFile(filename) {
         const s = line.trim();
         if (!s) continue;
         
-        const optionMatch = s.match(/^([A-E])\s*[.)]\s*(.*)/i);
-        const answerMatch = s.match(/^(?:Đáp án:\s*)?([A-E]{1,5})(?:\s*\.?)?(?:\s*\((.*)\))?$/i);
+        const optionMatch = s.match(/^([A-Z])\s*[.)]\s*(.*)/i);
+        const answerMatch = s.match(/^(?:Đáp án:\s*)?([A-Z]+)(?:\s*\.?)?(?:\s*\((.*)\))?$/i);
         
         if (optionMatch) {
             const letter = optionMatch[1].toUpperCase();

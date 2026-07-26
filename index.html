@@ -303,11 +303,21 @@
             await Promise.all(files.map(loadScript));
         }
 
+        function normalizeOptions(options) {
+            if (Array.isArray(options)) {
+                return Object.fromEntries(options
+                    .map((option, index) => [String.fromCharCode(65 + index), option])
+                    .filter(([, option]) => String(option || '').trim()));
+            }
+            return Object.fromEntries(Object.entries(options || {})
+                .filter(([, option]) => String(option || '').trim()));
+        }
+
         function mapQuestions(source) {
             return source.questions.map((q, i) => ({
                 id: i + 1,
                 text: q.question,
-                options: q.options,
+                options: normalizeOptions(q.options),
                 correctAnswer: String(q.answer || '').toUpperCase(),
                 explanation: q.explanation || ''
             })).filter(q => q.text && q.correctAnswer && q.options && Object.keys(q.options).length >= 2);
