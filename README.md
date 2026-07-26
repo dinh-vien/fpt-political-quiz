@@ -51,4 +51,12 @@ node build_sources.js ten-mon.md --force
 ## Phím tắt
 
 - `←` / `→`: chuyển câu trước hoặc sau.
-- `Space`: hiện đáp án đúng.
+- `Space`: hiện hoặc ẩn đáp án đúng ở chế độ luyện tập.
+
+## Chế độ thi
+
+- Mỗi đề thi lấy ngẫu nhiên 60 câu không trùng từ môn đang chọn (hoặc toàn bộ câu nếu môn có ít hơn 60 câu).
+- Đáp án chỉ được chấm khi bấm **Nộp bài**; điểm được quy đổi về thang 10.
+- Có thể làm lại các câu sai nhiều lần. Các vòng làm lại không thay đổi điểm bài thi ban đầu.
+- Sau khi nộp bài, có thể thi lại đúng bộ 60 câu hoặc bốc một bộ 60 câu khác.
+- Phiên thi đang làm được lưu trong trình duyệt. Bấm **Thoát chế độ thi** để xóa phiên đó và quay lại chế độ luyện tập.

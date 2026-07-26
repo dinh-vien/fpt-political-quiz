@@ -29,15 +29,49 @@ button, input, select { font: inherit; }
   box-shadow: 0 4px 6px rgb(0 0 0 / 10%);
 }
 
+.progress-track {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 20px;
+  overflow: hidden;
+  background: #d1d5db;
+}
+
+.progress-bar {
+  position: relative;
+  height: 100%;
+  width: 0;
+  overflow: hidden;
+  background: linear-gradient(90deg, #16a34a, #22c55e);
+  transition: width .35s ease;
+}
+
+.progress-bar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  width: 42%;
+  transform: translateX(-160%) skewX(-22deg);
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 15%), rgb(255 255 255 / 80%), rgb(255 255 255 / 15%), transparent);
+  animation: progress-shimmer 1.9s linear infinite;
+}
+
+@keyframes progress-shimmer {
+  to { transform: translateX(340%) skewX(-22deg); }
+}
+
 .left-panel {
   width: 35%;
-  padding: 20px 20px 20px 60px;
+  padding: 36px 20px 20px 60px;
   overflow-y: auto;
 }
 
 .right-panel {
   width: 65%;
-  padding: 20px 60px 20px 40px;
+  padding: 36px 60px 20px 40px;
   overflow-y: auto;
 }
 
@@ -77,6 +111,97 @@ button, input, select { font: inherit; }
   border-radius: 4px;
   background: #fff;
   font-size: 14px;
+}
+
+.source-select:disabled { color: #4b5563; background: #f3f4f6; cursor: not-allowed; }
+
+.exam-actions { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 15px; }
+
+.exam-btn {
+  padding: 7px 9px;
+  border: 1px solid #2563eb;
+  border-radius: 4px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.exam-btn:hover:not(:disabled), .exam-btn:focus-visible { background: #dbeafe; }
+.exam-btn:disabled { opacity: .5; cursor: not-allowed; }
+.exam-btn-submit { color: #fff; background: #16a34a; border-color: #15803d; }
+.exam-btn-submit:hover:not(:disabled), .exam-btn-submit:focus-visible { background: #15803d; }
+.exam-btn-retry { color: #92400e; background: #fffbeb; border-color: #fbbf24; }
+.exam-btn-retake { color: #1e40af; background: #eff6ff; border-color: #93c5fd; }
+.exam-btn-new { color: #065f46; background: #ecfdf5; border-color: #6ee7b7; }
+.exam-btn-exit { color: #991b1b; background: #fef2f2; border-color: #fca5a5; }
+
+.exam-mode .exam-btn-submit,
+.exam-mode .exam-actions > .exam-btn-exit {
+  position: absolute;
+  z-index: 4;
+  bottom: 18px;
+  min-width: 108px;
+  padding: 9px 13px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 14%);
+}
+
+.exam-mode .exam-btn-submit { right: 18px; }
+.exam-mode .exam-actions > .exam-btn-exit { left: 18px; }
+
+.exam-mode .practice-actions,
+.exam-mode .jump-container { display: none; }
+
+.exam-mode .question-content-text { margin-top: 4px; }
+.exam-mode .left-panel, .exam-mode .right-panel { padding-bottom: 72px; }
+
+.modal-backdrop {
+  position: fixed;
+  z-index: 50;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgb(15 23 42 / 58%);
+  backdrop-filter: blur(3px);
+}
+
+.modal-backdrop[hidden] { display: none; }
+
+.exam-modal {
+  width: min(440px, 100%);
+  padding: 28px;
+  border: 1px solid #d1d5db;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 24px 70px rgb(0 0 0 / 28%);
+  text-align: center;
+  animation: modal-enter .22s ease-out;
+}
+
+.exam-modal-icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  color: #fff;
+  background: #16a34a;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.exam-modal-title { margin: 0 0 8px; color: #111827; font-size: 22px; }
+.exam-modal-score { margin: 0 0 8px; color: #15803d; font-size: 30px; font-weight: 800; }
+.exam-modal-summary { margin: 0 0 8px; color: #374151; font-weight: 700; }
+.exam-modal-message { margin: 0 0 20px; color: #6b7280; font-size: 14px; line-height: 1.5; }
+.exam-modal-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; }
+.exam-modal-actions .exam-btn { padding: 9px 13px; }
+
+@keyframes modal-enter {
+  from { opacity: 0; transform: translateY(8px) scale(.98); }
 }
 
 .practice-actions { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 15px; }
@@ -126,6 +251,7 @@ button, input, select { font: inherit; }
 .result-answer { font-size: 14px; }
 .result-correct { color: #065f46; background: #d1fae5; border-color: #34d399; }
 .result-incorrect { color: #991b1b; background: #fee2e2; border-color: #f87171; }
+.exam-summary { color: #1e3a8a; background: #eff6ff; border-color: #93c5fd; }
 .explanation { margin-top: 10px; font-size: 14px; font-style: italic; white-space: pre-line; }
 .source-error { padding: 16px; color: #991b1b; background: #fee2e2; border: 1px solid #f87171; border-radius: 4px; }
 
@@ -145,8 +271,12 @@ button, input, select { font: inherit; }
   body { padding: 0; align-items: stretch; }
   .quiz-container { min-height: 100vh; height: auto; border: 0; flex-direction: column; }
   .left-panel, .right-panel { width: 100%; padding: 20px 52px; overflow: visible; }
+  .left-panel { padding-top: 36px; }
   .divider { width: 100%; height: 2px; flex-basis: 2px; }
   .nav-btn { position: fixed; top: auto; bottom: 18px; transform: none; padding: 8px 12px; border-radius: 999px; background: rgb(255 255 255 / 90%); box-shadow: 0 1px 4px rgb(0 0 0 / 20%); }
   .prev-btn { left: 12px; }
   .next-btn { right: 12px; }
+  .exam-mode .nav-btn { bottom: 70px; }
+  .exam-mode .exam-btn-submit, .exam-mode .exam-actions > .exam-btn-exit { position: fixed; bottom: 14px; }
+  .exam-modal { padding: 24px 20px; }
 }

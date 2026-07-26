@@ -3,7 +3,9 @@ const path = require('path');
 
 const workspace = __dirname;
 const sourceNames = {
-    mln111: 'MLN111 - Triết học Mác-Lênin'
+    mln111: 'MLN111 - Triết học Mác-Lênin',
+    mln122: 'MLN122 - Kinh tế chính trị',
+    vnr202: 'VNR202 - Lịch sử Đảng Cộng sản Việt Nam'
 };
 
 function parseMarkdown(markdown) {
@@ -60,7 +62,7 @@ if (force && !requestedFile) {
     throw new Error('Hãy chỉ định file Markdown khi dùng --force, ví dụ: node build_sources.js ten-mon.md --force');
 }
 
-const sourceFiles = [];
+const sourceCatalog = [];
 
 for (const markdownFile of selectedMarkdownFiles) {
     const baseName = path.basename(markdownFile, '.md');
@@ -87,12 +89,21 @@ for (const markdownFile of selectedMarkdownFiles) {
 
 for (const markdownFile of markdownFiles) {
     const outputFile = `${path.basename(markdownFile, '.md')}.js`;
-    if (fs.existsSync(path.join(workspace, outputFile))) sourceFiles.push(outputFile);
+    if (fs.existsSync(path.join(workspace, outputFile))) {
+        const id = sourceId(markdownFile);
+        const count = parseMarkdown(fs.readFileSync(path.join(workspace, markdownFile), 'utf8')).length;
+        sourceCatalog.push({
+            id,
+            name: sourceNames[id] || path.basename(markdownFile, '.md').toUpperCase(),
+            file: outputFile,
+            count
+        });
+    }
 }
 
 fs.writeFileSync(
     path.join(workspace, 'sources.js'),
-    `window.quizSourceFiles = ${JSON.stringify(sourceFiles, null, 2)};\n`,
+    `window.quizSourceCatalog = ${JSON.stringify(sourceCatalog, null, 2)};\n`,
     'utf8'
 );
-console.log(`Đã cập nhật sources.js với ${sourceFiles.length} nguồn.`);
+console.log(`Đã cập nhật sources.js với ${sourceCatalog.length} nguồn.`);

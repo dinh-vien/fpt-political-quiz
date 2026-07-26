@@ -11,7 +11,10 @@
   <script src="app.js" defer></script>
 </head>
 <body>
-  <main class="quiz-container" aria-label="Hệ thống học trắc nghiệm">
+  <main id="quizContainer" class="quiz-container" aria-label="Hệ thống học trắc nghiệm">
+    <div class="progress-track" aria-label="Tiến độ làm bài">
+      <div id="progressBar" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div>
+    </div>
     <button class="nav-btn prev-btn" id="prevBtn" type="button" aria-label="Câu trước">&#10094;</button>
 
     <section class="left-panel" aria-label="Trả lời câu hỏi">
@@ -20,9 +23,15 @@
         <select id="sourceSelect" class="source-select" aria-label="Chọn nguồn câu hỏi"></select>
       </div>
 
+      <div class="exam-actions" aria-label="Chế độ thi">
+        <button id="startExamBtn" class="exam-btn" type="button">Thi thử (60 câu)</button>
+        <button id="submitExamBtn" class="exam-btn exam-btn-submit" type="button" hidden>Nộp bài</button>
+        <button id="exitExamBtn" class="exam-btn exam-btn-exit" type="button" hidden>Thoát chế độ thi</button>
+      </div>
+
       <div class="practice-actions" aria-label="Tùy chọn luyện tập">
         <button id="retryIncorrectBtn" class="practice-btn" type="button">Làm lại câu sai</button>
-        <button id="resetSourceBtn" class="practice-btn practice-btn-danger" type="button">Làm lại toàn bộ môn</button>
+        <button id="resetSourceBtn" class="practice-btn practice-btn-danger" type="button">Làm lại toàn bộ</button>
         <button id="showAllBtn" class="practice-btn practice-btn-secondary" type="button" hidden>Quay lại tất cả câu</button>
       </div>
       <p id="practiceModeDisplay" class="practice-mode" hidden></p>
@@ -53,5 +62,21 @@
 
     <button class="nav-btn next-btn" id="nextBtn" type="button" aria-label="Câu sau">&#10095;</button>
   </main>
+
+  <div id="examResultModal" class="modal-backdrop" hidden>
+    <section class="exam-modal" role="dialog" aria-modal="true" aria-labelledby="examModalTitle" aria-describedby="examModalSummary">
+      <div class="exam-modal-icon" aria-hidden="true">✓</div>
+      <h2 id="examModalTitle" class="exam-modal-title">Kết quả bài thi</h2>
+      <p id="examModalScore" class="exam-modal-score"></p>
+      <p id="examModalSummary" class="exam-modal-summary"></p>
+      <p id="examModalMessage" class="exam-modal-message"></p>
+      <div class="exam-modal-actions">
+        <button id="retryExamBtn" class="exam-btn exam-btn-retry" type="button">Làm lại câu sai</button>
+        <button id="retakeExamBtn" class="exam-btn exam-btn-retake" type="button">Thi lại đề này</button>
+        <button id="newExamBtn" class="exam-btn exam-btn-new" type="button">Thi đề khác</button>
+        <button id="exitExamModalBtn" class="exam-btn exam-btn-exit" type="button">Thoát chế độ thi</button>
+      </div>
+    </section>
+  </div>
 </body>
 </html>

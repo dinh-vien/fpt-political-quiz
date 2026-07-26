@@ -1,5 +1,20 @@
-window.quizSourceFiles = [
-  "mln111.js",
-  "mln122.js",
-  "vnr202.js"
+window.quizSourceCatalog = [
+  {
+    "id": "mln111",
+    "name": "MLN111 - Triết học Mác-Lênin",
+    "file": "mln111.js",
+    "count": 549
+  },
+  {
+    "id": "mln122",
+    "name": "MLN122 - Kinh tế chính trị",
+    "file": "mln122.js",
+    "count": 529
+  },
+  {
+    "id": "vnr202",
+    "name": "VNR202 - Lịch sử Đảng Cộng sản Việt Nam",
+    "file": "vnr202.js",
+    "count": 404
+  }
 ];
