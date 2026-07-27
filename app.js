@@ -356,6 +356,7 @@
     const fragment = document.createDocumentFragment();
     for (const [key, value] of Object.entries(question.options)) {
       const option = createElement('div', 'option-text');
+      option.dataset.answer = key;
       option.append(createElement('span', 'option-letter', `${key}.`), createElement('span', '', value));
       fragment.append(option);
     }
@@ -559,6 +560,15 @@
     if (state.exam) saveExamSession();
     else savePracticeProgress();
     renderQuestion();
+  }
+
+  function selectAnswerFromOption(option) {
+    const answerKey = option?.dataset.answer;
+    if (!answerKey) return;
+    const input = [...elements.answers.querySelectorAll('input')]
+      .find(answer => answer.value === answerKey);
+    if (!input || input.disabled) return;
+    input.click();
   }
 
   function navigate(direction) {
@@ -843,6 +853,9 @@
     elements.answers.addEventListener('change', handleAnswerChange);
     elements.answers.addEventListener('click', event => {
       if (event.target.closest('[data-action="clear-answer"]')) clearCurrentAnswer();
+    });
+    elements.options.addEventListener('click', event => {
+      selectAnswerFromOption(event.target.closest('[data-answer]'));
     });
     elements.previous.addEventListener('click', () => navigate(-1));
     elements.next.addEventListener('click', () => navigate(1));
