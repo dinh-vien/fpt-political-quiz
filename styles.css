@@ -91,10 +91,19 @@ button, input, select { font: inherit; }
   border: 0;
   background: transparent;
   color: #ccc;
-  font-size: 3rem;
-  line-height: 1;
   cursor: pointer;
   transition: color .2s ease;
+}
+
+.nav-icon {
+  display: block;
+  width: 3rem;
+  height: 3rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.5;
 }
 
 .nav-btn:hover:not(:disabled), .nav-btn:focus-visible { color: #888; }
@@ -103,6 +112,7 @@ button, input, select { font: inherit; }
 .next-btn {
   right: 10px;
 }
+.next-btn .nav-icon { transform: scaleX(-1); }
 
 .source-container { margin-bottom: 15px; }
 .source-label { display: block; margin-bottom: 6px; font-size: 14px; font-weight: 700; }
