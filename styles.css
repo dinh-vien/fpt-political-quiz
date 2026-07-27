@@ -64,6 +64,7 @@ button, input, select { font: inherit; }
 }
 
 .left-panel {
+  position: relative;
   width: 35%;
   padding: 36px 20px 20px 60px;
   overflow-y: auto;
@@ -99,7 +100,9 @@ button, input, select { font: inherit; }
 .nav-btn:hover:not(:disabled), .nav-btn:focus-visible { color: #888; }
 .nav-btn:disabled { color: #eee; cursor: not-allowed; }
 .prev-btn { left: 10px; }
-.next-btn { right: 10px; }
+.next-btn {
+  right: 10px;
+}
 
 .source-container { margin-bottom: 15px; }
 .source-label { display: block; margin-bottom: 6px; font-size: 14px; font-weight: 700; }
