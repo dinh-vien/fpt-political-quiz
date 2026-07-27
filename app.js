@@ -15,8 +15,10 @@
     practiceMode: 'all',
     practiceReturnIndex: 0,
     practiceReturnToStart: false,
+    optionOrders: {},
     questions: [],
     revealedQuestionId: null,
+    shuffleOptions: false,
     sourceVersion: ''
   };
   const sourceLoadPromises = new Map();
@@ -59,7 +61,9 @@
     result: document.getElementById('resultBox'),
     resultStatus: document.getElementById('resultStatus'),
     retryIncorrect: document.getElementById('retryIncorrectBtn'),
+    reshuffleOptions: document.getElementById('reshuffleOptionsBtn'),
     showAll: document.getElementById('showAllBtn'),
+    shuffleOptions: document.getElementById('shuffleOptionsBtn'),
     source: document.getElementById('sourceSelect'),
     options: document.getElementById('dynamicOptions'),
     total: document.getElementById('totalQuestionsDisplay')
@@ -228,6 +232,8 @@
     state.sourceVersion = createSourceVersion(state.allQuestions);
     state.practiceMode = 'all';
     state.answers = readStorage('source-version', '') === state.sourceVersion ? readStorage('answers', {}) : {};
+    state.shuffleOptions = readStorage('shuffle-options', false) === true;
+    state.optionOrders = readStorage('option-orders', {});
     if (readStorage('source-version', '') !== state.sourceVersion) writeStorage('source-version', state.sourceVersion);
 
     state.exam = getSavedExamSession();
@@ -252,6 +258,7 @@
   function savePracticeProgress() {
     writeStorage('current-index', state.currentIndex);
     writeStorage('answers', state.answers);
+    writeStorage('option-orders', state.optionOrders);
   }
 
   function saveExamSession() {
@@ -285,6 +292,38 @@
   function isQuestionCorrect(question, answer) {
     const correct = [...question.correctAnswer].sort().join('');
     return answer.length >= question.correctAnswer.length && answer.toUpperCase() === correct;
+  }
+
+  function getOptionOrderStore() {
+    if (state.exam) return state.exam.optionOrders ||= {};
+    if (!state.optionOrders || typeof state.optionOrders !== 'object' || Array.isArray(state.optionOrders)) state.optionOrders = {};
+    return state.optionOrders;
+  }
+
+  function getOptionOrder(question) {
+    const optionKeys = Object.keys(question.options);
+    if (!state.shuffleOptions) return optionKeys;
+
+    const orders = getOptionOrderStore();
+    const savedOrder = orders[question.id];
+    const isValid = Array.isArray(savedOrder)
+      && savedOrder.length === optionKeys.length
+      && savedOrder.every(key => optionKeys.includes(key));
+    if (isValid) return savedOrder;
+
+    const order = shuffleQuestions(optionKeys);
+    orders[question.id] = order;
+    if (state.exam) saveExamSession();
+    else writeStorage('option-orders', state.optionOrders);
+    return order;
+  }
+
+  function getDisplayedAnswer(question) {
+    const optionOrder = getOptionOrder(question);
+    return [...question.correctAnswer]
+      .map(key => LETTERS[optionOrder.indexOf(key)])
+      .sort()
+      .join('');
   }
 
   function renderQuestion() {
@@ -331,16 +370,17 @@
     const fragment = document.createDocumentFragment();
     fragment.append(createElement('p', 'answer-heading', 'Chọn đáp án của bạn:'));
 
-    for (const key of Object.keys(question.options)) {
+    for (const [index, key] of getOptionOrder(question).entries()) {
       const label = createElement('label', 'answer-row');
       const input = document.createElement('input');
+      const displayedKey = LETTERS[index];
       input.type = inputType;
       input.name = 'userAnswer';
       input.value = key;
       input.checked = selected.includes(key);
       input.disabled = Boolean(state.exam?.submitted) || isRevealed;
-      input.setAttribute('aria-label', `Đáp án ${key}`);
-      label.append(input, createElement('span', 'answer-label', key));
+      input.setAttribute('aria-label', `Đáp án ${displayedKey}`);
+      label.append(input, createElement('span', 'answer-label', displayedKey));
       fragment.append(label);
     }
     const clearButton = createElement('button', 'clear-answer-btn', 'Bỏ chọn đáp án');
@@ -354,10 +394,12 @@
 
   function renderOptions(question) {
     const fragment = document.createDocumentFragment();
-    for (const [key, value] of Object.entries(question.options)) {
+    for (const [index, key] of getOptionOrder(question).entries()) {
+      const value = question.options[key];
+      const displayedKey = LETTERS[index];
       const option = createElement('div', 'option-text');
       option.dataset.answer = key;
-      option.append(createElement('span', 'option-letter', `${key}.`), createElement('span', '', value));
+      option.append(createElement('span', 'option-letter', `${displayedKey}.`), createElement('span', '', value));
       fragment.append(option);
     }
     elements.options.replaceChildren(fragment);
@@ -376,7 +418,7 @@
     elements.resultStatus.textContent = isRevealed && answer.length < question.correctAnswer.length
       ? 'Đáp án tham khảo'
       : isCorrect ? '✓ Chính xác!' : '✗ Chưa chính xác';
-    elements.correctAnswer.textContent = `Đáp án đúng: ${question.correctAnswer}`;
+    elements.correctAnswer.textContent = `Đáp án đúng: ${getDisplayedAnswer(question)}`;
     elements.explanation.textContent = question.explanation;
   }
 
@@ -441,6 +483,10 @@
     elements.examExit.hidden = !active;
     elements.disableExamTimer.hidden = !active || state.exam.submitted || !hasExamTimer(state.exam);
     elements.disableExamTimer.textContent = state.exam?.timerEnabled ? 'Ơ sao lại tắt' : 'Bật lại đê, sợ à';
+    elements.shuffleOptions.setAttribute('aria-pressed', String(state.shuffleOptions));
+    elements.shuffleOptions.textContent = `Đảo lựa chọn: ${state.shuffleOptions ? 'Bật' : 'Tắt'}`;
+    elements.reshuffleOptions.hidden = !state.shuffleOptions;
+    elements.reshuffleOptions.disabled = Boolean(state.exam?.submitted);
   }
 
   function hasExamTimer(exam) {
@@ -642,6 +688,22 @@
     return shuffled;
   }
 
+  function toggleOptionShuffle() {
+    state.shuffleOptions = !state.shuffleOptions;
+    writeStorage('shuffle-options', state.shuffleOptions);
+    if (state.exam) saveExamSession();
+    renderQuestion();
+  }
+
+  function reshuffleOptions() {
+    if (!state.shuffleOptions || state.exam?.submitted) return;
+    const orders = getOptionOrderStore();
+    for (const question of state.questions) orders[question.id] = shuffleQuestions(Object.keys(question.options));
+    if (state.exam) saveExamSession();
+    else writeStorage('option-orders', state.optionOrders);
+    renderQuestion();
+  }
+
   function createRandomExamQuestionIds(previousIds = []) {
     const count = Math.min(EXAM_QUESTION_COUNT, state.allQuestions.length);
     const previousSet = new Set(previousIds);
@@ -681,6 +743,7 @@
       currentIndex: 0,
       initialTotal: questionIds.length,
       originalQuestionIds: [...questionIds],
+      optionOrders: {},
       questionIds: [...questionIds],
       round: 0,
       sourceVersion: state.sourceVersion,
@@ -862,6 +925,8 @@
     elements.resetSource.addEventListener('click', resetCurrentSource);
     elements.retryIncorrect.addEventListener('click', retryIncorrectQuestions);
     elements.showAll.addEventListener('click', showAllQuestions);
+    elements.shuffleOptions.addEventListener('click', toggleOptionShuffle);
+    elements.reshuffleOptions.addEventListener('click', reshuffleOptions);
     elements.examStart.addEventListener('click', startExam);
     elements.examSubmit.addEventListener('click', () => submitExam());
     elements.disableExamTimer.addEventListener('click', toggleExamTimer);

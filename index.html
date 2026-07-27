@@ -31,9 +31,17 @@
         <button id="exitExamBtn" class="exam-btn exam-btn-exit" type="button" hidden>Thoát chế độ thi</button>
       </div>
 
+      <details class="practice-options-menu">
+        <summary>Tùy chọn</summary>
+        <div class="practice-options-list">
+          <button id="shuffleOptionsBtn" class="shuffle-options-btn" type="button" aria-pressed="false">Đảo lựa chọn: Tắt</button>
+          <button id="reshuffleOptionsBtn" class="shuffle-options-btn" type="button" hidden>Đảo lại lựa chọn</button>
+          <button id="retryIncorrectBtn" class="practice-btn practice-only" type="button">Làm lại câu sai</button>
+          <button id="resetSourceBtn" class="practice-btn practice-btn-danger practice-only" type="button">Làm lại toàn bộ</button>
+        </div>
+      </details>
+
       <div class="practice-actions" aria-label="Tùy chọn luyện tập">
-        <button id="retryIncorrectBtn" class="practice-btn" type="button">Làm lại câu sai</button>
-        <button id="resetSourceBtn" class="practice-btn practice-btn-danger" type="button">Làm lại toàn bộ</button>
         <button id="showAllBtn" class="practice-btn practice-btn-secondary" type="button" hidden>Quay lại tất cả câu</button>
       </div>
       <p id="practiceModeDisplay" class="practice-mode" hidden></p>
