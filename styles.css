@@ -264,6 +264,20 @@ button, input, select { font: inherit; }
 .answer-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; cursor: pointer; }
 .answer-row input { width: 16px; height: 16px; margin: 0; cursor: pointer; }
 .answer-label { font-size: 16px; font-weight: 700; }
+.clear-answer-btn {
+  margin-top: 4px;
+  padding: 6px 10px;
+  color: #991b1b;
+  background: #fff;
+  border: 1px solid #fca5a5;
+  border-radius: 4px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.clear-answer-btn:hover:not(:disabled), .clear-answer-btn:focus-visible { background: #fef2f2; }
+.clear-answer-btn:disabled { opacity: .5; cursor: not-allowed; }
 
 .option-text { display: flex; gap: 10px; margin-bottom: 15px; font-size: 14px; line-height: 1.5; white-space: pre-line; }
 .option-letter { flex: 0 0 auto; font-weight: 700; }

@@ -325,7 +325,8 @@
 
   function renderAnswerControls(question) {
     const isRevealed = !state.exam && state.revealedQuestionId === question.id;
-    const selected = isRevealed ? question.correctAnswer : (getAnswerStore()[question.id] || '');
+    const savedAnswer = getAnswerStore()[question.id] || '';
+    const selected = isRevealed ? question.correctAnswer : savedAnswer;
     const inputType = question.correctAnswer.length > 1 ? 'checkbox' : 'radio';
     const fragment = document.createDocumentFragment();
     fragment.append(createElement('p', 'answer-heading', 'Chọn đáp án của bạn:'));
@@ -342,6 +343,12 @@
       label.append(input, createElement('span', 'answer-label', key));
       fragment.append(label);
     }
+    const clearButton = createElement('button', 'clear-answer-btn', 'Bỏ chọn đáp án');
+    clearButton.type = 'button';
+    clearButton.disabled = !savedAnswer || Boolean(state.exam?.submitted) || isRevealed;
+    clearButton.setAttribute('aria-label', 'Bỏ chọn đáp án của câu này');
+    clearButton.dataset.action = 'clear-answer';
+    fragment.append(clearButton);
     elements.answers.replaceChildren(fragment);
   }
 
@@ -539,6 +546,19 @@
     renderPracticeResult(question);
     renderPracticeControls();
     updateProgress();
+  }
+
+  function clearCurrentAnswer() {
+    const question = state.questions[state.currentIndex];
+    if (!question || state.exam?.submitted || (!state.exam && state.revealedQuestionId === question.id)) return;
+
+    const answers = getAnswerStore();
+    if (!(answers[question.id] || '')) return;
+    delete answers[question.id];
+
+    if (state.exam) saveExamSession();
+    else savePracticeProgress();
+    renderQuestion();
   }
 
   function navigate(direction) {
@@ -821,6 +841,9 @@
   function bindEvents() {
     elements.source.addEventListener('change', event => handleSourceChange(event).catch(showLoadError));
     elements.answers.addEventListener('change', handleAnswerChange);
+    elements.answers.addEventListener('click', event => {
+      if (event.target.closest('[data-action="clear-answer"]')) clearCurrentAnswer();
+    });
     elements.previous.addEventListener('click', () => navigate(-1));
     elements.next.addEventListener('click', () => navigate(1));
     elements.resetSource.addEventListener('click', resetCurrentSource);
