@@ -659,7 +659,7 @@ window.quizSources["mln122"] = {
       "D": "Hoạt động thực nghiệm khoa học."
     },
     "answer": "C",
-    "explanation": "ách mạng công nghiệp lần thứ hai đã tạo ra những tiến bộ vượt bậc trong lĩnh vực nào?"
+    "explanation": "Cách mạng công nghiệp lần thứ hai đã tạo ra những tiến bộ vượt bậc trong lĩnh vực nào?"
   },
   {
     "question": "A. Giao thông vận tải và thông tin liên lạc",
