@@ -653,12 +653,14 @@
   function retryIncorrectQuestions() {
     const incorrectQuestions = getIncorrectQuestions();
     if (!incorrectQuestions.length || !window.confirm(`Làm lại ${incorrectQuestions.length} câu đã sai? Đáp án sai cũ sẽ được xóa.`)) return;
-    state.practiceReturnToStart = state.allQuestions.every(question => {
-      const answer = state.answers[question.id] || '';
-      return answer.length >= question.correctAnswer.length;
-    });
+    if (state.practiceMode !== 'incorrect') {
+      state.practiceReturnToStart = state.allQuestions.every(question => {
+        const answer = state.answers[question.id] || '';
+        return answer.length >= question.correctAnswer.length;
+      });
+      state.practiceReturnIndex = state.currentIndex;
+    }
     for (const question of incorrectQuestions) delete state.answers[question.id];
-    state.practiceReturnIndex = state.currentIndex;
     state.questions = incorrectQuestions;
     state.practiceMode = 'incorrect';
     state.currentIndex = 0;
