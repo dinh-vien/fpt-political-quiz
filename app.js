@@ -2,6 +2,8 @@ import {
   LETTERS,
   createPracticeSession,
   createSourceVersion,
+  getExamResults,
+  getIncorrectQuestions,
   getPreparedQuestions,
   isQuestionCorrect,
   shuffleQuestions
@@ -132,14 +134,14 @@ const EXAM_QUESTION_COUNT = 60;
   }
 
   function getSavedExamSession() {
-    const session = readStorage('exam-session', null);
+    const session = storage.read('exam-session', null);
     if (!session || session.sourceVersion !== state.sourceVersion || !Array.isArray(session.questionIds)) return null;
     const questions = getQuestionsByIds(session.questionIds);
     return questions.length === session.questionIds.length ? session : null;
   }
 
   function getSavedPracticeSession() {
-    const session = readStorage('practice-session', null);
+    const session = storage.read('practice-session', null);
     if (!session || session.sourceVersion !== state.sourceVersion || !Array.isArray(session.questionIds)) return null;
     const questions = getQuestionsByIds(session.questionIds);
     return questions.length === session.questionIds.length ? session : null;
@@ -153,10 +155,10 @@ const EXAM_QUESTION_COUNT = 60;
     state.allQuestions = getPreparedQuestions(source);
     state.sourceVersion = createSourceVersion(state.allQuestions);
     state.practiceMode = 'all';
-    state.answers = readStorage('source-version', '') === state.sourceVersion ? readStorage('answers', {}) : {};
-    state.shuffleOptions = readStorage('shuffle-options', false) === true;
-    state.optionOrders = readStorage('option-orders', {});
-    if (readStorage('source-version', '') !== state.sourceVersion) writeStorage('source-version', state.sourceVersion);
+    state.answers = storage.read('source-version', '') === state.sourceVersion ? storage.read('answers', {}) : {};
+    state.shuffleOptions = storage.read('shuffle-options', false) === true;
+    state.optionOrders = storage.read('option-orders', {});
+    if (storage.read('source-version', '') !== state.sourceVersion) storage.write('source-version', state.sourceVersion);
 
     state.exam = getSavedExamSession();
     const practiceSession = state.exam ? null : getSavedPracticeSession();
@@ -170,7 +172,7 @@ const EXAM_QUESTION_COUNT = 60;
       state.currentIndex = Math.min(Math.max(Number(practiceSession.currentIndex) || 0, 0), Math.max(state.questions.length - 1, 0));
     } else {
       state.questions = state.allQuestions;
-      state.currentIndex = Number(readStorage('current-index', 0)) || 0;
+      state.currentIndex = Number(storage.read('current-index', 0)) || 0;
       if (state.currentIndex < 0 || state.currentIndex >= state.questions.length) state.currentIndex = 0;
     }
 
@@ -179,41 +181,41 @@ const EXAM_QUESTION_COUNT = 60;
     elements.source.value = sourceId;
     elements.quiz.classList.toggle('exam-mode', Boolean(state.exam));
     setSourceLoading(false);
-    saveGlobalActiveSource();
+    storage.saveGlobalActiveSource();
     renderQuestion();
   }
 
   function savePracticeProgress() {
-    writeStorage('current-index', state.currentIndex);
-    writeStorage('answers', state.answers);
-    writeStorage('option-orders', state.optionOrders);
+    storage.write('current-index', state.currentIndex);
+    storage.write('answers', state.answers);
+    storage.write('option-orders', state.optionOrders);
     if (state.practiceMode === 'incorrect') {
-      writeStorage('practice-session', {
+      storage.write('practice-session', createPracticeSession({
         sourceVersion: state.sourceVersion,
-        questionIds: state.questions.map(question => question.id),
+        questions: state.questions,
         currentIndex: state.currentIndex,
         practiceReturnIndex: state.practiceReturnIndex
-      });
+      }));
     } else {
-      removeStorage('practice-session');
+      storage.remove('practice-session');
     }
   }
 
   function saveExamSession() {
     if (!state.exam) return;
     state.exam.currentIndex = state.currentIndex;
-    writeStorage('exam-session', state.exam);
+    storage.write('exam-session', state.exam);
   }
 
   function getExamQuestionHistory() {
-    const savedHistory = readStorage('exam-correct-question-history', null);
+    const savedHistory = storage.read('exam-correct-question-history', null);
     if (!savedHistory || savedHistory.sourceVersion !== state.sourceVersion || !Array.isArray(savedHistory.questionIds)) return [];
     const validIds = new Set(state.allQuestions.map(question => question.id));
     return [...new Set(savedHistory.questionIds)].filter(id => validIds.has(id));
   }
 
   function saveExamQuestionHistory(questionIds) {
-    writeStorage('exam-correct-question-history', {
+    storage.write('exam-correct-question-history', {
       sourceVersion: state.sourceVersion,
       questionIds: [...new Set(questionIds)]
     });
@@ -225,11 +227,6 @@ const EXAM_QUESTION_COUNT = 60;
 
   function getAnswerStore() {
     return state.exam ? state.exam.answers : state.answers;
-  }
-
-  function isQuestionCorrect(question, answer) {
-    const correct = [...question.correctAnswer].sort().join('');
-    return answer.length >= question.correctAnswer.length && answer.toUpperCase() === correct;
   }
 
   function getOptionOrderStore() {
@@ -252,7 +249,7 @@ const EXAM_QUESTION_COUNT = 60;
     const order = shuffleQuestions(optionKeys);
     orders[question.id] = order;
     if (state.exam) saveExamSession();
-    else writeStorage('option-orders', state.optionOrders);
+    else storage.write('option-orders', state.optionOrders);
     return order;
   }
 
@@ -360,12 +357,6 @@ const EXAM_QUESTION_COUNT = 60;
     elements.explanation.textContent = question.explanation;
   }
 
-  function getExamResults() {
-    const answers = state.exam?.answers || {};
-    const correctQuestions = state.questions.filter(question => isQuestionCorrect(question, answers[question.id] || ''));
-    return { correct: correctQuestions.length, incorrect: state.questions.length - correctQuestions.length };
-  }
-
   function renderExamResult() {
     elements.result.hidden = true;
     if (!state.exam.submitted) {
@@ -373,7 +364,7 @@ const EXAM_QUESTION_COUNT = 60;
       return;
     }
 
-    const results = getExamResults();
+    const results = getExamResults(state.questions, state.exam.answers);
     if (state.exam.round === 0) {
       const score = ((results.correct / state.questions.length) * 10).toFixed(2);
       elements.examModalTitle.textContent = state.exam.autoSubmitted ? 'Hết giờ — kết quả bài thi' : 'Kết quả bài thi';
@@ -390,18 +381,9 @@ const EXAM_QUESTION_COUNT = 60;
     elements.examModal.hidden = false;
   }
 
-  function isQuestionIncorrect(question) {
-    const answer = state.answers[question.id] || '';
-    return answer.length >= question.correctAnswer.length && !isQuestionCorrect(question, answer);
-  }
-
-  function getIncorrectQuestions() {
-    return state.allQuestions.filter(isQuestionIncorrect);
-  }
-
   function renderPracticeControls() {
     if (state.exam) return;
-    const incorrectCount = getIncorrectQuestions().length;
+    const incorrectCount = getIncorrectQuestions(state.allQuestions, state.answers).length;
     const isRetryMode = state.practiceMode === 'incorrect';
     elements.retryIncorrect.disabled = incorrectCount === 0;
     elements.resetSource.disabled = state.allQuestions.length === 0;
@@ -412,7 +394,7 @@ const EXAM_QUESTION_COUNT = 60;
 
   function renderExamControls() {
     const active = Boolean(state.exam);
-    const results = active && state.exam.submitted ? getExamResults() : null;
+    const results = active && state.exam.submitted ? getExamResults(state.questions, state.exam.answers) : null;
     elements.source.disabled = active;
     elements.examStart.hidden = active;
     elements.examStart.disabled = state.allQuestions.length === 0;
@@ -588,7 +570,7 @@ const EXAM_QUESTION_COUNT = 60;
   }
 
   function retryIncorrectQuestions() {
-    const incorrectQuestions = getIncorrectQuestions();
+    const incorrectQuestions = getIncorrectQuestions(state.allQuestions, state.answers);
     if (!incorrectQuestions.length || !window.confirm(`Làm lại ${incorrectQuestions.length} câu đã sai? Đáp án sai cũ sẽ được xóa.`)) return;
     if (state.practiceMode !== 'incorrect') {
       state.practiceReturnIndex = state.currentIndex;
@@ -611,20 +593,9 @@ const EXAM_QUESTION_COUNT = 60;
     renderQuestion();
   }
 
-  function shuffleQuestions(questions) {
-    const shuffled = [...questions];
-    for (let index = shuffled.length - 1; index > 0; index -= 1) {
-      const random = new Uint32Array(1);
-      const randomValue = window.crypto?.getRandomValues ? (window.crypto.getRandomValues(random), random[0]) : Math.floor(Math.random() * 0xFFFFFFFF);
-      const swapIndex = randomValue % (index + 1);
-      [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
-    }
-    return shuffled;
-  }
-
   function toggleOptionShuffle() {
     state.shuffleOptions = !state.shuffleOptions;
-    writeStorage('shuffle-options', state.shuffleOptions);
+    storage.write('shuffle-options', state.shuffleOptions);
     if (state.exam) saveExamSession();
     renderQuestion();
   }
@@ -634,7 +605,7 @@ const EXAM_QUESTION_COUNT = 60;
     const orders = getOptionOrderStore();
     for (const question of state.questions) orders[question.id] = shuffleQuestions(Object.keys(question.options));
     if (state.exam) saveExamSession();
-    else writeStorage('option-orders', state.optionOrders);
+    else storage.write('option-orders', state.optionOrders);
     renderQuestion();
   }
 
@@ -672,7 +643,7 @@ const EXAM_QUESTION_COUNT = 60;
   }
 
   function beginExam(questionIds, timerEnabled = true) {
-    removeStorage('practice-session');
+    storage.remove('practice-session');
     state.practiceMode = 'all';
     state.practiceReturnIndex = 0;
     state.exam = {
@@ -783,13 +754,13 @@ const EXAM_QUESTION_COUNT = 60;
 
   function clearExamSession() {
     stopExamTimer();
-    removeStorage('exam-session');
-    removeStorage('practice-session');
+    storage.remove('exam-session');
+    storage.remove('practice-session');
     state.exam = null;
     state.questions = state.allQuestions;
     state.practiceMode = 'all';
     state.practiceReturnIndex = 0;
-    state.currentIndex = Number(readStorage('current-index', 0)) || 0;
+    state.currentIndex = Number(storage.read('current-index', 0)) || 0;
     if (state.currentIndex < 0 || state.currentIndex >= state.questions.length) state.currentIndex = 0;
     elements.examModal.hidden = true;
     elements.quiz.classList.remove('exam-mode');
@@ -907,4 +878,3 @@ const EXAM_QUESTION_COUNT = 60;
   }
 
   document.addEventListener('DOMContentLoaded', initialize);
-})();

@@ -2,6 +2,14 @@
 
 Website tĩnh để luyện trắc nghiệm các môn lý luận chính trị. Không cần framework hay bước cài đặt phụ thuộc.
 
+## Kiểm tra logic
+
+Chạy các bài kiểm tra tự động bằng Node.js:
+
+```powershell
+node --test tests/quiz-core.test.mjs
+```
+
 ## Chạy website
 
 Mở `index.html` bằng trình duyệt, hoặc dùng một static server (khuyến nghị khi public website).
@@ -42,7 +50,11 @@ node build_sources.js ten-mon.md --force
 
 - `index.html`: cấu trúc giao diện.
 - `styles.css`: toàn bộ giao diện responsive.
-- `app.js`: tải nguồn, điều hướng, chấm điểm và lưu tiến độ trong trình duyệt.
+- `app.js`: điều phối giao diện, điều hướng và các luồng luyện tập/thi thử.
+- `quiz-core.js`: logic thuần cho chuẩn hóa câu hỏi, chấm điểm, tạo phiên luyện tập và trộn dữ liệu.
+- `quiz-state.js`: trạng thái khởi tạo của ứng dụng.
+- `quiz-storage.js`: đọc/ghi tiến độ trong trình duyệt.
+- `tests/quiz-core.test.mjs`: test cho chấm điểm, làm lại câu sai, refresh và kết quả thi.
 - `build_sources.js`: pipeline duy nhất để chuyển Markdown thành nguồn câu hỏi JavaScript.
 - `sources.js`: danh sách nguồn được tạo tự động.
 - `*.md`: dữ liệu gốc có thể chỉnh sửa.

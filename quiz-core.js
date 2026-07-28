@@ -35,7 +35,8 @@ export function createSourceVersion(questions) {
 
 export function isQuestionCorrect(question, answer) {
   const correct = [...question.correctAnswer].sort().join('');
-  return answer.toUpperCase() === correct;
+  const selected = [...String(answer || '').toUpperCase()].sort().join('');
+  return selected === correct;
 }
 
 export function shuffleQuestions(questions, random = Math.random) {
@@ -54,4 +55,16 @@ export function createPracticeSession({ sourceVersion, questions, currentIndex, 
     currentIndex,
     practiceReturnIndex
   };
+}
+
+export function getIncorrectQuestions(questions, answers) {
+  return questions.filter(question => {
+    const answer = answers[question.id] || '';
+    return answer.length >= question.correctAnswer.length && !isQuestionCorrect(question, answer);
+  });
+}
+
+export function getExamResults(questions, answers) {
+  const correct = questions.filter(question => isQuestionCorrect(question, answers[question.id] || '')).length;
+  return { correct, incorrect: questions.length - correct };
 }
