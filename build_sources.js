@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const workspace = __dirname;
 const sourceNames = {
@@ -44,6 +45,10 @@ function parseMarkdown(markdown) {
 
 function sourceId(filename) {
     return path.basename(filename, '.md').toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
+}
+
+function contentVersion(content) {
+    return crypto.createHash('sha256').update(content).digest('hex').slice(0, 12);
 }
 
 const requestedFile = process.argv.slice(2).find(argument => argument.toLowerCase().endsWith('.md'));
@@ -96,14 +101,24 @@ for (const markdownFile of markdownFiles) {
             id,
             name: sourceNames[id] || path.basename(markdownFile, '.md').toUpperCase(),
             file: outputFile,
+            version: contentVersion(fs.readFileSync(path.join(workspace, outputFile), 'utf8')),
             count
         });
     }
 }
 
-fs.writeFileSync(
-    path.join(workspace, 'sources.js'),
-    `window.quizSourceCatalog = ${JSON.stringify(sourceCatalog, null, 2)};\n`,
-    'utf8'
+const sourceCatalogContent = `window.quizSourceCatalog = ${JSON.stringify(sourceCatalog, null, 2)};\n`;
+fs.writeFileSync(path.join(workspace, 'sources.js'), sourceCatalogContent, 'utf8');
+
+const indexPath = path.join(workspace, 'index.html');
+const indexContent = fs.readFileSync(indexPath, 'utf8');
+const sourceScriptPattern = /<script src="sources\.js(?:\?v=[^"]*)?" defer><\/script>/;
+if (!sourceScriptPattern.test(indexContent)) {
+    throw new Error('Không tìm thấy thẻ tải sources.js trong index.html.');
+}
+const versionedIndexContent = indexContent.replace(
+    sourceScriptPattern,
+    `<script src="sources.js?v=${contentVersion(sourceCatalogContent)}" defer></script>`
 );
+fs.writeFileSync(indexPath, versionedIndexContent, 'utf8');
 console.log(`Đã cập nhật sources.js với ${sourceCatalog.length} nguồn.`);

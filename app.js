@@ -91,7 +91,8 @@ const EXAM_QUESTION_COUNT = 60;
     const sourceInfo = getSourceCatalog().find(source => source.id === sourceId);
     if (!sourceInfo) throw new Error(`Không tìm thấy cấu hình nguồn câu hỏi: ${sourceId}`);
 
-    if (!sourceLoadPromises.has(sourceId)) sourceLoadPromises.set(sourceId, loadScript(sourceInfo.file));
+    const sourceUrl = sourceInfo.version ? `${sourceInfo.file}?v=${sourceInfo.version}` : sourceInfo.file;
+    if (!sourceLoadPromises.has(sourceId)) sourceLoadPromises.set(sourceId, loadScript(sourceUrl));
     try {
       await sourceLoadPromises.get(sourceId);
     } catch (error) {
