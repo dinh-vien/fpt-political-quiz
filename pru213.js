@@ -1253,7 +1253,7 @@ window.quizSources["pru213"] = {
       "explanation": ""
     },
     {
-      "question": "What is the following tool used for? (photo)",
+      "question": "What is the following tool used for?\n![Unity Rotate tool](assets/pru213/rotate-tool.png)",
       "options": {
         "A": "Rotate game object",
         "B": "Translate game object",
