@@ -638,7 +638,7 @@ window.quizSources["pru213"] = {
       "explanation": ""
     },
     {
-      "question": "Given the following script for handling game over conditions, what will be the outcome when the player's health reaches zero?\nusing UnityEngine;\npublic class GameOverManager : MonoBehaviour\n{\npublic int playerHealth = 3;\nvoid Update()\n{\nif (playerHealth <= 0)\n{\nGameOver();\n}\n}\nvoid GameOver()\n{\nDebug.Log(\"Game Over! Player health depleted.\");\nReloadScene();\n}\nvoid ReloadScene()\n{\nUnityEngine.SceneManagement.SceneManager.LoadScene(\nUnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex\n);\n}\n}",
+      "question": "Given the following script for handling game over conditions, what will be the outcome when the player's health reaches zero?\n```csharp\nusing UnityEngine;\n\npublic class GameOverManager : MonoBehaviour\n{\n    public int playerHealth = 3;\n\n    void Update()\n    {\n        if (playerHealth <= 0)\n        {\n            GameOver();\n        }\n    }\n\n    void GameOver()\n    {\n        Debug.Log(\"Game Over! Player health depleted.\");\n        ReloadScene();\n    }\n\n    void ReloadScene()\n    {\n        UnityEngine.SceneManagement.SceneManager.LoadScene(\n            UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex\n        );\n    }\n}\n```",
       "options": {
         "A": "The player health will reset to the initial value",
         "B": "The player health will increase by 1",
@@ -1189,7 +1189,7 @@ window.quizSources["pru213"] = {
       "explanation": ""
     },
     {
-      "question": "Analyze the following code and determine what happens when the GameObject with this script enters a trigger zone tagged as \"Checkpoint\":\nusing UnityEngine;\npublic class CheckpointTrigger : MonoBehaviour\n{\npublic GameObject checkpointEffect;\nvoid OnTriggerEnter(Collider other)\n{\nif (other.CompareTag(\"Checkpoint\"))\n{\ncheckpointEffect.SetActive(true);\nDebug.Log(\"Checkpoint Reached!\");\n}\n}\n}",
+      "question": "Analyze the following code and determine what happens when the GameObject with this script enters a trigger zone tagged as \"Checkpoint\":\n```csharp\nusing UnityEngine;\npublic class CheckpointTrigger : MonoBehaviour\n{\n    public GameObject checkpointEffect;\n\n    void OnTriggerEnter(Collider other)\n    {\n        if (other.CompareTag(\"Checkpoint\"))\n        {\n            checkpointEffect.SetActive(true);\n            Debug.Log(\"Checkpoint Reached!\");\n        }\n    }\n}\n```",
       "options": {
         "A": "The GameObject will change color",
         "B": "A particle effect will be activated and a message logged",
@@ -1200,7 +1200,7 @@ window.quizSources["pru213"] = {
       "explanation": ""
     },
     {
-      "question": "Given the following script snippet attached to a GameObject with a Rigidbody component, what will happen when the space bar is pressed?\npublic Rigidbody rb;\npublic float forceMagnitude = 500f;\nvoid Update()\n{\nif (Input.GetKeyDown(KeyCode.Space))\n{\nrb.AddForce(Vector3.up * forceMagnitude);\n}\n}",
+      "question": "Given the following script snippet attached to a GameObject with a Rigidbody component, what will happen when the space bar is pressed?\n```csharp\npublic Rigidbody rb;\npublic float forceMagnitude = 500f;\nvoid Update()\n{\n    if (Input.GetKeyDown(KeyCode.Space))\n    {\n        rb.AddForce(Vector3.up * forceMagnitude);\n    }\n}\n```",
       "options": {
         "A": "The GameObject will move downward with a force of 500 Newtons.",
         "B": "The GameObject will rotate around the Y-axis.",

@@ -28,6 +28,21 @@ Mở `index.html` bằng trình duyệt, hoặc dùng một static server (khuy�
    A
    ```
 
+   Với câu hỏi có code, bọc đoạn code trong dấu ba backtick để web hiển thị đúng thụt lề:
+
+   ````md
+   Đoạn code này làm gì?
+   ```csharp
+   void Start()
+   {
+       Debug.Log("Hello");
+   }
+   ```
+   A. In Hello ra Console
+   B. Thoát game
+   A
+   ````
+
    Số lượng lựa chọn linh hoạt từ `A` đến `Z`. Dòng đáp án có thể viết `A` hoặc `Đáp án: A`; đáp án nhiều lựa chọn dùng dạng `AC`.
 
 3. Chạy:

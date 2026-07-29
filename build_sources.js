@@ -13,8 +13,20 @@ function parseMarkdown(markdown) {
     const questions = [];
     let questionLines = [];
     let options = {};
+    let inCodeBlock = false;
 
     for (const line of markdown.replace(/\r\n/g, '\n').split('\n')) {
+        if (/^\s*```/.test(line)) {
+            inCodeBlock = !inCodeBlock;
+            questionLines.push(line.trim());
+            continue;
+        }
+
+        if (inCodeBlock) {
+            questionLines.push(line);
+            continue;
+        }
+
         const text = line.trim();
         if (!text) continue;
 

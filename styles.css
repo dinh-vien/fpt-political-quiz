@@ -302,7 +302,22 @@ button, input, select { font: inherit; }
 }
 
 .instruction-text { margin: 0 0 30px; color: #555; font-size: 14px; }
-.question-content-text { margin-bottom: 20px; font-size: 15px; font-weight: 700; line-height: 1.5; white-space: pre-line; }
+.question-content-text { margin-bottom: 20px; font-size: 15px; font-weight: 700; line-height: 1.5; }
+.question-text-part { white-space: pre-line; }
+.question-content-text pre {
+  margin: 12px 0;
+  padding: 14px 16px;
+  overflow-x: auto;
+  color: #e5e7eb;
+  background: #111827;
+  border: 1px solid #374151;
+  border-radius: 8px;
+  font: 13px/1.55 Consolas, "Courier New", monospace;
+  font-weight: 400;
+  tab-size: 2;
+  white-space: pre;
+}
+.question-content-text code { font: inherit; }
 .answer-section { margin-top: 20px; }
 .answer-heading { margin: 0 0 8px; font-size: 14px; font-weight: 700; }
 

@@ -262,6 +262,47 @@ const EXAM_QUESTION_COUNT = 60;
       .join('');
   }
 
+  function renderQuestionContent(questionText) {
+    const fragment = document.createDocumentFragment();
+    const textLines = [];
+    const codeLines = [];
+    let inCodeBlock = false;
+
+    const appendText = () => {
+      if (!textLines.length) return;
+      const text = document.createElement('div');
+      text.className = 'question-text-part';
+      text.textContent = textLines.join('\n').trim();
+      if (text.textContent) fragment.append(text);
+      textLines.length = 0;
+    };
+
+    const appendCode = () => {
+      const pre = document.createElement('pre');
+      const code = document.createElement('code');
+      code.textContent = codeLines.join('\n');
+      pre.append(code);
+      fragment.append(pre);
+      codeLines.length = 0;
+    };
+
+    for (const line of String(questionText || '').split('\n')) {
+      if (/^\s*```/.test(line)) {
+        if (inCodeBlock) appendCode();
+        else appendText();
+        inCodeBlock = !inCodeBlock;
+      } else if (inCodeBlock) {
+        codeLines.push(line);
+      } else {
+        textLines.push(line);
+      }
+    }
+
+    if (inCodeBlock) appendCode();
+    else appendText();
+    elements.question.replaceChildren(fragment);
+  }
+
   function renderQuestion() {
     const question = state.questions[state.currentIndex];
     elements.total.textContent = String(state.questions.length);
@@ -273,7 +314,7 @@ const EXAM_QUESTION_COUNT = 60;
 
     elements.questionNumber.textContent = `Câu: ${state.currentIndex + 1}`;
     elements.jump.value = String(state.currentIndex + 1);
-    elements.question.textContent = question.text;
+    renderQuestionContent(question.text);
     elements.instruction.textContent = `(Chọn ${question.correctAnswer.length} đáp án)`;
     renderAnswerControls(question);
     renderOptions(question);
