@@ -903,7 +903,7 @@ window.quizSources["pru213"] = {
       "explanation": ""
     },
     {
-      "question": "Which window does the following picture belong to?",
+      "question": "Which window does the following picture belong to?\n![Unity Inspector window](assets/pru213/inspector-window.png)",
       "options": {
         "A": "Scene window",
         "B": "Inspewindow",
