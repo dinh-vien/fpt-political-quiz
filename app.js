@@ -34,6 +34,8 @@ const EXAM_QUESTION_COUNT = 60;
     examModalTitle: document.getElementById('examModalTitle'),
     examConfirm: document.getElementById('examConfirmModal'),
     examConfirmMessage: document.getElementById('examConfirmMessage'),
+    examCount: document.getElementById('examCountInput'),
+    examCountControl: document.getElementById('examCountControl'),
     examNew: document.getElementById('newExamBtn'),
     examRetake: document.getElementById('retakeExamBtn'),
     examRetry: document.getElementById('retryExamBtn'),
@@ -155,6 +157,7 @@ const EXAM_QUESTION_COUNT = 60;
     state.activeSourceId = sourceId;
     state.allQuestions = getPreparedQuestions(source);
     state.sourceVersion = createSourceVersion(state.allQuestions);
+    updateExamCountLimit();
     state.practiceMode = 'all';
     state.answers = storage.read('source-version', '') === state.sourceVersion ? storage.read('answers', {}) : {};
     state.shuffleOptions = storage.read('shuffle-options', false) === true;
@@ -164,6 +167,7 @@ const EXAM_QUESTION_COUNT = 60;
     state.exam = getSavedExamSession();
     const practiceSession = state.exam ? null : getSavedPracticeSession();
     if (state.exam) {
+      elements.examCount.value = String(state.exam.questionCount || state.exam.originalQuestionIds?.length || state.exam.questionIds.length);
       state.questions = getQuestionsByIds(state.exam.questionIds);
       state.currentIndex = Math.min(Math.max(Number(state.exam.currentIndex) || 0, 0), Math.max(state.questions.length - 1, 0));
     } else if (practiceSession) {
@@ -450,6 +454,8 @@ const EXAM_QUESTION_COUNT = 60;
     const active = Boolean(state.exam);
     const results = active && state.exam.submitted ? getExamResults(state.questions, state.exam.answers) : null;
     elements.source.disabled = active;
+    elements.examCount.disabled = active || state.allQuestions.length === 0;
+    elements.examCountControl.hidden = active;
     elements.examStart.hidden = active;
     elements.examStart.disabled = state.allQuestions.length === 0;
     elements.examSubmit.hidden = !active || state.exam.submitted;
@@ -582,6 +588,33 @@ const EXAM_QUESTION_COUNT = 60;
     renderQuestion();
   }
 
+  function updateExamCountLimit() {
+    const total = state.allQuestions.length;
+    elements.examCount.max = String(total);
+    if (!total) {
+      elements.examCount.value = '';
+      return;
+    }
+
+    const requestedCount = Number(elements.examCount.value);
+    const defaultCount = Math.min(EXAM_QUESTION_COUNT, total);
+    elements.examCount.value = String(
+      Number.isInteger(requestedCount) && requestedCount > 0
+        ? Math.min(requestedCount, total)
+        : defaultCount
+    );
+  }
+
+  function getRequestedExamCount() {
+    const count = Number(elements.examCount.value);
+    const total = state.allQuestions.length;
+    if (Number.isInteger(count) && count > 0 && count <= total) return count;
+
+    window.alert(`Số câu phải là số nguyên lớn hơn 0 và không vượt quá ${total} câu của môn này.`);
+    elements.examCount.focus();
+    return null;
+  }
+
   function selectAnswerFromOption(option) {
     const answerKey = option?.dataset.answer;
     if (!answerKey) return;
@@ -663,8 +696,7 @@ const EXAM_QUESTION_COUNT = 60;
     renderQuestion();
   }
 
-  function createRandomExamQuestionIds(previousIds = []) {
-    const count = Math.min(EXAM_QUESTION_COUNT, state.allQuestions.length);
+  function createRandomExamQuestionIds(count, previousIds = []) {
     const previousSet = new Set(previousIds);
     if (!previousSet.size || state.allQuestions.length <= count) {
       return shuffleQuestions(state.allQuestions).slice(0, count).map(question => question.id);
@@ -680,8 +712,7 @@ const EXAM_QUESTION_COUNT = 60;
     return shuffleQuestions(selected).map(question => question.id);
   }
 
-  function getNewExamQuestionIds() {
-    const count = Math.min(EXAM_QUESTION_COUNT, state.allQuestions.length);
+  function getNewExamQuestionIds(count) {
     const usedIds = getExamQuestionHistory();
     const usedSet = new Set(usedIds);
     const unusedQuestions = state.allQuestions.filter(question => !usedSet.has(question.id));
@@ -690,7 +721,7 @@ const EXAM_QUESTION_COUNT = 60;
       const remaining = unusedQuestions.length;
       window.alert(`Bạn đã làm đúng gần hết ngân hàng câu hỏi của môn này. Chỉ còn ${remaining} câu bạn chưa làm đúng, không đủ để tạo đề ${count} câu.\n\nHệ thống sẽ tự động reset vòng trộn. Đề mới có thể có lại các câu bạn đã làm đúng.`);
       saveExamQuestionHistory([]);
-      return createRandomExamQuestionIds();
+      return createRandomExamQuestionIds(count);
     }
 
     return shuffleQuestions(unusedQuestions).slice(0, count).map(question => question.id);
@@ -710,6 +741,7 @@ const EXAM_QUESTION_COUNT = 60;
       sourceVersion: state.sourceVersion,
       submitted: false,
       autoSubmitted: false,
+      questionCount: questionIds.length,
       timerEnabled: Boolean(timerEnabled),
       deadline: timerEnabled ? Date.now() + EXAM_DURATION_MS : null,
       pausedRemainingMs: timerEnabled ? null : EXAM_DURATION_MS
@@ -724,12 +756,11 @@ const EXAM_QUESTION_COUNT = 60;
 
   function startExam() {
     if (!state.allQuestions.length) return;
-    const questionIds = getNewExamQuestionIds();
+    const count = getRequestedExamCount();
+    if (!count) return;
+    const questionIds = getNewExamQuestionIds(count);
     if (!questionIds) return;
-    const count = Math.min(EXAM_QUESTION_COUNT, state.allQuestions.length);
-    const message = count === EXAM_QUESTION_COUNT
-      ? 'Bắt đầu bài thi gồm 60 câu ngẫu nhiên?'
-      : `Ngân hàng chỉ có ${count} câu. Bắt đầu bài thi với toàn bộ ${count} câu?`;
+    const message = `Bắt đầu bài thi gồm ${count} câu ngẫu nhiên?`;
     if (!window.confirm(message)) return;
 
     beginExam(questionIds);
@@ -743,7 +774,8 @@ const EXAM_QUESTION_COUNT = 60;
 
   function startDifferentExam() {
     if (!state.exam?.submitted) return;
-    const questionIds = getNewExamQuestionIds();
+    const count = state.exam.questionCount || state.exam.originalQuestionIds?.length || state.exam.questionIds.length;
+    const questionIds = getNewExamQuestionIds(count);
     if (!questionIds) return;
     beginExam(questionIds);
   }

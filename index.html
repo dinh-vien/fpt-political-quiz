@@ -6,9 +6,9 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <meta name="description" content="Hệ thống luyện trắc nghiệm các môn lý luận chính trị.">
   <title>FPT Political Final Exam</title>
-  <link rel="stylesheet" href="styles.css?v=0a303378e4d6">
+  <link rel="stylesheet" href="styles.css?v=8e358ca64caf">
   <script src="sources.js?v=ff898b9bc308" defer></script>
-  <script src="app.js?v=77f4fbd0d061" type="module"></script>
+  <script src="app.js?v=df8c0259d7bf" type="module"></script>
 </head>
 <body>
   <main id="quizContainer" class="quiz-container" aria-label="FPT Political Final Exam">
@@ -26,7 +26,11 @@
       </div>
 
       <div class="exam-actions" aria-label="Chế độ thi">
-        <button id="startExamBtn" class="exam-btn" type="button">Thi thử (60 câu)</button>
+        <label id="examCountControl" class="exam-count-control" for="examCountInput">
+          Số câu
+          <input id="examCountInput" type="number" min="1" step="1" value="60" inputmode="numeric" aria-label="Số câu thi thử">
+        </label>
+        <button id="startExamBtn" class="exam-btn" type="button">Bắt đầu thi</button>
         <button id="submitExamBtn" class="exam-btn exam-btn-submit" type="button" hidden>Nộp bài</button>
         <button id="exitExamBtn" class="exam-btn exam-btn-exit" type="button" hidden>Thoát chế độ thi</button>
       </div>

@@ -129,6 +129,22 @@ button, input, select { font: inherit; }
 .source-select:disabled { color: #4b5563; background: #f3f4f6; cursor: not-allowed; }
 
 .exam-actions { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 15px; }
+.exam-count-control {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #374151;
+  font-size: 12px;
+  font-weight: 700;
+}
+.exam-count-control input {
+  width: 58px;
+  padding: 6px;
+  border: 1px solid #9ca3af;
+  border-radius: 4px;
+  font: inherit;
+}
+.exam-count-control input:disabled { color: #6b7280; background: #f3f4f6; }
 
 .exam-btn {
   padding: 7px 9px;
