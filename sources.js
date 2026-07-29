@@ -12,6 +12,12 @@ window.quizSourceCatalog = [
     "count": 529
   },
   {
+    "id": "pru213",
+    "name": "PRU213",
+    "file": "pru213.js",
+    "count": 153
+  },
+  {
     "id": "vnr202",
     "name": "VNR202 - Lịch sử Đảng Cộng sản Việt Nam",
     "file": "vnr202.js",
