@@ -660,7 +660,7 @@ window.quizSources["pru213"] = {
       "explanation": ""
     },
     {
-      "question": "What is TRUE about below hierarchy window?",
+      "question": "What is TRUE about below hierarchy window?\n![Unity Hierarchy window](assets/pru213/hierarchy-window.png)",
       "options": {
         "A": "bullets 4_up and bullets 4 down share the same"
       },

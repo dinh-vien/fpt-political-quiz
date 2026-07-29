@@ -43,6 +43,16 @@ Mở `index.html` bằng trình duyệt, hoặc dùng một static server (khuy�
    A
    ````
 
+   Với câu hỏi cần nhìn ảnh, thêm ảnh vào `assets/` rồi chèn một dòng ảnh Markdown ngay dưới câu hỏi:
+
+   ```md
+   What is TRUE about below hierarchy window?
+   ![Unity Hierarchy window](assets/pru213/hierarchy-window.png)
+   A. Phương án A
+   B. Phương án B
+   B
+   ```
+
    Số lượng lựa chọn linh hoạt từ `A` đến `Z`. Dòng đáp án có thể viết `A` hoặc `Đáp án: A`; đáp án nhiều lựa chọn dùng dạng `AC`.
 
 3. Chạy:

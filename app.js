@@ -294,7 +294,19 @@ const EXAM_QUESTION_COUNT = 60;
       } else if (inCodeBlock) {
         codeLines.push(line);
       } else {
-        textLines.push(line);
+        const imageMatch = line.match(/^\s*!\[([^\]]*)\]\(([^)\s]+)\)\s*$/);
+        if (!imageMatch) {
+          textLines.push(line);
+          continue;
+        }
+
+        appendText();
+        const image = document.createElement('img');
+        image.className = 'question-image';
+        image.src = imageMatch[2];
+        image.alt = imageMatch[1] || 'Hình minh họa cho câu hỏi';
+        image.loading = 'lazy';
+        fragment.append(image);
       }
     }
 

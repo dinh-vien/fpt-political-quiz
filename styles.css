@@ -318,6 +318,16 @@ button, input, select { font: inherit; }
   white-space: pre;
 }
 .question-content-text code { font: inherit; }
+.question-image {
+  display: block;
+  width: min(100%, 760px);
+  max-height: 520px;
+  margin: 12px auto;
+  object-fit: contain;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #fff;
+}
 .answer-section { margin-top: 20px; }
 .answer-heading { margin: 0 0 8px; font-size: 14px; font-weight: 700; }
 

@@ -128,9 +128,22 @@ const sourceScriptPattern = /<script src="sources\.js(?:\?v=[^"]*)?" defer><\/sc
 if (!sourceScriptPattern.test(indexContent)) {
     throw new Error('Không tìm thấy thẻ tải sources.js trong index.html.');
 }
-const versionedIndexContent = indexContent.replace(
+let versionedIndexContent = indexContent.replace(
     sourceScriptPattern,
     `<script src="sources.js?v=${contentVersion(sourceCatalogContent)}" defer></script>`
 );
+for (const [file, pattern] of [
+    ['styles.css', /<link rel="stylesheet" href="styles\.css(?:\?v=[^"]*)?">/],
+    ['app.js', /<script src="app\.js(?:\?v=[^"]*)?" type="module"><\/script>/]
+]) {
+    if (!pattern.test(versionedIndexContent)) {
+        throw new Error(`Không tìm thấy thẻ tải ${file} trong index.html.`);
+    }
+    const version = contentVersion(fs.readFileSync(path.join(workspace, file), 'utf8'));
+    const tag = file === 'styles.css'
+        ? `<link rel="stylesheet" href="${file}?v=${version}">`
+        : `<script src="${file}?v=${version}" type="module"></script>`;
+    versionedIndexContent = versionedIndexContent.replace(pattern, tag);
+}
 fs.writeFileSync(indexPath, versionedIndexContent, 'utf8');
 console.log(`Đã cập nhật sources.js với ${sourceCatalog.length} nguồn.`);
