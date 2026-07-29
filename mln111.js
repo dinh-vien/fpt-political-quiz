@@ -1915,7 +1915,10 @@ window.quizSources["mln111"] = {
     {
       "question": "Một sinh viên chuẩn bị bài thuyết trình trong một tháng theo cách thức: Tuần đầu phác thảo đề cương và hàng ngày dành 30 phút sửa chữa bổ sung hoàn thiện. Vào buổi thuyết trình sinh viên đã có một bản thảo hoàn chỉnh. Công việc trên đã diễn ra theo quy luật, nguyên lý nào?",
       "options": {
-        "A": "Quy luật lượng chất"
+        "A": "Quy luật lượng chất",
+        "B": "Phủ định của phủ định",
+        "C": "Mối liên hệ phổ biến",
+        "D": "Thống nhất và đấu tranh của các mặt đối lập"
       },
       "answer": "A",
       "explanation": ""
@@ -2332,7 +2335,7 @@ window.quizSources["mln111"] = {
       "explanation": ""
     },
     {
-      "question": "",
+      "question": "C.Mác và Ph.Ăngghen cho rằng: Cái mà người ta quả quyết cho là...thì lại hoàn toàn do những cái...cấu thành và cái được coi là...lại là hình thức trong đó ẩn nấp...",
       "options": {
         "A": "Tất yếu/ Ngẫu nhiên; Ngẫu nhiên/ Tất yếu.",
         "B": "Ngẫu nhiên/ Tất yếu; Tất yếu/ Ngẫu nhiên",
@@ -3540,7 +3543,7 @@ window.quizSources["mln111"] = {
       "explanation": ""
     },
     {
-      "question": "",
+      "question": "Bốn hình thức vận động cơ bản",
       "options": {
         "A": "Bốn hình thức vận động cơ bản",
         "B": "Năm hình thức vận động cơ bản",
@@ -5476,6 +5479,16 @@ window.quizSources["mln111"] = {
       "explanation": ""
     },
     {
+      "question": "Triết học duy tâm cho rằng:",
+      "options": {
+        "A": "Vật chất quyết định ý thức",
+        "B": "Ý thức quyết định vật chất",
+        "C": "Con người quyết định tất cả"
+      },
+      "answer": "B",
+      "explanation": ""
+    },
+    {
       "question": "Bộ phận nào của tư liệu lao động được coi là tiêu chí phản ánh đặc trưng phát triển của một thời đại kinh tế?",
       "options": {
         "A": "Công cụ lao động",
@@ -5487,7 +5500,7 @@ window.quizSources["mln111"] = {
       "explanation": ""
     },
     {
-      "question": "",
+      "question": "Bộ phận nào của tư liệu lao động được coi là tiêu chí phản ánh đặc trưng phát triển của một thời đại kinh tế?",
       "options": {
         "A": "Công cụ lao động",
         "B": "Kết cấu hạ tầng sản xuất",

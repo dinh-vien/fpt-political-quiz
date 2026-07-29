@@ -3,8 +3,8 @@ window.quizSourceCatalog = [
     "id": "mln111",
     "name": "MLN111 - Triết học Mác-Lênin",
     "file": "mln111.js",
-    "version": "91d658be75ef",
-    "count": 549
+    "version": "3d7ea2fd8b6b",
+    "count": 550
   },
   {
     "id": "mln122",
