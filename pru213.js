@@ -602,14 +602,7 @@ window.quizSources["pru213"] = {
       "options": {
         "A": "By automatically playing a predetermined animation.",
         "B": "By deleting one or both of the objects involved in the collision.",
-        "C": "By applying forces or impulses to the colliding objects based on their mass, velocity, and the nature of the"
-      },
-      "answer": "COLLISION",
-      "explanation": ""
-    },
-    {
-      "question": "",
-      "options": {
+        "C": "By applying forces or impulses to the colliding objects based on their mass, velocity, and the nature of the collision.",
         "D": "Unity does not handle collision responses; it must be manually programmed for each object."
       },
       "answer": "C",
@@ -662,22 +655,8 @@ window.quizSources["pru213"] = {
     {
       "question": "What is TRUE about below hierarchy window?\n![Unity Hierarchy window](assets/pru213/hierarchy-window.png)",
       "options": {
-        "A": "bullets 4_up and bullets 4 down share the same"
-      },
-      "answer": "CHORAOTERINTICN",
-      "explanation": ""
-    },
-    {
-      "question": "",
-      "options": {
-        "B": "Protecter will move exactiy same as spaceWarShip"
-      },
-      "answer": "MOVES",
-      "explanation": ""
-    },
-    {
-      "question": "",
-      "options": {
+        "A": "bullets 4_up and bullets 4 down share the same choraoterinticn",
+        "B": "Protecter will move exactiy same as spaceWarShip moves",
         "C": "bullets_4_up is child game object of spaceWarShip",
         "D": "ObjectRelease is child game object of Main Camera"
       },
@@ -841,13 +820,16 @@ window.quizSources["pru213"] = {
     {
       "question": "Given Unity's physics simulation capabilities, explain how using a Rigidbody 2D component with a dynamic\nbody type and a non-zero gravity scale affects a GameObject when it collides with another GameObject that\nhas a static body type and a Collider 2D component. Consider the impact of both GameObjects having\ndifferent mass properties.",
       "options": {
-        "A": "The dynamic GameObject will stop immediately upon collision, regardless of its mass or the gravity scale"
+        "A": "The dynamic GameObject will stop immediately upon collision, regardless of its mass or the gravity scale set",
+        "B": "The dynamic GameObject will pass through the static GameObject, as static bodies do not interact with other physics bodies.",
+        "C": "The dynamic GameObject's movement and subsequent reaction to the collision are influenced by its mass and the gravity scale. A higher mass results in less impact from the collision, whereas a higher gravity scale increases the GameObject's speed upon collision.",
+        "D": "The collision will result in the static GameObject being pushed by the dynamic GameObject, demonstrating a physical response."
       },
-      "answer": "SET",
+      "answer": "C",
       "explanation": ""
     },
     {
-      "question": "a physical response.\nC\nWhat is the fundamental role of components in Unity's Entity Component System (ECS)?",
+      "question": "What is the fundamental role of components in Unity's Entity Component System (ECS)?",
       "options": {
         "A": "To define the graphical appearance of entities",
         "B": "To serve as data containers that represent the attributes and behavior of entities",
@@ -1222,8 +1204,10 @@ window.quizSources["pru213"] = {
       "explanation": ""
     },
     {
-      "question": "movement and rotation.",
+      "question": "What is the primary role of the Rigidbody component in Unity when creating physics-based puzzles?",
       "options": {
+        "A": "To add visual effects to objects during collisions.",
+        "B": "To enable objects to respond to physics simulations, such as gravity and collisions, affecting their movement and rotation.",
         "C": "To define the graphical representation of objects in the game world.",
         "D": "To play audio effects when objects interact with the environment."
       },
@@ -1418,8 +1402,11 @@ window.quizSources["pru213"] = {
       "explanation": ""
     },
     {
-      "question": "OnMousePosition(InputAction.CallbackContext context), starting the drag on context.performed and tracking the mouse position until the button is released.",
+      "question": "When implementing mouse dragging functionality in a Unity game, which combination of InputAction callbacks and conditions would you use in your C# script?",
       "options": {
+        "A": "Use OnMouseDrag(InputAction.CallbackContext context) and check if context.performed is true for starting drag, and context.canceled for ending the drag.",
+        "B": "Implement OnMouseDown() and OnMouseUp() methods, and calculate the drag distance in Update() method.",
+        "C": "Register callbacks for OnMouseDown(InputAction.CallbackContext context) and OnMousePosition(InputAction.CallbackContext context), starting the drag on context.performed and tracking the mouse position until the button is released.",
         "D": "Utilize OnLeftClick(InputAction.CallbackContext context) for detecting drag start, and track movement in OnMouseMovement(InputAction.CallbackContext context) until context.canceled is true."
       },
       "answer": "C",

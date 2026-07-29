@@ -35,7 +35,11 @@ function parseMarkdown(markdown) {
 
         if (optionMatch) {
             options[optionMatch[1].toUpperCase()] = optionMatch[2];
-        } else if (answerMatch && Object.keys(options).length) {
+        } else if (
+            answerMatch
+            && Object.keys(options).length
+            && [...answerMatch[1].toUpperCase()].every(key => Object.hasOwn(options, key))
+        ) {
             questions.push({
                 question: questionLines.join('\n').trim(),
                 options: { ...options },
@@ -45,8 +49,9 @@ function parseMarkdown(markdown) {
             questionLines = [];
             options = {};
         } else if (Object.keys(options).length) {
-            questionLines = [text];
-            options = {};
+            const optionKeys = Object.keys(options);
+            const lastOptionKey = optionKeys[optionKeys.length - 1];
+            options[lastOptionKey] = `${options[lastOptionKey]} ${text}`.trim();
         } else {
             questionLines.push(text);
         }
