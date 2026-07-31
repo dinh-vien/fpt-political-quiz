@@ -559,6 +559,8 @@ const EXAM_QUESTION_COUNT = 60;
     const question = state.questions[state.currentIndex];
     if (!question || state.exam?.submitted) return;
     const answer = getSelectedAnswer();
+    const clearButton = elements.answers.querySelector('[data-action="clear-answer"]');
+    if (clearButton) clearButton.disabled = !answer;
 
     if (state.exam) {
       state.exam.answers[question.id] = answer;
