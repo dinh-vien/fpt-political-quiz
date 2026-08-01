@@ -378,7 +378,7 @@ const EXAM_QUESTION_COUNT = 60;
     }
     const clearButton = createElement('button', 'clear-answer-btn', 'Bỏ chọn đáp án');
     clearButton.type = 'button';
-    clearButton.disabled = !savedAnswer || Boolean(state.exam?.submitted) || isRevealed;
+    clearButton.disabled = Boolean(state.exam?.submitted) || isRevealed;
     clearButton.setAttribute('aria-label', 'Bỏ chọn đáp án của câu này');
     clearButton.dataset.action = 'clear-answer';
     fragment.append(clearButton);
@@ -559,8 +559,6 @@ const EXAM_QUESTION_COUNT = 60;
     const question = state.questions[state.currentIndex];
     if (!question || state.exam?.submitted) return;
     const answer = getSelectedAnswer();
-    const clearButton = elements.answers.querySelector('[data-action="clear-answer"]');
-    if (clearButton) clearButton.disabled = !answer;
 
     if (state.exam) {
       state.exam.answers[question.id] = answer;
