@@ -14,6 +14,13 @@ window.quizSourceCatalog = [
     "count": 529
   },
   {
+    "id": "pmg201c",
+    "name": "PMG201C",
+    "file": "pmg201c.js",
+    "version": "371bf2c13f57",
+    "count": 284
+  },
+  {
     "id": "pru213",
     "name": "PRU213",
     "file": "pru213.js",
