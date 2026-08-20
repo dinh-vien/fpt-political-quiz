@@ -91,12 +91,12 @@ A. Decreased understanding of what is takes to get it done
 B. Changing stakeholder perspectives
 C. Poorly defined objectives
 D. Inability to say "NO"E. Lack of defined change con trol process
-D
+A
 
 True or False: Project quality focuses on the project management processes used to meet project objec tives.
 A. False
 B. True
-A
+B
 
 Lateral communication is NOT communication to/from:
 A. Your customers.
@@ -388,7 +388,7 @@ F
 True or False: Project Human Resource Management includes the processes that define the tasks and as sign them to suitable resources, and motivate project team to complete the tasks.
 A. False
 B. True
-B
+A
 
 All of the following is responsible for documenting lessons learned, except:
 A. Project manager
