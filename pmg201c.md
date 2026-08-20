@@ -870,7 +870,7 @@ A. You change your plans so that you eliminate the risk.
 B. You actively do not consider the risk but establish contingency plan
 C. You change your plan so that another party will be responsible for the risk
 D. You create your plan to reduce the probability and/or the impact of the risk
-A
+B
 
 All of the following are inputs to estimating activity durations except:
 A. Project Documents Updates & Requirements Spec ifications
