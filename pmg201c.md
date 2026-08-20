@@ -20,7 +20,7 @@ A
 True or False: Project scope statement is better to define inclusions (in-scope items) than identify only exclusions (out of scope items).
 A. False
 B. True
-A
+B
 
 Which one is NOT the approach to shorten your pro ject schedule?
 A. Fast Tracking
@@ -71,7 +71,7 @@ C. Balanced Matrix
 D. Strongest Matrix
 E. Projectized
 F. Medium Matrix
-F
+E
 
 Which project management process group generally takes the most project time and resources?
 A. Executing
@@ -126,12 +126,12 @@ A
 True or False: The Cost Baseline is equal to the total of Activity Cost Estimates plus contingency reserves
 A. True
 B. False
-B
+A
 
 True or False: The danger of estimating using the same parametric model is the no longer applicable of historical data
 A. True
 B. False
-B
+A
 
 All of the following are inputs to estimating activity duration except:
 A. Enterprise Environmental Factor & Organizational Process Assets
@@ -159,7 +159,7 @@ A. Both of them are included into the cost budget of the project.
 B. Both of them are not included into the cost budget of the project.
 C. Management reserve is included into the cost bud get but contingency reserve is not.
 D. Contingency reserve is included into the cost bud get but management reserve is not.
-C
+A
 
 All the following occur during the planning process group EXCEPT:
 A. Develop Project Charter
@@ -232,17 +232,17 @@ C. Only update your risk register when you are prepar ing to share it with your 
 D. Continue to identify and monitor risks for the re mainder of the project.
 D
 
-If "review online modules" needs to begin before "de velop online modules" can finish, that is called a
+If "review online modules" needs to begin before "develop online modules" can finish, that is called a:
 A. Finish to start relationship.
 B. Start to finish relationship.
 C. Finish to finish relationship.
 D. Start to start relationship.
-A
+B
 
 True or False: The Project Sponsor is responsible for stakeholder expectations management.
 A. False
 B. True
-B
+A
 
 to manage a project effectively, work should be bro ken down into small pieces. Which of the following does not describe how far to decompose the work?
 A. Until it has a meaningful conclusion
@@ -263,7 +263,7 @@ B. Define how format verification and acceptance of the completed project delive
 C. Control how requests for changes to the project scope will be processed.
 D. Prepare a project scope statement based upon the project charter.
 E. Define how to identify and manage triple con straints.
-A
+E
 
 The definition of a stakeholder includes:
 A. People and organizations that are not impacted by your project. people, they are all part of the impacted organiza tions.
@@ -284,7 +284,7 @@ A. Budgeting
 B. Timing
 C. Roles and Responsibilities
 D. Risk Register
-C
+D
 
 An estimate created by looking at a similar project or activity and then adding or subtracting to or from the estimate based on the differences between the two is called:
 A. Bottoms up estimating
@@ -305,7 +305,7 @@ A. Supportive
 B. Neutral
 C. Unaware
 D. Leading
-B
+D
 
 The best time to assign a project manager to a project is during:
 A. Initiating
@@ -686,7 +686,7 @@ CD
 True or False: A Work Breakdown Structure (WBS) is a deliverable-oriented hierarchical decomposition of the work to be executed by the project team.
 A. False
 B. True
-A
+B
 
 To ensure control over the incidence and frequency of change, the project manager establishes a:
 A. Work breakdown structure
@@ -698,7 +698,7 @@ D
 True or False: You should compare your project perfor mance against the performance measurement base line to look for potential changes in the project
 A. False
 B. True
-A
+B
 
 True or False: Project quality focuses on the goods and services
 A. False
@@ -715,7 +715,7 @@ B
 True or False: The Crashing is the approach to re-plan the work and try to perform more overlapping se quential activities to be in parallel.
 A. False
 B. True
-B
+A
 
 True or False: The Process Improvement Plan is a com ponent of the project management plan that details how project management and development process es are to be analyzed in order to identify how to in crease their value
 A. True
@@ -751,7 +751,7 @@ A. Reviewing and evaluating project documents B EVM (Earned Value Management)
 B. EVM (Earned Value Management)
 C. SWOT (Strengths. Opportunities, Weaknesses. Threats)
 D. Reviewing similar projects executed in past
-C
+B
 
 When you use the RACI or Responsible, Accountable, Consult, Inform version of the RAM, those who are responsible are:
 A. Supervising the work
@@ -784,12 +784,12 @@ A. Project priorities
 B. Project management
 C. Project resources
 D. Project team
-A
+B
 
 True or False: Performance reporting aims to inform stakeholders the good achievements of the project's objectives weekly or monthly.
 A. False
 B. True
-B
+A
 
 The purpose of project risk management is to:
 A. Eliminate the likelihood or the impact of negative events or threats to your project and to decrease the likelihood or impact of positive events.
@@ -803,7 +803,7 @@ A. Your peers
 B. Your social groups
 C. Your senior management
 D. Your direct reports
-C
+D
 
 Which of the following is included in a project charter?
 A. Work package estimates
@@ -815,14 +815,14 @@ C
 True or False: Using bottom-up estimating techniques when the detail is available and the accuracy is need ed
 A. True
 B. False
-B
+A
 
 A cost can be either direct or indirect. Which of the following statements are correct (choose 2 answers)
 A. Indirect costs :These costs are directly attributable to the work on the project. Examples are team wages. team travel and recognition expenses, and costs of material used on the project
 B. Indirect costs :These costs are overhead items or costs incurred for the benefit of more than one project Examples include taxes, fringe benefits, and janitorial services
 C. Direct costs: These costs are overhead items or costs incurred for the benefit of more than one project Examples include taxes, fringe benefits, and janitorial services
 D. Direct costs: These costs are directly attributable to the work on the project. Examples are team wages. team travel and recognition expenses, and costs of material used on
-BC
+BD
 
 Which of the following is NOT the advantages of top-down estimating?
 A. Quick
@@ -855,7 +855,7 @@ A. They are some points in time which have no dura tion
 B. They are completely defined in the project charter
 C. Identify major events of the project deliverables
 D. They are supported by activities on detail schedules
-A
+B
 
 The network diagram can be used to:
 A. Control the cost performance of the project
@@ -975,7 +975,7 @@ C
 True or False: If "review online modules" needs to begin before "develop online modules" can finish, that is called a start to finish relationship
 A. True
 B. False
-B
+A
 
 To calculate late finish (LF) of an activity which has more than one successor, you will
 A. Take the earliest late start of its immediate succes sors.
@@ -999,7 +999,7 @@ A. Slow
 B. Less accurate
 C. Requires considerable experience to do well
 D. Does not take into account the differences between projects
-B
+A
 
 A team member tells you that her work is too creative to provide you with a fixed single estimate for the ac tivity. You both decide to use the average labor hours (from past, similar projects) to develop a prototype. This is an example of which of the following?
 A. Parametric estimating
@@ -1018,7 +1018,7 @@ A. Customer satisfaction
 B. Prevention over inspection
 C. One-time improvement
 D. Management responsibility
-D
+C
 
 True or False: Product quality focuses on the project management processes used to meet project objec tives.
 A. False
@@ -1385,12 +1385,12 @@ C. Work package
 D. Deliverable
 B
 
-If "review online modules" needs to begin before "de velop online modules" can finish, that is called a:
+If "review online modules" needs to begin before "develop online modules" can finish, that is called a:
 A. Finish to start relationship.
 B. Start to finish relationship.
 C. Finish to finish relationship.
 D. Start to start relationship.
-C
+B
 
 To calculate late finish (LF) and late start (LS) perform a:
 A. Critical pass
@@ -1423,7 +1423,7 @@ A. Parametric estimating
 B. Analogous estimating
 C. Bottom-up estimating
 D. Three-point estimating
-C
+B
 
 True or False: Using bottom-up estimating techniques when activity durations or resource quantities are un certain.
 A. True
@@ -1450,10 +1450,10 @@ A. False
 B. True
 B
 
-True or False: Performing quality assurance within the context of a project involves taking actions to elimi nate causes of unsatisfactory project performance.
+True or False: Performing quality assurance within the context of a project involves taking actions to eliminate causes of unsatisfactory project performance.
 A. False
 B. True
-B
+A
 
 True or False: Project Human Resource Management includes the processes that organize, manage, and lead the project team.
 A. False
