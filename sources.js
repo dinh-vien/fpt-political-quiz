@@ -21,6 +21,13 @@ window.quizSourceCatalog = [
     "count": 284
   },
   {
+    "id": "pmg201c_true_false_questions",
+    "name": "PMG201C_TRUE_FALSE_QUESTIONS",
+    "file": "pmg201c_true_false_questions.js",
+    "version": "347e8e924b98",
+    "count": 89
+  },
+  {
     "id": "pru213",
     "name": "PRU213",
     "file": "pru213.js",
