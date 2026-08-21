@@ -40,7 +40,7 @@ window.quizSources["pmg201c"] = {
         "A": "False",
         "B": "True"
       },
-      "answer": "A",
+      "answer": "B",
       "explanation": ""
     },
     {
@@ -119,7 +119,7 @@ window.quizSources["pmg201c"] = {
         "E": "Projectized",
         "F": "Medium Matrix"
       },
-      "answer": "F",
+      "answer": "E",
       "explanation": ""
     },
     {
@@ -151,7 +151,7 @@ window.quizSources["pmg201c"] = {
         "C": "Poorly defined objectives",
         "D": "Inability to say \"NO\"E. Lack of defined change con trol process"
       },
-      "answer": "D",
+      "answer": "A",
       "explanation": ""
     },
     {
@@ -160,7 +160,7 @@ window.quizSources["pmg201c"] = {
         "A": "False",
         "B": "True"
       },
-      "answer": "A",
+      "answer": "B",
       "explanation": ""
     },
     {
@@ -210,7 +210,7 @@ window.quizSources["pmg201c"] = {
         "A": "True",
         "B": "False"
       },
-      "answer": "B",
+      "answer": "A",
       "explanation": ""
     },
     {
@@ -219,7 +219,7 @@ window.quizSources["pmg201c"] = {
         "A": "True",
         "B": "False"
       },
-      "answer": "B",
+      "answer": "A",
       "explanation": ""
     },
     {
@@ -263,7 +263,7 @@ window.quizSources["pmg201c"] = {
         "C": "Management reserve is included into the cost bud get but contingency reserve is not.",
         "D": "Contingency reserve is included into the cost bud get but management reserve is not."
       },
-      "answer": "C",
+      "answer": "A",
       "explanation": ""
     },
     {
@@ -382,14 +382,14 @@ window.quizSources["pmg201c"] = {
       "explanation": ""
     },
     {
-      "question": "If \"review online modules\" needs to begin before \"de velop online modules\" can finish, that is called a",
+      "question": "If \"review online modules\" needs to begin before \"develop online modules\" can finish, that is called a:",
       "options": {
         "A": "Finish to start relationship.",
         "B": "Start to finish relationship.",
         "C": "Finish to finish relationship.",
         "D": "Start to start relationship."
       },
-      "answer": "A",
+      "answer": "B",
       "explanation": ""
     },
     {
@@ -398,7 +398,7 @@ window.quizSources["pmg201c"] = {
         "A": "False",
         "B": "True"
       },
-      "answer": "B",
+      "answer": "A",
       "explanation": ""
     },
     {
@@ -431,7 +431,7 @@ window.quizSources["pmg201c"] = {
         "D": "Prepare a project scope statement based upon the project charter.",
         "E": "Define how to identify and manage triple con straints."
       },
-      "answer": "A",
+      "answer": "E",
       "explanation": ""
     },
     {
@@ -464,7 +464,7 @@ window.quizSources["pmg201c"] = {
         "C": "Roles and Responsibilities",
         "D": "Risk Register"
       },
-      "answer": "C",
+      "answer": "D",
       "explanation": ""
     },
     {
@@ -497,7 +497,7 @@ window.quizSources["pmg201c"] = {
         "C": "Unaware",
         "D": "Leading"
       },
-      "answer": "B",
+      "answer": "D",
       "explanation": ""
     },
     {
@@ -628,7 +628,7 @@ window.quizSources["pmg201c"] = {
         "A": "False",
         "B": "True"
       },
-      "answer": "B",
+      "answer": "A",
       "explanation": ""
     },
     {
@@ -1110,7 +1110,7 @@ window.quizSources["pmg201c"] = {
         "A": "False",
         "B": "True"
       },
-      "answer": "A",
+      "answer": "B",
       "explanation": ""
     },
     {
@@ -1130,7 +1130,7 @@ window.quizSources["pmg201c"] = {
         "A": "False",
         "B": "True"
       },
-      "answer": "A",
+      "answer": "B",
       "explanation": ""
     },
     {
@@ -1159,7 +1159,7 @@ window.quizSources["pmg201c"] = {
         "A": "False",
         "B": "True"
       },
-      "answer": "B",
+      "answer": "A",
       "explanation": ""
     },
     {
@@ -1219,7 +1219,7 @@ window.quizSources["pmg201c"] = {
         "C": "SWOT (Strengths. Opportunities, Weaknesses. Threats)",
         "D": "Reviewing similar projects executed in past"
       },
-      "answer": "C",
+      "answer": "B",
       "explanation": ""
     },
     {
@@ -1272,7 +1272,7 @@ window.quizSources["pmg201c"] = {
         "C": "Project resources",
         "D": "Project team"
       },
-      "answer": "A",
+      "answer": "B",
       "explanation": ""
     },
     {
@@ -1281,7 +1281,7 @@ window.quizSources["pmg201c"] = {
         "A": "False",
         "B": "True"
       },
-      "answer": "B",
+      "answer": "A",
       "explanation": ""
     },
     {
@@ -1303,7 +1303,7 @@ window.quizSources["pmg201c"] = {
         "C": "Your senior management",
         "D": "Your direct reports"
       },
-      "answer": "C",
+      "answer": "D",
       "explanation": ""
     },
     {
@@ -1323,7 +1323,7 @@ window.quizSources["pmg201c"] = {
         "A": "True",
         "B": "False"
       },
-      "answer": "B",
+      "answer": "A",
       "explanation": ""
     },
     {
@@ -1334,7 +1334,7 @@ window.quizSources["pmg201c"] = {
         "C": "Direct costs: These costs are overhead items or costs incurred for the benefit of more than one project Examples include taxes, fringe benefits, and janitorial services",
         "D": "Direct costs: These costs are directly attributable to the work on the project. Examples are team wages. team travel and recognition expenses, and costs of material used on"
       },
-      "answer": "BC",
+      "answer": "BD",
       "explanation": ""
     },
     {
@@ -1387,7 +1387,7 @@ window.quizSources["pmg201c"] = {
         "C": "Identify major events of the project deliverables",
         "D": "They are supported by activities on detail schedules"
       },
-      "answer": "A",
+      "answer": "B",
       "explanation": ""
     },
     {
@@ -1410,7 +1410,7 @@ window.quizSources["pmg201c"] = {
         "C": "You change your plan so that another party will be responsible for the risk",
         "D": "You create your plan to reduce the probability and/or the impact of the risk"
       },
-      "answer": "A",
+      "answer": "B",
       "explanation": ""
     },
     {
@@ -1579,7 +1579,7 @@ window.quizSources["pmg201c"] = {
         "A": "True",
         "B": "False"
       },
-      "answer": "B",
+      "answer": "A",
       "explanation": ""
     },
     {
@@ -1619,7 +1619,7 @@ window.quizSources["pmg201c"] = {
         "C": "Requires considerable experience to do well",
         "D": "Does not take into account the differences between projects"
       },
-      "answer": "B",
+      "answer": "A",
       "explanation": ""
     },
     {
@@ -1650,7 +1650,7 @@ window.quizSources["pmg201c"] = {
         "C": "One-time improvement",
         "D": "Management responsibility"
       },
-      "answer": "D",
+      "answer": "C",
       "explanation": ""
     },
     {
@@ -2247,14 +2247,14 @@ window.quizSources["pmg201c"] = {
       "explanation": ""
     },
     {
-      "question": "If \"review online modules\" needs to begin before \"de velop online modules\" can finish, that is called a:",
+      "question": "If \"review online modules\" needs to begin before \"develop online modules\" can finish, that is called a:",
       "options": {
         "A": "Finish to start relationship.",
         "B": "Start to finish relationship.",
         "C": "Finish to finish relationship.",
         "D": "Start to start relationship."
       },
-      "answer": "C",
+      "answer": "B",
       "explanation": ""
     },
     {
@@ -2307,7 +2307,7 @@ window.quizSources["pmg201c"] = {
         "C": "Bottom-up estimating",
         "D": "Three-point estimating"
       },
-      "answer": "C",
+      "answer": "B",
       "explanation": ""
     },
     {
@@ -2356,12 +2356,12 @@ window.quizSources["pmg201c"] = {
       "explanation": ""
     },
     {
-      "question": "True or False: Performing quality assurance within the context of a project involves taking actions to elimi nate causes of unsatisfactory project performance.",
+      "question": "True or False: Performing quality assurance within the context of a project involves taking actions to eliminate causes of unsatisfactory project performance.",
       "options": {
         "A": "False",
         "B": "True"
       },
-      "answer": "B",
+      "answer": "A",
       "explanation": ""
     },
     {
