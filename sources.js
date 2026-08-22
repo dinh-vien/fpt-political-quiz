@@ -28,6 +28,13 @@ window.quizSourceCatalog = [
     "count": 89
   },
   {
+    "id": "pmg_questions_without_true_false",
+    "name": "PMG_QUESTIONS_WITHOUT_TRUE_FALSE",
+    "file": "pmg_questions_without_true_false.js",
+    "version": "b1683d2342b8",
+    "count": 195
+  },
+  {
     "id": "pru213",
     "name": "PRU213",
     "file": "pru213.js",
