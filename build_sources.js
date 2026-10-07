@@ -6,8 +6,18 @@ const workspace = __dirname;
 const sourceNames = {
     mln111: 'MLN111 - Triết học Mác-Lênin',
     mln122: 'MLN122 - Kinh tế chính trị',
-    vnr202: 'VNR202 - Lịch sử Đảng Cộng sản Việt Nam'
+    vnr202: 'VNR202 - Lịch sử Đảng Cộng sản Việt Nam',
+    mln131: 'MLN131 - Chủ nghĩa xã hội khoa học',
+    hcm202: 'HCM202 - Tư tưởng Hồ Chí Minh'
 };
+
+// Nguồn bị ẩn khỏi website (vẫn giữ file .md/.js, xóa id khỏi danh sách này để hiện lại).
+const hiddenSources = new Set([
+    'pmg201c',
+    'pmg201c_true_false_questions',
+    'pmg_questions_without_true_false',
+    'pru213'
+]);
 
 function parseMarkdown(markdown) {
     const questions = [];
@@ -113,6 +123,7 @@ for (const markdownFile of markdownFiles) {
     const outputFile = `${path.basename(markdownFile, '.md')}.js`;
     if (fs.existsSync(path.join(workspace, outputFile))) {
         const id = sourceId(markdownFile);
+        if (hiddenSources.has(id)) continue;
         const count = parseMarkdown(fs.readFileSync(path.join(workspace, markdownFile), 'utf8')).length;
         sourceCatalog.push({
             id,

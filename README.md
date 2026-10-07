@@ -7,7 +7,7 @@ Website tĩnh để luyện trắc nghiệm các môn lý luận chính trị. K
 Chạy các bài kiểm tra tự động bằng Node.js:
 
 ```powershell
-node --test tests/quiz-core.test.mjs
+node --test tests/*.test.mjs
 ```
 
 ## Chạy website
@@ -68,6 +68,10 @@ Mở `index.html` bằng trình duyệt, hoặc dùng một static server (khuy�
 ```powershell
 node build_sources.js ten-mon.md --force
 ```
+
+### Ẩn / hiện một môn
+
+Thêm hoặc xóa id môn trong `hiddenSources` ở `build_sources.js`, rồi chạy lại `node build_sources.js`. File `.md` và `.js` của môn bị ẩn vẫn được giữ.
 
 > Không chạy `--force` không kèm tên file: các file JavaScript đã tạo sẵn sẽ được giữ nguyên.
 

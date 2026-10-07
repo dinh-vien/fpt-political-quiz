@@ -11,7 +11,7 @@ import {
 import { createInitialState } from './quiz-state.js';
 import { createQuizStorage } from './quiz-storage.js';
 
-const EXAM_QUESTION_COUNT = 60;
+  const EXAM_QUESTION_COUNT = 60;
   const EXAM_DURATION_MS = 15 * 60 * 1000;
   const state = createInitialState();
   const storage = createQuizStorage(() => state.activeSourceId);
@@ -64,7 +64,6 @@ const EXAM_QUESTION_COUNT = 60;
     options: document.getElementById('dynamicOptions'),
     total: document.getElementById('totalQuestionsDisplay')
   };
-
 
   function createElement(tagName, className, text) {
     const element = document.createElement(tagName);
@@ -159,6 +158,7 @@ const EXAM_QUESTION_COUNT = 60;
     state.sourceVersion = createSourceVersion(state.allQuestions);
     updateExamCountLimit();
     state.practiceMode = 'all';
+    state.revealedQuestionId = null;
     state.answers = storage.read('source-version', '') === state.sourceVersion ? storage.read('answers', {}) : {};
     state.shuffleOptions = storage.read('shuffle-options', false) === true;
     state.optionOrders = storage.read('option-orders', {});
@@ -462,7 +462,7 @@ const EXAM_QUESTION_COUNT = 60;
     elements.examRetry.hidden = !active || !state.exam.submitted || results.incorrect === 0;
     elements.examExit.hidden = !active;
     elements.disableExamTimer.hidden = !active || state.exam.submitted || !hasExamTimer(state.exam);
-    elements.disableExamTimer.textContent = state.exam?.timerEnabled ? 'Ơ sao lại tắt' : 'Bật lại đê, sợ à';
+    elements.disableExamTimer.textContent = state.exam?.timerEnabled ? 'Tắt đồng hồ' : 'Bật lại đồng hồ';
     elements.shuffleOptions.setAttribute('aria-pressed', String(state.shuffleOptions));
     elements.shuffleOptions.textContent = `Đảo lựa chọn: ${state.shuffleOptions ? 'Bật' : 'Tắt'}`;
     elements.reshuffleOptions.hidden = !state.shuffleOptions;
@@ -696,20 +696,8 @@ const EXAM_QUESTION_COUNT = 60;
     renderQuestion();
   }
 
-  function createRandomExamQuestionIds(count, previousIds = []) {
-    const previousSet = new Set(previousIds);
-    if (!previousSet.size || state.allQuestions.length <= count) {
-      return shuffleQuestions(state.allQuestions).slice(0, count).map(question => question.id);
-    }
-
-    const newQuestions = state.allQuestions.filter(question => !previousSet.has(question.id));
-    const reusedQuestions = state.allQuestions.filter(question => previousSet.has(question.id));
-    const selected = [
-      ...shuffleQuestions(newQuestions).slice(0, count),
-      ...shuffleQuestions(reusedQuestions).slice(0, Math.max(count - newQuestions.length, 0))
-    ];
-
-    return shuffleQuestions(selected).map(question => question.id);
+  function createRandomExamQuestionIds(count) {
+    return shuffleQuestions(state.allQuestions).slice(0, count).map(question => question.id);
   }
 
   function getNewExamQuestionIds(count) {
@@ -758,12 +746,9 @@ const EXAM_QUESTION_COUNT = 60;
     if (!state.allQuestions.length) return;
     const count = getRequestedExamCount();
     if (!count) return;
-    const questionIds = getNewExamQuestionIds(count);
-    if (!questionIds) return;
-    const message = `Bắt đầu bài thi gồm ${count} câu ngẫu nhiên?`;
-    if (!window.confirm(message)) return;
+    if (!window.confirm(`Bắt đầu bài thi gồm ${count} câu ngẫu nhiên?`)) return;
 
-    beginExam(questionIds);
+    beginExam(getNewExamQuestionIds(count));
   }
 
   function retakeSameExam() {
@@ -775,9 +760,7 @@ const EXAM_QUESTION_COUNT = 60;
   function startDifferentExam() {
     if (!state.exam?.submitted) return;
     const count = state.exam.questionCount || state.exam.originalQuestionIds?.length || state.exam.questionIds.length;
-    const questionIds = getNewExamQuestionIds(count);
-    if (!questionIds) return;
-    beginExam(questionIds);
+    beginExam(getNewExamQuestionIds(count));
   }
 
   function submitExam(isAutomatic = false, confirmed = false) {
@@ -876,7 +859,16 @@ const EXAM_QUESTION_COUNT = 60;
     return target instanceof HTMLInputElement || target instanceof HTMLSelectElement || target instanceof HTMLTextAreaElement;
   }
 
+  function isModalOpen() {
+    return !elements.examModal.hidden || !elements.examConfirm.hidden;
+  }
+
+  function isInteractiveTarget(target) {
+    return target instanceof Element && Boolean(target.closest('button, summary, a, select'));
+  }
+
   function handleKeyboard(event) {
+    if (isModalOpen() || event.ctrlKey || event.metaKey || event.altKey) return;
     const isAnswerInput = event.target instanceof HTMLInputElement
       && (event.target.type === 'radio' || event.target.type === 'checkbox');
     if (event.code === 'Space' && !state.exam && isAnswerInput) {
@@ -891,7 +883,7 @@ const EXAM_QUESTION_COUNT = 60;
     } else if (event.key === 'ArrowRight') {
       event.preventDefault();
       navigate(1);
-    } else if (event.code === 'Space' && !state.exam) {
+    } else if (event.code === 'Space' && !state.exam && !isInteractiveTarget(event.target)) {
       event.preventDefault();
       revealAnswer();
     }
@@ -907,7 +899,7 @@ const EXAM_QUESTION_COUNT = 60;
   }
 
   function bindEvents() {
-    elements.source.addEventListener('change', event => handleSourceChange(event).catch(showLoadError));
+    elements.source.addEventListener('change', event => handleSourceChange(event).catch(showSourceSwitchError));
     elements.answers.addEventListener('change', handleAnswerChange);
     elements.answers.addEventListener('click', event => {
       if (event.target.closest('[data-action="clear-answer"]')) clearCurrentAnswer();
@@ -951,6 +943,14 @@ const EXAM_QUESTION_COUNT = 60;
     console.error(error);
     setSourceLoading(false);
     elements.question.textContent = error.message || 'Không thể tải câu hỏi.';
+  }
+
+  function showSourceSwitchError(error) {
+    console.error(error);
+    setSourceLoading(false);
+    elements.source.value = state.activeSourceId;
+    if (state.allQuestions.length) renderQuestion();
+    window.alert(error.message || 'Không thể tải nguồn câu hỏi.');
   }
 
   async function initialize() {

@@ -3390,16 +3390,6 @@ window.quizSources["mln111"] = {
       "explanation": ""
     },
     {
-      "question": "",
-      "options": {
-        "A": "Thị tộc - Bộ lạc - Bộ tộc - Dân tộc",
-        "B": "Thị tộc - Bộ tộc - Bộ lạc - Dân tộc",
-        "C": "Dân tộc - Thị tộc - Bộ lạc - Bộ tộc"
-      },
-      "answer": "A",
-      "explanation": ""
-    },
-    {
       "question": "Theo quan điểm của Triết học Mác-Lênin, có thể định nghĩa về vật chất như sau:",
       "options": {
         "A": "Vật chất là những chất tạo nên vũ trụ",

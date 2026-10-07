@@ -1,10 +1,17 @@
 window.quizSourceCatalog = [
   {
+    "id": "hcm202",
+    "name": "HCM202 - Tư tưởng Hồ Chí Minh",
+    "file": "hcm202.js",
+    "version": "2d19e28cd4a7",
+    "count": 636
+  },
+  {
     "id": "mln111",
     "name": "MLN111 - Triết học Mác-Lênin",
     "file": "mln111.js",
-    "version": "3d7ea2fd8b6b",
-    "count": 550
+    "version": "dae60f2d36c0",
+    "count": 549
   },
   {
     "id": "mln122",
@@ -14,32 +21,11 @@ window.quizSourceCatalog = [
     "count": 529
   },
   {
-    "id": "pmg201c",
-    "name": "PMG201C",
-    "file": "pmg201c.js",
-    "version": "3457d276b458",
-    "count": 284
-  },
-  {
-    "id": "pmg201c_true_false_questions",
-    "name": "PMG201C_TRUE_FALSE_QUESTIONS",
-    "file": "pmg201c_true_false_questions.js",
-    "version": "347e8e924b98",
-    "count": 89
-  },
-  {
-    "id": "pmg_questions_without_true_false",
-    "name": "PMG_QUESTIONS_WITHOUT_TRUE_FALSE",
-    "file": "pmg_questions_without_true_false.js",
-    "version": "b1683d2342b8",
-    "count": 195
-  },
-  {
-    "id": "pru213",
-    "name": "PRU213",
-    "file": "pru213.js",
-    "version": "4c6f092f41dd",
-    "count": 150
+    "id": "mln131",
+    "name": "MLN131 - Chủ nghĩa xã hội khoa học",
+    "file": "mln131.js",
+    "version": "8556ce1dac26",
+    "count": 414
   },
   {
     "id": "vnr202",
