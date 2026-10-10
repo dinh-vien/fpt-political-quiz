@@ -1094,6 +1094,8 @@ import { createQuizStorage } from './quiz-storage.js?v=442950530dff';
     } else if (event.code === 'Space' && !state.exam && !isInteractiveTarget(event.target)) {
       event.preventDefault();
       revealAnswer();
+    } else if (event.key >= '1' && event.key <= '9') {
+      selectAnswerByKey(event);
     }
   }
 
@@ -1298,7 +1300,14 @@ import { createQuizStorage } from './quiz-storage.js?v=442950530dff';
       submitRushUnsure();
       return;
     }
-    const answerIndex = event.key.length === 1 ? LETTERS.indexOf(event.key.toUpperCase()) : -1;
+    selectAnswerByKey(event);
+  }
+
+  // Phím chữ (A, B, ...) hoặc phím số (1 = A, 2 = B, ...) chọn đáp án tương ứng.
+  function selectAnswerByKey(event) {
+    if (event.key.length !== 1) return;
+    const digit = Number(event.key);
+    const answerIndex = event.key >= '1' && event.key <= '9' ? digit - 1 : LETTERS.indexOf(event.key.toUpperCase());
     const input = answerIndex >= 0 ? elements.answers.querySelectorAll('input')[answerIndex] : null;
     if (input && !input.disabled) {
       event.preventDefault();

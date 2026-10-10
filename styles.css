@@ -170,11 +170,15 @@ button, input, select { font: inherit; }
 .exam-mode .exam-actions > .exam-btn-exit {
   position: absolute;
   z-index: 4;
-  bottom: 18px;
+  bottom: 12px;
   min-width: 108px;
   padding: 9px 13px;
   box-shadow: 0 2px 8px rgb(0 0 0 / 14%);
 }
+
+/* Chừa chỗ ở đáy để nút nổi không đè lên đáp án / ô số câu. */
+.exam-mode .left-panel,
+.exam-mode .right-panel { padding-bottom: 76px; }
 
 .exam-mode .exam-btn-submit { right: 18px; }
 .exam-mode .exam-actions > .exam-btn-exit { left: 18px; }
