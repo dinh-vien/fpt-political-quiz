@@ -3,7 +3,6 @@ import test from 'node:test';
 import {
   createPracticeSession,
   createSourceVersion,
-  getExamDurationMs,
   getExamResults,
   getIncorrectQuestions,
   getQuestionStatus,
@@ -48,13 +47,6 @@ test('kết quả thi tính cả câu sai và chưa trả lời', () => {
 
 test('version nguồn đổi khi dữ liệu câu hỏi đổi', () => {
   assert.notEqual(createSourceVersion(questions), createSourceVersion([...questions, questions[0]]));
-});
-
-test("thời gian làm bài tỉ lệ theo số câu và có mức tối thiểu", () => {
-  assert.equal(getExamDurationMs(60), 15 * 60 * 1000);
-  assert.equal(getExamDurationMs(6), 90 * 1000);
-  assert.equal(getExamDurationMs(120), 30 * 60 * 1000);
-  assert.equal(getExamDurationMs(1), 60 * 1000);
 });
 
 test("trạng thái ô số câu không lộ đúng sai khi đang thi", () => {

@@ -93,6 +93,7 @@ Thêm hoặc xóa id môn trong `hiddenSources` ở `build_sources.js`, rồi ch
 
 - `←` / `→`: chuyển câu trước hoặc sau.
 - `Space`: hiện hoặc ẩn đáp án đúng ở chế độ luyện tập.
+- `1`–`9`: chọn đáp án theo thứ tự hiển thị (`1` = A, `2` = B, …); dùng được ở luyện tập, thi và học cấp tốc.
 
 ## Chế độ học cấp tốc
 
@@ -103,13 +104,12 @@ Dùng khi cần ghi nhớ nhanh một môn. Bấm **Học cấp tốc** (có th�
 - **Lượt 2:** làm lại toàn bộ khối theo thứ tự xáo trộn, cùng cơ chế quay lại với câu sai. Khối hoàn thành khi mọi câu đã được trả lời đúng ở lượt này.
 - Câu chỉ được coi là **đã thuộc** khi đúng ngay lần đầu ở lượt 2; câu sai ở lượt 2 trở thành câu **chưa thuộc**.
 - **Ôn dồn:** cứ sau 3 khối (và sau khối cuối cùng), hệ thống ôn lại các câu chưa thuộc của các khối trước. Câu đúng ngay lần đầu được loại khỏi danh sách chưa thuộc.
-- Không đảo thứ tự đáp án. Sau mỗi câu (đúng hay sai) cần bấm **Tiếp tục** (hoặc `Enter`, `Space`, `→`). Phím `A`, `B`, `C`… chọn đáp án tương ứng.
+- Không đảo thứ tự đáp án. Sau mỗi câu (đúng hay sai) cần bấm **Tiếp tục** (hoặc `Enter`, `Space`, `→`). Phím `A`, `B`, `C`… (hoặc `1`, `2`, `3`…) chọn đáp án tương ứng.
 - Tiến độ được lưu theo từng môn trong trình duyệt. **Tạm dừng học cấp tốc** giữ nguyên vị trí để học tiếp; **Đặt lại tiến độ học cấp tốc** (trong mục Tùy chọn) xóa toàn bộ.
 
 ## Chế độ thi
 
 - Người dùng chọn số câu hỏi (mặc định 60) và khoảng câu "Từ câu … đến câu …". Đề thi lấy ngẫu nhiên, không trùng, từ khoảng đã chọn; số câu không thể vượt quá số câu trong khoảng và sẽ tự giảm theo khoảng.
-- Thời gian làm bài tỉ lệ theo số câu (15 giây mỗi câu, tối thiểu 1 phút; 60 câu tương ứng 15 phút) và bài thi tự nộp khi hết giờ. Trong lúc thi có thể tắt giới hạn thời gian; các vòng làm lại câu sai không giới hạn thời gian.
 - Đáp án chỉ được chấm khi bấm **Nộp bài**; điểm được quy đổi về thang 10.
 - Có thể làm lại các câu sai nhiều lần. Các vòng làm lại không thay đổi điểm bài thi ban đầu.
 - Sau khi nộp bài, có thể làm lại đúng đề đã thi hoặc tạo một đề mới có cùng số câu và khoảng câu.

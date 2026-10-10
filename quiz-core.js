@@ -64,14 +64,6 @@ export function getIncorrectQuestions(questions, answers) {
   });
 }
 
-const EXAM_SECONDS_PER_QUESTION = 15;
-const EXAM_MIN_DURATION_MS = 60 * 1000;
-
-// Thời gian làm bài tỉ lệ với số câu: 60 câu tương ứng 15 phút.
-export function getExamDurationMs(questionCount) {
-  return Math.max(EXAM_MIN_DURATION_MS, Math.ceil(questionCount) * EXAM_SECONDS_PER_QUESTION * 1000);
-}
-
 // Trạng thái hiển thị của một câu hỏi trong danh sách ô số.
 // Khi đang thi, chưa chấm nên chỉ phân biệt đã/chưa trả lời để không lộ đáp án.
 export function getQuestionStatus(question, answer, { isExam = false, isSubmitted = false } = {}) {

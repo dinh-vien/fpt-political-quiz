@@ -206,15 +206,13 @@ button, input, select { font: inherit; }
 .exam-mode .rush-actions { display: none; }
 .exam-mode .practice-only { display: none; }
 
-.exam-mode .question-content-text { margin-top: 4px; }
-.exam-mode .left-panel, .exam-mode .right-panel { padding-bottom: 72px; }
+/* Trong lúc thi, nguồn câu hỏi đã bị khóa; thu gọn cột trái để đáp án hiện đủ mà không phải cuộn. */
+@media (min-width: 721px) {
+  .exam-mode .source-container { display: none; }
+  .exam-mode .question-map-grid { max-height: 124px; }
+}
 
-.exam-timer-controls { display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin: 0 0 14px; }
-.exam-timer-controls[hidden] { display: none; }
-.exam-timer { margin: 0; color: var(--accent); font-size: 17px; font-weight: 700; font-variant-numeric: tabular-nums; }
-.exam-timer.timer-critical { color: #b91c1c; }
-.disable-timer-btn { padding: 5px 8px; border: 1px solid #9ca3af; border-radius: 4px; color: var(--ink); background: #fff; font-size: 13px; font-weight: 600; cursor: pointer; }
-.disable-timer-btn:hover, .disable-timer-btn:focus-visible { background: #f3f4f6; }
+.exam-mode .question-content-text { margin-top: 4px; }
 
 .modal-backdrop {
   position: fixed;
@@ -498,6 +496,8 @@ button, input, select { font: inherit; }
   .prev-btn { left: 12px; }
   .next-btn { right: 12px; }
   .exam-mode .nav-btn { bottom: 70px; }
+  /* Chừa chỗ cho nút điều hướng (cao ~64px) nằm trên hai nút Nộp bài / Kết thúc. */
+  .exam-mode.quiz-container { padding-bottom: 150px; }
   .rush-actions { order: 2; }
   .rush-status { order: 4; }
   .exam-mode .exam-btn-submit, .exam-mode .exam-actions > .exam-btn-exit { position: fixed; bottom: 14px; }
