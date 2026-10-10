@@ -144,6 +144,7 @@ button, input, select { font: inherit; }
   border-radius: 4px;
   font: inherit;
 }
+#examRangeControl input { width: 52px; }
 .exam-count-control input:disabled { color: #6b7280; background: #f3f4f6; }
 
 .exam-btn {

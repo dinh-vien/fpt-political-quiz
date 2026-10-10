@@ -30,6 +30,12 @@
           Số câu
           <input id="examCountInput" type="number" min="1" step="1" value="60" inputmode="numeric" aria-label="Số câu thi thử">
         </label>
+        <label id="examRangeControl" class="exam-count-control" for="examFromInput">
+          Từ câu
+          <input id="examFromInput" type="number" min="1" step="1" inputmode="numeric" aria-label="Từ câu số">
+          đến
+          <input id="examToInput" type="number" min="1" step="1" inputmode="numeric" aria-label="Đến câu số">
+        </label>
         <button id="startExamBtn" class="exam-btn" type="button">Bắt đầu thi</button>
         <button id="submitExamBtn" class="exam-btn exam-btn-submit" type="button" hidden>Nộp bài</button>
         <button id="exitExamBtn" class="exam-btn exam-btn-exit" type="button" hidden>Thoát chế độ thi</button>

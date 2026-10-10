@@ -36,6 +36,9 @@ import { createQuizStorage } from './quiz-storage.js';
     examConfirmMessage: document.getElementById('examConfirmMessage'),
     examCount: document.getElementById('examCountInput'),
     examCountControl: document.getElementById('examCountControl'),
+    examFrom: document.getElementById('examFromInput'),
+    examTo: document.getElementById('examToInput'),
+    examRangeControl: document.getElementById('examRangeControl'),
     examNew: document.getElementById('newExamBtn'),
     examRetake: document.getElementById('retakeExamBtn'),
     examRetry: document.getElementById('retryExamBtn'),
@@ -456,6 +459,8 @@ import { createQuizStorage } from './quiz-storage.js';
     elements.source.disabled = active;
     elements.examCount.disabled = active || state.allQuestions.length === 0;
     elements.examCountControl.hidden = active;
+    elements.examFrom.disabled = elements.examTo.disabled = active || state.allQuestions.length === 0;
+    elements.examRangeControl.hidden = active;
     elements.examStart.hidden = active;
     elements.examStart.disabled = state.allQuestions.length === 0;
     elements.examSubmit.hidden = !active || state.exam.submitted;
@@ -591,6 +596,9 @@ import { createQuizStorage } from './quiz-storage.js';
   function updateExamCountLimit() {
     const total = state.allQuestions.length;
     elements.examCount.max = String(total);
+    elements.examFrom.max = elements.examTo.max = String(total);
+    elements.examFrom.value = total ? '1' : '';
+    elements.examTo.value = total ? String(total) : '';
     if (!total) {
       elements.examCount.value = '';
       return;
@@ -605,12 +613,22 @@ import { createQuizStorage } from './quiz-storage.js';
     );
   }
 
-  function getRequestedExamCount() {
-    const count = Number(elements.examCount.value);
+  function getRequestedExamRange() {
     const total = state.allQuestions.length;
-    if (Number.isInteger(count) && count > 0 && count <= total) return count;
+    const from = Number(elements.examFrom.value);
+    const to = Number(elements.examTo.value);
+    if (Number.isInteger(from) && Number.isInteger(to) && from >= 1 && to <= total && from <= to) return { from, to };
 
-    window.alert(`Số câu phải là số nguyên lớn hơn 0 và không vượt quá ${total} câu của môn này.`);
+    window.alert(`Khoảng câu không hợp lệ. Nhập "Từ câu" ≤ "Đến câu" trong khoảng 1–${total}.`);
+    elements.examFrom.focus();
+    return null;
+  }
+
+  function getRequestedExamCount(rangeSize) {
+    const count = Number(elements.examCount.value);
+    if (Number.isInteger(count) && count > 0 && count <= rangeSize) return count;
+
+    window.alert(`Số câu phải là số nguyên lớn hơn 0 và không vượt quá ${rangeSize} câu trong khoảng đã chọn.`);
     elements.examCount.focus();
     return null;
   }
@@ -696,26 +714,31 @@ import { createQuizStorage } from './quiz-storage.js';
     renderQuestion();
   }
 
-  function createRandomExamQuestionIds(count) {
-    return shuffleQuestions(state.allQuestions).slice(0, count).map(question => question.id);
+  function getQuestionsInRange(range) {
+    if (!range) return state.allQuestions;
+    return state.allQuestions.slice(range.from - 1, range.to);
   }
 
-  function getNewExamQuestionIds(count) {
+  function createRandomExamQuestionIds(count, range) {
+    return shuffleQuestions(getQuestionsInRange(range)).slice(0, count).map(question => question.id);
+  }
+
+  function getNewExamQuestionIds(count, range) {
     const usedIds = getExamQuestionHistory();
     const usedSet = new Set(usedIds);
-    const unusedQuestions = state.allQuestions.filter(question => !usedSet.has(question.id));
+    const unusedQuestions = getQuestionsInRange(range).filter(question => !usedSet.has(question.id));
 
     if (unusedQuestions.length < count && usedIds.length) {
       const remaining = unusedQuestions.length;
-      window.alert(`Bạn đã làm đúng gần hết ngân hàng câu hỏi của môn này. Chỉ còn ${remaining} câu bạn chưa làm đúng, không đủ để tạo đề ${count} câu.\n\nHệ thống sẽ tự động reset vòng trộn. Đề mới có thể có lại các câu bạn đã làm đúng.`);
+      window.alert(`Bạn đã làm đúng gần hết các câu${range ? ` trong khoảng ${range.from}–${range.to}` : ' của môn này'}. Chỉ còn ${remaining} câu bạn chưa làm đúng, không đủ để tạo đề ${count} câu.\n\nHệ thống sẽ tự động reset vòng trộn. Đề mới có thể có lại các câu bạn đã làm đúng.`);
       saveExamQuestionHistory([]);
-      return createRandomExamQuestionIds(count);
+      return createRandomExamQuestionIds(count, range);
     }
 
     return shuffleQuestions(unusedQuestions).slice(0, count).map(question => question.id);
   }
 
-  function beginExam(questionIds, timerEnabled = true) {
+  function beginExam(questionIds, timerEnabled = true, range = null) {
     storage.remove('practice-session');
     state.practiceMode = 'all';
     state.practiceReturnIndex = 0;
@@ -730,6 +753,7 @@ import { createQuizStorage } from './quiz-storage.js';
       submitted: false,
       autoSubmitted: false,
       questionCount: questionIds.length,
+      range,
       timerEnabled: Boolean(timerEnabled),
       deadline: timerEnabled ? Date.now() + EXAM_DURATION_MS : null,
       pausedRemainingMs: timerEnabled ? null : EXAM_DURATION_MS
@@ -744,23 +768,29 @@ import { createQuizStorage } from './quiz-storage.js';
 
   function startExam() {
     if (!state.allQuestions.length) return;
-    const count = getRequestedExamCount();
+    const range = getRequestedExamRange();
+    if (!range) return;
+    const isFullRange = range.from === 1 && range.to === state.allQuestions.length;
+    const count = getRequestedExamCount(range.to - range.from + 1);
     if (!count) return;
-    if (!window.confirm(`Bắt đầu bài thi gồm ${count} câu ngẫu nhiên?`)) return;
+    const rangeText = isFullRange ? '' : ` trong khoảng câu ${range.from}–${range.to}`;
+    if (!window.confirm(`Bắt đầu bài thi gồm ${count} câu ngẫu nhiên${rangeText}?`)) return;
 
-    beginExam(getNewExamQuestionIds(count));
+    const savedRange = isFullRange ? null : range;
+    beginExam(getNewExamQuestionIds(count, savedRange), true, savedRange);
   }
 
   function retakeSameExam() {
     if (!state.exam?.submitted) return;
     const questionIds = state.exam.originalQuestionIds || state.exam.questionIds;
-    beginExam(questionIds);
+    beginExam(questionIds, true, state.exam.range || null);
   }
 
   function startDifferentExam() {
     if (!state.exam?.submitted) return;
     const count = state.exam.questionCount || state.exam.originalQuestionIds?.length || state.exam.questionIds.length;
-    beginExam(getNewExamQuestionIds(count));
+    const range = state.exam.range || null;
+    beginExam(getNewExamQuestionIds(count, range), true, range);
   }
 
   function submitExam(isAutomatic = false, confirmed = false) {
