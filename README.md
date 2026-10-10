@@ -94,12 +94,25 @@ Thêm hoặc xóa id môn trong `hiddenSources` ở `build_sources.js`, rồi ch
 - `←` / `→`: chuyển câu trước hoặc sau.
 - `Space`: hiện hoặc ẩn đáp án đúng ở chế độ luyện tập.
 
+## Chế độ học cấp tốc
+
+Dùng khi cần ghi nhớ nhanh một môn. Bấm **Học cấp tốc** (có thể chọn khối bắt đầu; mặc định là khối chưa hoàn thành kế tiếp).
+
+- Câu hỏi của môn được chia thành các khối 50 câu theo thứ tự trong đề.
+- **Lượt 1:** chọn đáp án cho từng câu; có nút **Không chắc** (phím `0`) để xem ngay đáp án đúng. Câu sai hoặc không chắc được hiển thị đáp án đúng, được ghi nhận và quay lại sau 3–5 câu, lặp lại cho tới khi chọn đúng.
+- **Lượt 2:** làm lại toàn bộ khối theo thứ tự xáo trộn, cùng cơ chế quay lại với câu sai. Khối hoàn thành khi mọi câu đã được trả lời đúng ở lượt này.
+- Câu chỉ được coi là **đã thuộc** khi đúng ngay lần đầu ở lượt 2; câu sai ở lượt 2 trở thành câu **chưa thuộc**.
+- **Ôn dồn:** cứ sau 3 khối (và sau khối cuối cùng), hệ thống ôn lại các câu chưa thuộc của các khối trước. Câu đúng ngay lần đầu được loại khỏi danh sách chưa thuộc.
+- Không đảo thứ tự đáp án. Câu đúng tự chuyển tiếp sau chưa đầy một giây; câu sai cần bấm **Tiếp tục** (hoặc `Enter`, `Space`, `→`). Phím `A`, `B`, `C`… chọn đáp án tương ứng.
+- Tiến độ được lưu theo từng môn trong trình duyệt. **Tạm dừng học cấp tốc** giữ nguyên vị trí để học tiếp; **Đặt lại tiến độ học cấp tốc** (trong mục Tùy chọn) xóa toàn bộ.
+
 ## Chế độ thi
 
-- Mỗi đề thi lấy ngẫu nhiên 60 câu không trùng từ môn đang chọn (hoặc toàn bộ câu nếu môn có ít hơn 60 câu).
-- Mỗi bài thi bắt đầu với giới hạn 15 phút và tự nộp khi hết giờ. Trong lúc thi có thể tắt giới hạn thời gian; các vòng làm lại câu sai không giới hạn thời gian.
+- Người dùng chọn số câu hỏi (mặc định 60) và khoảng câu "Từ câu … đến câu …". Đề thi lấy ngẫu nhiên, không trùng, từ khoảng đã chọn; số câu không thể vượt quá số câu trong khoảng và sẽ tự giảm theo khoảng.
+- Thời gian làm bài tỉ lệ theo số câu (15 giây mỗi câu, tối thiểu 1 phút; 60 câu tương ứng 15 phút) và bài thi tự nộp khi hết giờ. Trong lúc thi có thể tắt giới hạn thời gian; các vòng làm lại câu sai không giới hạn thời gian.
 - Đáp án chỉ được chấm khi bấm **Nộp bài**; điểm được quy đổi về thang 10.
 - Có thể làm lại các câu sai nhiều lần. Các vòng làm lại không thay đổi điểm bài thi ban đầu.
-- Sau khi nộp bài, có thể thi lại đúng bộ 60 câu hoặc bốc một bộ 60 câu khác.
-- Các đề mới ưu tiên không lặp lại các câu bạn đã làm đúng; câu sai hoặc chưa làm vẫn có thể xuất hiện lại để ôn. Khi không còn đủ câu chưa làm đúng để tạo một đề, website sẽ thông báo rồi tự reset vòng trộn.
-- Phiên thi đang làm được lưu trong trình duyệt. Bấm **Thoát chế độ thi** để xóa phiên đó và quay lại chế độ luyện tập.
+- Sau khi nộp bài, có thể làm lại đúng đề đã thi hoặc tạo một đề mới có cùng số câu và khoảng câu.
+- Các đề mới ưu tiên không lặp lại các câu bạn đã làm đúng; câu sai hoặc chưa làm vẫn có thể xuất hiện lại để ôn. Khi không còn đủ câu chưa làm đúng để tạo một đề, website sẽ thông báo rồi tự động đặt lại vòng xáo trộn câu hỏi.
+- Danh sách ô số câu cho phép nhảy nhanh tới từng câu và theo dõi trạng thái: khi thi chỉ hiển thị đã/chưa trả lời, sau khi nộp bài hiển thị đúng/sai.
+- Phiên thi đang làm được lưu trong trình duyệt. Bấm **Kết thúc bài thi** để xóa phiên đó và quay lại chế độ luyện tập.

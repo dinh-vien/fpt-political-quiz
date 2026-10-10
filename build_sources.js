@@ -148,6 +148,20 @@ let versionedIndexContent = indexContent.replace(
     sourceScriptPattern,
     `<script src="sources.js?v=${contentVersion(sourceCatalogContent)}" defer></script>`
 );
+// app.js import các module con; gắn phiên bản vào đường dẫn import để trình duyệt
+// không dùng lẫn module cũ trong bộ nhớ đệm với app.js mới.
+const appPath = path.join(workspace, 'app.js');
+let appContent = fs.readFileSync(appPath, 'utf8');
+for (const moduleFile of ['quiz-core.js', 'quiz-state.js', 'quiz-storage.js']) {
+    const version = contentVersion(fs.readFileSync(path.join(workspace, moduleFile), 'utf8'));
+    const importPattern = new RegExp(`from '\\./${moduleFile.replace('.', '\\.')}(?:\\?v=[^']*)?'`);
+    if (!importPattern.test(appContent)) {
+        throw new Error(`Không tìm thấy import ${moduleFile} trong app.js.`);
+    }
+    appContent = appContent.replace(importPattern, `from './${moduleFile}?v=${version}'`);
+}
+fs.writeFileSync(appPath, appContent, 'utf8');
+
 for (const [file, pattern] of [
     ['styles.css', /<link rel="stylesheet" href="styles\.css(?:\?v=[^"]*)?">/],
     ['app.js', /<script src="app\.js(?:\?v=[^"]*)?" type="module"><\/script>/]

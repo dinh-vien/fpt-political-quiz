@@ -10,6 +10,8 @@ export function createInitialState() {
     optionOrders: {},
     questions: [],
     revealedQuestionId: null,
+    rush: null,
+    rushActive: false,
     shuffleOptions: false,
     sourceVersion: ''
   };

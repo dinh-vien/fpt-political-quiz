@@ -1,23 +1,37 @@
 import {
   LETTERS,
+  advanceRush,
+  answerRushPhase,
+  beginRushBlock,
   createPracticeSession,
+  createRushProgress,
   createSourceVersion,
+  findNextRushBlock,
+  getExamDurationMs,
   getExamResults,
   getIncorrectQuestions,
   getPreparedQuestions,
+  getQuestionStatus,
+  getRushBlockCount,
+  getRushBlockRange,
+  getRushRemaining,
   isQuestionCorrect,
   shuffleQuestions
-} from './quiz-core.js';
-import { createInitialState } from './quiz-state.js';
-import { createQuizStorage } from './quiz-storage.js';
+} from './quiz-core.js?v=66f9733e515d';
+import { createInitialState } from './quiz-state.js?v=905b79661e1c';
+import { createQuizStorage } from './quiz-storage.js?v=442950530dff';
 
   const EXAM_QUESTION_COUNT = 60;
-  const EXAM_DURATION_MS = 15 * 60 * 1000;
+  const RUSH_AUTO_ADVANCE_MS = 700;
   const state = createInitialState();
   const storage = createQuizStorage(() => state.activeSourceId);
   const sourceLoadPromises = new Map();
   let examTimerIntervalId = null;
   let pendingExamConfirmation = null;
+  let dialogCancelable = true;
+  let dialogReturnFocus = null;
+  let questionMapSource = null;
+  let rushAdvanceTimer = null;
 
   const elements = {
     answers: document.getElementById('dynamicAnswers'),
@@ -34,6 +48,7 @@ import { createQuizStorage } from './quiz-storage.js';
     examModalTitle: document.getElementById('examModalTitle'),
     examConfirm: document.getElementById('examConfirmModal'),
     examConfirmMessage: document.getElementById('examConfirmMessage'),
+    examConfirmTitle: document.getElementById('examConfirmTitle'),
     examCount: document.getElementById('examCountInput'),
     examCountControl: document.getElementById('examCountControl'),
     examFrom: document.getElementById('examFromInput'),
@@ -51,12 +66,22 @@ import { createQuizStorage } from './quiz-storage.js';
     jump: document.getElementById('jumpInput'),
     next: document.getElementById('nextBtn'),
     practiceMode: document.getElementById('practiceModeDisplay'),
+    questionMap: document.getElementById('questionMap'),
+    questionMapPanel: document.getElementById('questionMapPanel'),
     previous: document.getElementById('prevBtn'),
     progress: document.getElementById('progressBar'),
     question: document.getElementById('qContentDisplay'),
     questionNumber: document.getElementById('qNumberDisplay'),
     quiz: document.getElementById('quizContainer'),
+    resetRush: document.getElementById('resetRushBtn'),
     resetSource: document.getElementById('resetSourceBtn'),
+    rushBlock: document.getElementById('rushBlockSelect'),
+    rushBlockControl: document.getElementById('rushBlockControl'),
+    rushContinue: document.getElementById('rushContinueBtn'),
+    rushControls: document.getElementById('rushControls'),
+    rushExit: document.getElementById('exitRushBtn'),
+    rushStart: document.getElementById('startRushBtn'),
+    rushStatus: document.getElementById('rushStatus'),
     result: document.getElementById('resultBox'),
     resultStatus: document.getElementById('resultStatus'),
     retryIncorrect: document.getElementById('retryIncorrectBtn'),
@@ -127,7 +152,7 @@ import { createQuizStorage } from './quiz-storage.js';
   function setSourceLoading(isLoading) {
     elements.source.disabled = isLoading;
     if (!isLoading) return;
-    elements.question.textContent = 'Đang tải câu hỏi…';
+    elements.question.textContent = 'Đang tải dữ liệu câu hỏi…';
     elements.answers.replaceChildren();
     elements.options.replaceChildren();
     elements.result.hidden = true;
@@ -184,10 +209,16 @@ import { createQuizStorage } from './quiz-storage.js';
       if (state.currentIndex < 0 || state.currentIndex >= state.questions.length) state.currentIndex = 0;
     }
 
+    state.rush = getSavedRush();
+    state.rushActive = !state.exam && Boolean(state.rush?.active && state.rush.phase);
+    if (state.rushActive) state.practiceMode = 'all';
+    renderRushBlockOptions();
+
     const sourceOption = [...elements.source.options].find(option => option.value === sourceId);
     if (sourceOption) sourceOption.textContent = `${source.name} (${source.questions.length} câu)`;
     elements.source.value = sourceId;
     elements.quiz.classList.toggle('exam-mode', Boolean(state.exam));
+    elements.quiz.classList.toggle('rush-mode', state.rushActive);
     setSourceLoading(false);
     storage.saveGlobalActiveSource();
     renderQuestion();
@@ -245,7 +276,7 @@ import { createQuizStorage } from './quiz-storage.js';
 
   function getOptionOrder(question) {
     const optionKeys = Object.keys(question.options);
-    if (!state.shuffleOptions) return optionKeys;
+    if (!state.shuffleOptions || state.rushActive) return optionKeys;
 
     const orders = getOptionOrderStore();
     const savedOrder = orders[question.id];
@@ -323,6 +354,10 @@ import { createQuizStorage } from './quiz-storage.js';
   }
 
   function renderQuestion() {
+    if (state.rushActive) {
+      renderRushQuestion();
+      return;
+    }
     const question = state.questions[state.currentIndex];
     elements.total.textContent = String(state.questions.length);
     elements.jump.max = String(Math.max(state.questions.length, 1));
@@ -334,16 +369,17 @@ import { createQuizStorage } from './quiz-storage.js';
     elements.questionNumber.textContent = `Câu: ${state.currentIndex + 1}`;
     elements.jump.value = String(state.currentIndex + 1);
     renderQuestionContent(question.text);
-    elements.instruction.textContent = `(Chọn ${question.correctAnswer.length} đáp án)`;
+    elements.instruction.textContent = `(Chọn ${question.correctAnswer.length} đáp án đúng)`;
     renderAnswerControls(question);
     renderOptions(question);
     if (state.exam) renderExamResult();
     else renderPracticeResult(question);
     renderPracticeControls();
     renderExamControls();
+    renderRushControls();
     startExamTimer();
     updateNavigation();
-    updateProgress();
+    refreshProgress();
   }
 
   function renderEmptySource() {
@@ -355,7 +391,8 @@ import { createQuizStorage } from './quiz-storage.js';
     elements.next.disabled = true;
     renderPracticeControls();
     renderExamControls();
-    updateProgress();
+    renderRushControls();
+    refreshProgress();
   }
 
   function renderAnswerControls(question) {
@@ -364,7 +401,7 @@ import { createQuizStorage } from './quiz-storage.js';
     const selected = isRevealed ? question.correctAnswer : savedAnswer;
     const inputType = question.correctAnswer.length > 1 ? 'checkbox' : 'radio';
     const fragment = document.createDocumentFragment();
-    fragment.append(createElement('p', 'answer-heading', 'Chọn đáp án của bạn:'));
+    fragment.append(createElement('p', 'answer-heading', 'Chọn đáp án:'));
 
     for (const [index, key] of getOptionOrder(question).entries()) {
       const label = createElement('label', 'answer-row');
@@ -413,7 +450,7 @@ import { createQuizStorage } from './quiz-storage.js';
     elements.result.className = `result-container ${isRevealed || isCorrect ? 'result-correct' : 'result-incorrect'}`;
     elements.resultStatus.textContent = isRevealed && answer.length < question.correctAnswer.length
       ? 'Đáp án tham khảo'
-      : isCorrect ? '✓ Chính xác!' : '✗ Chưa chính xác';
+      : isCorrect ? '✓ Chính xác' : '✗ Chưa chính xác';
     elements.correctAnswer.textContent = `Đáp án đúng: ${getDisplayedAnswer(question)}`;
     elements.explanation.textContent = question.explanation;
   }
@@ -428,18 +465,20 @@ import { createQuizStorage } from './quiz-storage.js';
     const results = getExamResults(state.questions, state.exam.answers);
     if (state.exam.round === 0) {
       const score = ((results.correct / state.questions.length) * 10).toFixed(2);
-      elements.examModalTitle.textContent = state.exam.autoSubmitted ? 'Hết giờ — kết quả bài thi' : 'Kết quả bài thi';
+      elements.examModalTitle.textContent = state.exam.autoSubmitted ? 'Hết thời gian làm bài — Kết quả' : 'Kết quả bài thi';
       elements.examModalScore.textContent = `${score}/10`;
-      elements.examModalSummary.textContent = `Đúng ${results.correct}/${state.questions.length} câu · Sai hoặc chưa làm: ${results.incorrect} câu.`;
+      elements.examModalSummary.textContent = `Đúng ${results.correct}/${state.questions.length} câu · Sai hoặc chưa trả lời: ${results.incorrect} câu.`;
     } else {
       elements.examModalTitle.textContent = `Kết quả làm lại lần ${state.exam.round}`;
       elements.examModalScore.textContent = `${results.correct}/${state.questions.length} câu đúng`;
       elements.examModalSummary.textContent = `Đã sửa đúng ${results.correct} câu · Còn sai: ${results.incorrect} câu.`;
     }
     elements.examModalMessage.textContent = results.incorrect
-      ? 'Bạn có thể làm lại câu sai, thi lại đúng đề này, thi một đề khác hoặc thoát.'
-      : 'Xuất sắc! Bạn có thể thi lại đề này, thi một đề khác hoặc thoát.';
+      ? 'Bạn có thể làm lại các câu sai, làm lại đề này, làm đề mới hoặc kết thúc bài thi.'
+      : 'Bạn đã trả lời đúng toàn bộ câu hỏi. Bạn có thể làm lại đề này, làm đề mới hoặc kết thúc bài thi.';
+    const wasHidden = elements.examModal.hidden;
     elements.examModal.hidden = false;
+    if (wasHidden) elements.examModal.querySelector('button:not([hidden])')?.focus();
   }
 
   function renderPracticeControls() {
@@ -469,7 +508,7 @@ import { createQuizStorage } from './quiz-storage.js';
     elements.disableExamTimer.hidden = !active || state.exam.submitted || !hasExamTimer(state.exam);
     elements.disableExamTimer.textContent = state.exam?.timerEnabled ? 'Tắt đồng hồ' : 'Bật lại đồng hồ';
     elements.shuffleOptions.setAttribute('aria-pressed', String(state.shuffleOptions));
-    elements.shuffleOptions.textContent = `Đảo lựa chọn: ${state.shuffleOptions ? 'Bật' : 'Tắt'}`;
+    elements.shuffleOptions.textContent = `Đảo thứ tự đáp án: ${state.shuffleOptions ? 'Bật' : 'Tắt'}`;
     elements.reshuffleOptions.hidden = !state.shuffleOptions;
     elements.reshuffleOptions.disabled = Boolean(state.exam?.submitted);
   }
@@ -478,15 +517,35 @@ import { createQuizStorage } from './quiz-storage.js';
     return Boolean(exam && (exam.timerEnabled || Number.isFinite(exam.pausedRemainingMs)));
   }
 
-  function requestExamConfirmation(message, onConfirm) {
+  function openDialog({ title = 'Xác nhận', message, confirmText = 'Xác nhận', cancelText = 'Quay lại', cancelable = true, onConfirm = null }) {
     pendingExamConfirmation = onConfirm;
+    dialogCancelable = cancelable;
+    dialogReturnFocus = document.activeElement;
+    elements.examConfirmTitle.textContent = title;
     elements.examConfirmMessage.textContent = message;
+    elements.acceptExamConfirm.textContent = confirmText;
+    elements.cancelExamConfirm.textContent = cancelText;
+    elements.cancelExamConfirm.hidden = !cancelable;
     elements.examConfirm.hidden = false;
+    elements.acceptExamConfirm.focus();
+  }
+
+  function showNotice(message, onClose = null) {
+    openDialog({ title: 'Thông báo', message, confirmText: 'Đã hiểu', cancelable: false, onConfirm: onClose });
   }
 
   function closeExamConfirmation() {
     pendingExamConfirmation = null;
     elements.examConfirm.hidden = true;
+    if (dialogReturnFocus?.isConnected) dialogReturnFocus.focus();
+    dialogReturnFocus = null;
+  }
+
+  function formatDuration(durationMs) {
+    const totalSeconds = Math.round(durationMs / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return seconds ? `${minutes} phút ${seconds} giây` : `${minutes} phút`;
   }
 
   function stopExamTimer() {
@@ -542,12 +601,65 @@ import { createQuizStorage } from './quiz-storage.js';
   }
 
   function updateNavigation() {
+    if (state.rushActive) {
+      elements.previous.disabled = true;
+      elements.next.disabled = !state.rush.reveal;
+      return;
+    }
     const disabled = state.questions.length < 2;
     elements.previous.disabled = disabled;
     elements.next.disabled = disabled;
   }
 
-  function updateProgress() {
+  const STATUS_LABELS = {
+    answered: 'đã trả lời',
+    correct: 'đúng',
+    incorrect: 'sai',
+    unanswered: 'chưa trả lời'
+  };
+
+  function updateQuestionMap() {
+    const map = elements.questionMap;
+    if (questionMapSource !== state.questions) {
+      const fragment = document.createDocumentFragment();
+      for (const [index] of state.questions.entries()) {
+        const cell = createElement('button', 'question-map-cell', String(index + 1));
+        cell.type = 'button';
+        cell.dataset.index = String(index);
+        fragment.append(cell);
+      }
+      map.replaceChildren(fragment);
+      questionMapSource = state.questions;
+    }
+
+    const answers = getAnswerStore();
+    const mode = { isExam: Boolean(state.exam), isSubmitted: Boolean(state.exam?.submitted) };
+    for (const [index, cell] of [...map.children].entries()) {
+      const question = state.questions[index];
+      const status = getQuestionStatus(question, answers[question.id], mode);
+      const isCurrent = index === state.currentIndex;
+      cell.className = `question-map-cell is-${status}${isCurrent ? ' is-current' : ''}`;
+      cell.setAttribute('aria-label', `Câu ${index + 1}, ${STATUS_LABELS[status]}`);
+      if (isCurrent) {
+        cell.setAttribute('aria-current', 'true');
+        if (cell.offsetTop < map.scrollTop || cell.offsetTop + cell.offsetHeight > map.scrollTop + map.clientHeight) {
+          map.scrollTop = Math.max(0, cell.offsetTop - map.clientHeight / 2);
+        }
+      } else {
+        cell.removeAttribute('aria-current');
+      }
+    }
+  }
+
+  function goToQuestion(index) {
+    if (!Number.isInteger(index) || index < 0 || index >= state.questions.length) return;
+    state.currentIndex = index;
+    if (state.exam) saveExamSession();
+    else savePracticeProgress();
+    renderQuestion();
+  }
+
+  function updateProgressBar() {
     const answers = getAnswerStore();
     const total = state.questions.length;
     const completed = state.questions.filter(question => (answers[question.id] || '').length >= question.correctAnswer.length).length;
@@ -556,11 +668,20 @@ import { createQuizStorage } from './quiz-storage.js';
     elements.progress.setAttribute('aria-valuenow', String(percent));
   }
 
+  function refreshProgress() {
+    updateProgressBar();
+    updateQuestionMap();
+  }
+
   function getSelectedAnswer() {
     return [...elements.answers.querySelectorAll('input:checked')].map(input => input.value).sort().join('');
   }
 
   function handleAnswerChange() {
+    if (state.rushActive) {
+      handleRushAnswer();
+      return;
+    }
     const question = state.questions[state.currentIndex];
     if (!question || state.exam?.submitted) return;
     const answer = getSelectedAnswer();
@@ -569,7 +690,7 @@ import { createQuizStorage } from './quiz-storage.js';
       state.exam.answers[question.id] = answer;
       saveExamSession();
       renderExamControls();
-      updateProgress();
+      refreshProgress();
       return;
     }
 
@@ -577,7 +698,7 @@ import { createQuizStorage } from './quiz-storage.js';
     savePracticeProgress();
     renderPracticeResult(question);
     renderPracticeControls();
-    updateProgress();
+    refreshProgress();
   }
 
   function clearCurrentAnswer() {
@@ -619,17 +740,34 @@ import { createQuizStorage } from './quiz-storage.js';
     const to = Number(elements.examTo.value);
     if (Number.isInteger(from) && Number.isInteger(to) && from >= 1 && to <= total && from <= to) return { from, to };
 
-    window.alert(`Khoảng câu không hợp lệ. Nhập "Từ câu" ≤ "Đến câu" trong khoảng 1–${total}.`);
-    elements.examFrom.focus();
+    showNotice(`Khoảng câu không hợp lệ. Vui lòng nhập "Từ câu" nhỏ hơn hoặc bằng "Đến câu", trong khoảng 1–${total}.`, () => elements.examFrom.focus());
     return null;
+  }
+
+  function syncExamCountToRange() {
+    const total = state.allQuestions.length;
+    const from = Number(elements.examFrom.value);
+    const to = Number(elements.examTo.value);
+    if (!total || !Number.isInteger(from) || !Number.isInteger(to) || from < 1 || to > total || from > to) {
+      elements.examCount.max = String(total);
+      return;
+    }
+
+    const rangeSize = to - from + 1;
+    elements.examCount.max = String(rangeSize);
+    const count = Number(elements.examCount.value);
+    if (Number.isInteger(count) && count > rangeSize) elements.examCount.value = String(rangeSize);
   }
 
   function getRequestedExamCount(rangeSize) {
     const count = Number(elements.examCount.value);
-    if (Number.isInteger(count) && count > 0 && count <= rangeSize) return count;
+    if (Number.isInteger(count) && count > rangeSize) {
+      elements.examCount.value = String(rangeSize);
+      return rangeSize;
+    }
+    if (Number.isInteger(count) && count > 0) return count;
 
-    window.alert(`Số câu phải là số nguyên lớn hơn 0 và không vượt quá ${rangeSize} câu trong khoảng đã chọn.`);
-    elements.examCount.focus();
+    showNotice(`Số câu hỏi phải là số nguyên lớn hơn 0 và không vượt quá ${rangeSize} câu trong khoảng đã chọn.`, () => elements.examCount.focus());
     return null;
   }
 
@@ -643,6 +781,10 @@ import { createQuizStorage } from './quiz-storage.js';
   }
 
   function navigate(direction) {
+    if (state.rushActive) {
+      if (direction > 0) continueRush();
+      return;
+    }
     const total = state.questions.length;
     if (total < 2) return;
     state.currentIndex = (state.currentIndex + direction + total) % total;
@@ -664,28 +806,42 @@ import { createQuizStorage } from './quiz-storage.js';
   }
 
   function resetCurrentSource() {
-    if (!state.allQuestions.length || !window.confirm('Xóa toàn bộ đáp án đã chọn và làm lại môn này từ đầu?')) return;
-    state.answers = {};
-    state.questions = state.allQuestions;
-    state.practiceMode = 'all';
-    state.practiceReturnIndex = 0;
-    state.currentIndex = 0;
-    savePracticeProgress();
-    renderQuestion();
+    if (!state.allQuestions.length) return;
+    openDialog({
+      message: 'Xóa toàn bộ đáp án đã chọn và bắt đầu lại môn học này từ đầu?',
+      confirmText: 'Đặt lại',
+      cancelText: 'Hủy',
+      onConfirm: () => {
+        state.answers = {};
+        state.questions = state.allQuestions;
+        state.practiceMode = 'all';
+        state.practiceReturnIndex = 0;
+        state.currentIndex = 0;
+        savePracticeProgress();
+        renderQuestion();
+      }
+    });
   }
 
   function retryIncorrectQuestions() {
     const incorrectQuestions = getIncorrectQuestions(state.allQuestions, state.answers);
-    if (!incorrectQuestions.length || !window.confirm(`Làm lại ${incorrectQuestions.length} câu đã sai? Đáp án sai cũ sẽ được xóa.`)) return;
-    if (state.practiceMode !== 'incorrect') {
-      state.practiceReturnIndex = state.currentIndex;
-    }
-    for (const question of incorrectQuestions) delete state.answers[question.id];
-    state.questions = incorrectQuestions;
-    state.practiceMode = 'incorrect';
-    state.currentIndex = 0;
-    savePracticeProgress();
-    renderQuestion();
+    if (!incorrectQuestions.length) return;
+    openDialog({
+      message: `Làm lại ${incorrectQuestions.length} câu đã sai? Đáp án sai cũ sẽ được xóa.`,
+      confirmText: 'Làm lại',
+      cancelText: 'Hủy',
+      onConfirm: () => {
+        if (state.practiceMode !== 'incorrect') {
+          state.practiceReturnIndex = state.currentIndex;
+        }
+        for (const question of incorrectQuestions) delete state.answers[question.id];
+        state.questions = incorrectQuestions;
+        state.practiceMode = 'incorrect';
+        state.currentIndex = 0;
+        savePracticeProgress();
+        renderQuestion();
+      }
+    });
   }
 
   function showAllQuestions() {
@@ -719,26 +875,37 @@ import { createQuizStorage } from './quiz-storage.js';
     return state.allQuestions.slice(range.from - 1, range.to);
   }
 
-  function createRandomExamQuestionIds(count, range) {
-    return shuffleQuestions(getQuestionsInRange(range)).slice(0, count).map(question => question.id);
+  function getUnusedQuestions(range) {
+    const usedIds = new Set(getExamQuestionHistory());
+    return getQuestionsInRange(range).filter(question => !usedIds.has(question.id));
+  }
+
+  function needsHistoryReset(count, range) {
+    return getExamQuestionHistory().length > 0 && getUnusedQuestions(range).length < count;
   }
 
   function getNewExamQuestionIds(count, range) {
-    const usedIds = getExamQuestionHistory();
-    const usedSet = new Set(usedIds);
-    const unusedQuestions = getQuestionsInRange(range).filter(question => !usedSet.has(question.id));
+    if (needsHistoryReset(count, range)) saveExamQuestionHistory([]);
+    return shuffleQuestions(getUnusedQuestions(range)).slice(0, count).map(question => question.id);
+  }
 
-    if (unusedQuestions.length < count && usedIds.length) {
-      const remaining = unusedQuestions.length;
-      window.alert(`Bạn đã làm đúng gần hết các câu${range ? ` trong khoảng ${range.from}–${range.to}` : ' của môn này'}. Chỉ còn ${remaining} câu bạn chưa làm đúng, không đủ để tạo đề ${count} câu.\n\nHệ thống sẽ tự động reset vòng trộn. Đề mới có thể có lại các câu bạn đã làm đúng.`);
-      saveExamQuestionHistory([]);
-      return createRandomExamQuestionIds(count, range);
+  function describeHistoryReset(count, range) {
+    const scope = range ? ` trong khoảng câu ${range.from}–${range.to}` : ' của môn này';
+    return `Số câu chưa trả lời đúng${scope} chỉ còn ${getUnusedQuestions(range).length}, không đủ để tạo đề ${count} câu. Hệ thống sẽ đặt lại vòng xáo trộn câu hỏi; đề mới có thể bao gồm cả những câu bạn đã trả lời đúng.`;
+  }
+
+  function requestNewExam(count, range, intro = '') {
+    const message = [intro, needsHistoryReset(count, range) ? describeHistoryReset(count, range) : ''].filter(Boolean).join('\n\n');
+    const begin = () => beginExam(getNewExamQuestionIds(count, range), true, range);
+    if (!message) {
+      begin();
+      return;
     }
-
-    return shuffleQuestions(unusedQuestions).slice(0, count).map(question => question.id);
+    openDialog({ message, confirmText: intro ? 'Bắt đầu' : 'Tiếp tục', cancelText: 'Hủy', onConfirm: begin });
   }
 
   function beginExam(questionIds, timerEnabled = true, range = null) {
+    const durationMs = getExamDurationMs(questionIds.length);
     storage.remove('practice-session');
     state.practiceMode = 'all';
     state.practiceReturnIndex = 0;
@@ -755,8 +922,8 @@ import { createQuizStorage } from './quiz-storage.js';
       questionCount: questionIds.length,
       range,
       timerEnabled: Boolean(timerEnabled),
-      deadline: timerEnabled ? Date.now() + EXAM_DURATION_MS : null,
-      pausedRemainingMs: timerEnabled ? null : EXAM_DURATION_MS
+      deadline: timerEnabled ? Date.now() + durationMs : null,
+      pausedRemainingMs: timerEnabled ? null : durationMs
     };
     state.questions = getQuestionsByIds(state.exam.questionIds);
     state.currentIndex = 0;
@@ -774,10 +941,8 @@ import { createQuizStorage } from './quiz-storage.js';
     const count = getRequestedExamCount(range.to - range.from + 1);
     if (!count) return;
     const rangeText = isFullRange ? '' : ` trong khoảng câu ${range.from}–${range.to}`;
-    if (!window.confirm(`Bắt đầu bài thi gồm ${count} câu ngẫu nhiên${rangeText}?`)) return;
-
-    const savedRange = isFullRange ? null : range;
-    beginExam(getNewExamQuestionIds(count, savedRange), true, savedRange);
+    const intro = `Bắt đầu bài thi gồm ${count} câu hỏi được chọn ngẫu nhiên${rangeText}.\nThời gian làm bài: ${formatDuration(getExamDurationMs(count))}.`;
+    requestNewExam(count, isFullRange ? null : range, intro);
   }
 
   function retakeSameExam() {
@@ -790,15 +955,15 @@ import { createQuizStorage } from './quiz-storage.js';
     if (!state.exam?.submitted) return;
     const count = state.exam.questionCount || state.exam.originalQuestionIds?.length || state.exam.questionIds.length;
     const range = state.exam.range || null;
-    beginExam(getNewExamQuestionIds(count, range), true, range);
+    requestNewExam(count, range);
   }
 
   function submitExam(isAutomatic = false, confirmed = false) {
     if (!state.exam || state.exam.submitted) return;
     const unanswered = state.questions.filter(question => !(state.exam.answers[question.id] || '')).length;
-    const message = unanswered ? `Bạn còn ${unanswered} câu chưa trả lời. Vẫn nộp bài?` : 'Bạn chắc chắn muốn nộp bài?';
+    const message = unanswered ? `Bạn còn ${unanswered} câu chưa trả lời. Bạn có chắc chắn muốn nộp bài?` : 'Bạn có chắc chắn muốn nộp bài?';
     if (!isAutomatic && !confirmed) {
-      requestExamConfirmation(message, () => submitExam(false, true));
+      openDialog({ message, confirmText: 'Nộp bài', cancelText: 'Quay lại làm bài', onConfirm: () => submitExam(false, true) });
       return;
     }
     state.exam.submitted = true;
@@ -868,7 +1033,12 @@ import { createQuizStorage } from './quiz-storage.js';
   function exitExam(shouldConfirm = true) {
     if (!state.exam) return true;
     if (shouldConfirm) {
-      requestExamConfirmation('Thoát chế độ thi? Phiên thi hiện tại sẽ bị xóa.', () => exitExam(false));
+      openDialog({
+        message: 'Kết thúc bài thi? Kết quả của phiên làm bài hiện tại sẽ không được lưu.',
+        confirmText: 'Kết thúc',
+        cancelText: 'Quay lại làm bài',
+        onConfirm: () => exitExam(false)
+      });
       return false;
     }
     closeExamConfirmation();
@@ -898,7 +1068,17 @@ import { createQuizStorage } from './quiz-storage.js';
   }
 
   function handleKeyboard(event) {
+    if (event.key === 'Escape' && !elements.examConfirm.hidden) {
+      event.preventDefault();
+      if (dialogCancelable) closeExamConfirmation();
+      else elements.acceptExamConfirm.click();
+      return;
+    }
     if (isModalOpen() || event.ctrlKey || event.metaKey || event.altKey) return;
+    if (state.rushActive) {
+      handleRushKeyboard(event);
+      return;
+    }
     const isAnswerInput = event.target instanceof HTMLInputElement
       && (event.target.type === 'radio' || event.target.type === 'checkbox');
     if (event.code === 'Space' && !state.exam && isAnswerInput) {
@@ -928,11 +1108,268 @@ import { createQuizStorage } from './quiz-storage.js';
     await switchSource(sourceId);
   }
 
+  // ----- Học cấp tốc -----
+
+  function getSavedRush() {
+    const rush = storage.read('rush', null);
+    if (!rush || rush.sourceVersion !== state.sourceVersion || !Array.isArray(rush.weakIds) || !Array.isArray(rush.completedBlocks)) return null;
+    const validIds = new Set(state.allQuestions.map(question => question.id));
+    const hasValidIds = ids => Array.isArray(ids) && ids.every(id => validIds.has(id));
+    const { phase, reveal } = rush;
+    const isPhaseValid = !phase || (hasValidIds(phase.ids) && hasValidIds(phase.queue) && (phase.queue.length > 0 || Boolean(reveal)));
+    const isRevealValid = !reveal || validIds.has(reveal.id);
+    return hasValidIds(rush.weakIds) && isPhaseValid && isRevealValid ? rush : null;
+  }
+
+  function saveRush() {
+    storage.write('rush', state.rush);
+  }
+
+  function getRushQuestion(id) {
+    return state.allQuestions.find(question => question.id === id);
+  }
+
+  function renderRushBlockOptions() {
+    const select = elements.rushBlock;
+    const previous = select.value;
+    const total = getRushBlockCount(state.allQuestions.length);
+    const completed = state.rush?.completedBlocks ?? [];
+    select.replaceChildren(new Option('Tự động', 'auto'));
+    for (let block = 0; block < total; block += 1) {
+      const { from, to } = getRushBlockRange(state.allQuestions.length, block);
+      select.add(new Option(`${completed.includes(block) ? '✓ ' : ''}Khối ${block + 1} (câu ${from}–${to})`, String(block)));
+    }
+    select.value = [...select.options].some(option => option.value === previous) ? previous : 'auto';
+  }
+
+  function renderRushControls() {
+    const isResumable = Boolean(state.rush?.phase);
+    elements.rushControls.hidden = Boolean(state.exam);
+    elements.rushBlockControl.hidden = state.rushActive || isResumable;
+    elements.rushStart.hidden = state.rushActive;
+    elements.rushStart.disabled = state.allQuestions.length === 0;
+    elements.rushStart.textContent = isResumable ? 'Tiếp tục học cấp tốc' : 'Học cấp tốc';
+    elements.rushExit.hidden = !state.rushActive;
+    elements.resetRush.disabled = !state.rush;
+    elements.rushStatus.hidden = !state.rushActive;
+    elements.source.disabled = state.rushActive || Boolean(state.exam);
+  }
+
+  function renderRushStatus() {
+    const { phase } = state.rush;
+    const remaining = getRushRemaining(phase);
+    const label = phase.kind === 'review'
+      ? 'Ôn dồn'
+      : `Khối ${phase.block + 1}/${getRushBlockCount(state.allQuestions.length)} · Lượt ${phase.pass}/2`;
+    elements.rushStatus.textContent = `${label} · Còn ${remaining} câu`;
+
+    const percent = Math.round(((phase.ids.length - remaining) / phase.ids.length) * 100);
+    elements.progress.style.width = `${percent}%`;
+    elements.progress.setAttribute('aria-valuenow', String(percent));
+  }
+
+  function renderRushAnswerControls(question) {
+    const { phase, reveal } = state.rush;
+    const selected = reveal ? reveal.picked : '';
+    const inputType = question.correctAnswer.length > 1 ? 'checkbox' : 'radio';
+    const fragment = document.createDocumentFragment();
+    fragment.append(createElement('p', 'answer-heading', 'Chọn đáp án:'));
+
+    for (const [index, key] of getOptionOrder(question).entries()) {
+      const label = createElement('label', 'answer-row');
+      const input = document.createElement('input');
+      const displayedKey = LETTERS[index];
+      input.type = inputType;
+      input.name = 'userAnswer';
+      input.value = key;
+      input.checked = selected.includes(key);
+      input.disabled = Boolean(reveal);
+      input.setAttribute('aria-label', `Đáp án ${displayedKey}`);
+      label.append(input, createElement('span', 'answer-label', displayedKey));
+      fragment.append(label);
+    }
+
+    if (!reveal && phase.kind === 'block' && phase.pass === 1) {
+      const unsureButton = createElement('button', 'rush-unsure-btn', 'Không chắc');
+      unsureButton.type = 'button';
+      unsureButton.dataset.action = 'rush-unsure';
+      unsureButton.title = 'Xem đáp án đúng (phím 0)';
+      fragment.append(unsureButton);
+    }
+    elements.answers.replaceChildren(fragment);
+  }
+
+  function renderRushFeedback(question) {
+    const { reveal } = state.rush;
+    elements.rushContinue.hidden = !reveal;
+    elements.result.hidden = !reveal;
+    if (!reveal) return;
+
+    const feedback = {
+      correct: ['result-correct', '✓ Chính xác'],
+      wrong: ['result-incorrect', '✗ Chưa chính xác'],
+      unsure: ['exam-summary', 'Đáp án đúng']
+    }[reveal.status];
+    elements.result.className = `result-container ${feedback[0]}`;
+    elements.resultStatus.textContent = feedback[1];
+    elements.correctAnswer.textContent = `Đáp án đúng: ${getDisplayedAnswer(question)}`;
+    elements.explanation.textContent = question.explanation;
+    for (const option of elements.options.querySelectorAll('[data-answer]')) {
+      const isCorrectOption = question.correctAnswer.includes(option.dataset.answer);
+      option.classList.toggle('is-correct-option', isCorrectOption);
+      option.classList.toggle('is-wrong-option', !isCorrectOption && reveal.picked.includes(option.dataset.answer));
+    }
+  }
+
+  function renderRushQuestion() {
+    const { phase, reveal } = state.rush;
+    const question = getRushQuestion(reveal ? reveal.id : phase.queue[0]);
+    state.questions = getQuestionsByIds(phase.ids);
+    state.currentIndex = Math.max(0, state.questions.findIndex(item => item.id === question.id));
+    elements.quiz.classList.add('rush-mode');
+    elements.examTimerControls.hidden = true;
+    elements.examModal.hidden = true;
+    stopExamTimer();
+
+    renderQuestionContent(question.text);
+    elements.instruction.textContent = `(Chọn ${question.correctAnswer.length} đáp án đúng)`;
+    renderRushAnswerControls(question);
+    renderOptions(question);
+    renderRushFeedback(question);
+    renderRushStatus();
+    renderRushControls();
+    updateNavigation();
+  }
+
+  function submitRushAnswer(question, picked) {
+    const rush = state.rush;
+    if (!rush || rush.reveal) return;
+    const isCorrect = picked !== '' && isQuestionCorrect(question, picked);
+    rush.phase = answerRushPhase(rush.phase, isCorrect);
+    rush.reveal = { id: question.id, picked, status: picked === '' ? 'unsure' : isCorrect ? 'correct' : 'wrong' };
+    saveRush();
+    renderQuestion();
+    if (isCorrect) rushAdvanceTimer = window.setTimeout(continueRush, RUSH_AUTO_ADVANCE_MS);
+  }
+
+  function handleRushAnswer() {
+    const rush = state.rush;
+    if (!rush || rush.reveal) return;
+    const question = getRushQuestion(rush.phase.queue[0]);
+    const picked = getSelectedAnswer();
+    if (picked.length >= question.correctAnswer.length) submitRushAnswer(question, picked);
+  }
+
+  function submitRushUnsure() {
+    const rush = state.rush;
+    if (!rush || rush.reveal) return;
+    submitRushAnswer(getRushQuestion(rush.phase.queue[0]), '');
+  }
+
+  function continueRush() {
+    window.clearTimeout(rushAdvanceTimer);
+    if (!state.rushActive || !state.rush.reveal) return;
+    state.rush.reveal = null;
+    if (!state.rush.phase.queue.length) {
+      state.rush = advanceRush(state.rush, state.allQuestions);
+      if (!state.rush.phase) {
+        saveRush();
+        exitRush();
+        showNotice(`Bạn đã hoàn thành toàn bộ ${getRushBlockCount(state.allQuestions.length)} khối của môn này.`);
+        return;
+      }
+    }
+    saveRush();
+    renderQuestion();
+  }
+
+  function handleRushKeyboard(event) {
+    const { target } = event;
+    if (target instanceof HTMLSelectElement || target instanceof HTMLTextAreaElement) return;
+    const { phase, reveal } = state.rush;
+
+    if (reveal) {
+      const isContinueKey = ['Enter', ' ', 'ArrowRight'].includes(event.key);
+      if (isContinueKey && (!isInteractiveTarget(target) || target === elements.rushContinue)) {
+        event.preventDefault();
+        continueRush();
+      }
+      return;
+    }
+
+    if (event.key === '0' && phase.kind === 'block' && phase.pass === 1) {
+      event.preventDefault();
+      submitRushUnsure();
+      return;
+    }
+    const answerIndex = event.key.length === 1 ? LETTERS.indexOf(event.key.toUpperCase()) : -1;
+    const input = answerIndex >= 0 ? elements.answers.querySelectorAll('input')[answerIndex] : null;
+    if (input && !input.disabled) {
+      event.preventDefault();
+      input.click();
+    }
+  }
+
+  function startRush() {
+    if (!state.allQuestions.length || state.exam) return;
+    const totalBlocks = getRushBlockCount(state.allQuestions.length);
+    let rush = state.rush ?? createRushProgress(state.sourceVersion);
+
+    if (!rush.phase) {
+      const requested = elements.rushBlock.value;
+      let block = requested === 'auto' ? findNextRushBlock(rush.completedBlocks, totalBlocks) : Number(requested);
+      if (block === null) {
+        rush = createRushProgress(state.sourceVersion);
+        block = 0;
+      }
+      rush = beginRushBlock(rush, state.allQuestions, block);
+    }
+
+    storage.remove('practice-session');
+    state.practiceMode = 'all';
+    state.practiceReturnIndex = 0;
+    state.rush = { ...rush, active: true };
+    state.rushActive = true;
+    saveRush();
+    renderQuestion();
+  }
+
+  function exitRush() {
+    window.clearTimeout(rushAdvanceTimer);
+    if (state.rush) {
+      state.rush.active = false;
+      saveRush();
+    }
+    state.rushActive = false;
+    state.questions = state.allQuestions;
+    state.currentIndex = Number(storage.read('current-index', 0)) || 0;
+    if (state.currentIndex < 0 || state.currentIndex >= state.questions.length) state.currentIndex = 0;
+    elements.quiz.classList.remove('rush-mode');
+    renderRushBlockOptions();
+    renderQuestion();
+  }
+
+  function resetRushProgress() {
+    if (!state.rush) return;
+    openDialog({
+      message: 'Xóa toàn bộ tiến độ học cấp tốc của môn này (các khối đã hoàn thành và danh sách câu chưa thuộc)?',
+      confirmText: 'Đặt lại',
+      cancelText: 'Hủy',
+      onConfirm: () => {
+        storage.remove('rush');
+        state.rush = null;
+        renderRushBlockOptions();
+        renderQuestion();
+      }
+    });
+  }
+
   function bindEvents() {
     elements.source.addEventListener('change', event => handleSourceChange(event).catch(showSourceSwitchError));
     elements.answers.addEventListener('change', handleAnswerChange);
     elements.answers.addEventListener('click', event => {
       if (event.target.closest('[data-action="clear-answer"]')) clearCurrentAnswer();
+      else if (event.target.closest('[data-action="rush-unsure"]')) submitRushUnsure();
     });
     elements.options.addEventListener('click', event => {
       selectAnswerFromOption(event.target.closest('[data-answer]'));
@@ -959,6 +1396,18 @@ import { createQuizStorage } from './quiz-storage.js';
       if (action) action();
     });
     elements.jump.addEventListener('change', jumpToQuestion);
+    elements.rushStart.addEventListener('click', startRush);
+    elements.rushExit.addEventListener('click', exitRush);
+    elements.rushContinue.addEventListener('click', continueRush);
+    elements.resetRush.addEventListener('click', resetRushProgress);
+    elements.questionMap.addEventListener('click', event => {
+      const cell = event.target.closest('[data-index]');
+      if (cell) goToQuestion(Number(cell.dataset.index));
+    });
+    for (const input of [elements.examFrom, elements.examTo, elements.examCount]) {
+      input.addEventListener('input', syncExamCountToRange);
+      input.addEventListener('change', syncExamCountToRange);
+    }
     elements.jump.addEventListener('keydown', event => {
       if (event.key === 'Enter') {
         event.preventDefault();
@@ -980,13 +1429,14 @@ import { createQuizStorage } from './quiz-storage.js';
     setSourceLoading(false);
     elements.source.value = state.activeSourceId;
     if (state.allQuestions.length) renderQuestion();
-    window.alert(error.message || 'Không thể tải nguồn câu hỏi.');
+    showNotice(error.message || 'Không thể tải nguồn câu hỏi.');
   }
 
   async function initialize() {
     try {
       renderSourceSelect();
       bindEvents();
+      if (window.matchMedia('(max-width: 720px)').matches) elements.questionMapPanel.open = false;
       await switchSource(state.activeSourceId);
     } catch (error) {
       showLoadError(error);
