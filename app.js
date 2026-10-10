@@ -22,7 +22,6 @@ import { createInitialState } from './quiz-state.js?v=905b79661e1c';
 import { createQuizStorage } from './quiz-storage.js?v=442950530dff';
 
   const EXAM_QUESTION_COUNT = 60;
-  const RUSH_AUTO_ADVANCE_MS = 700;
   const state = createInitialState();
   const storage = createQuizStorage(() => state.activeSourceId);
   const sourceLoadPromises = new Map();
@@ -31,7 +30,6 @@ import { createQuizStorage } from './quiz-storage.js?v=442950530dff';
   let dialogCancelable = true;
   let dialogReturnFocus = null;
   let questionMapSource = null;
-  let rushAdvanceTimer = null;
 
   const elements = {
     answers: document.getElementById('dynamicAnswers'),
@@ -1249,7 +1247,6 @@ import { createQuizStorage } from './quiz-storage.js?v=442950530dff';
     rush.reveal = { id: question.id, picked, status: picked === '' ? 'unsure' : isCorrect ? 'correct' : 'wrong' };
     saveRush();
     renderQuestion();
-    if (isCorrect) rushAdvanceTimer = window.setTimeout(continueRush, RUSH_AUTO_ADVANCE_MS);
   }
 
   function handleRushAnswer() {
@@ -1267,7 +1264,6 @@ import { createQuizStorage } from './quiz-storage.js?v=442950530dff';
   }
 
   function continueRush() {
-    window.clearTimeout(rushAdvanceTimer);
     if (!state.rushActive || !state.rush.reveal) return;
     state.rush.reveal = null;
     if (!state.rush.phase.queue.length) {
@@ -1335,7 +1331,6 @@ import { createQuizStorage } from './quiz-storage.js?v=442950530dff';
   }
 
   function exitRush() {
-    window.clearTimeout(rushAdvanceTimer);
     if (state.rush) {
       state.rush.active = false;
       saveRush();

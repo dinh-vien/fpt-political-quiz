@@ -103,7 +103,7 @@ Dùng khi cần ghi nhớ nhanh một môn. Bấm **Học cấp tốc** (có th�
 - **Lượt 2:** làm lại toàn bộ khối theo thứ tự xáo trộn, cùng cơ chế quay lại với câu sai. Khối hoàn thành khi mọi câu đã được trả lời đúng ở lượt này.
 - Câu chỉ được coi là **đã thuộc** khi đúng ngay lần đầu ở lượt 2; câu sai ở lượt 2 trở thành câu **chưa thuộc**.
 - **Ôn dồn:** cứ sau 3 khối (và sau khối cuối cùng), hệ thống ôn lại các câu chưa thuộc của các khối trước. Câu đúng ngay lần đầu được loại khỏi danh sách chưa thuộc.
-- Không đảo thứ tự đáp án. Câu đúng tự chuyển tiếp sau chưa đầy một giây; câu sai cần bấm **Tiếp tục** (hoặc `Enter`, `Space`, `→`). Phím `A`, `B`, `C`… chọn đáp án tương ứng.
+- Không đảo thứ tự đáp án. Sau mỗi câu (đúng hay sai) cần bấm **Tiếp tục** (hoặc `Enter`, `Space`, `→`). Phím `A`, `B`, `C`… chọn đáp án tương ứng.
 - Tiến độ được lưu theo từng môn trong trình duyệt. **Tạm dừng học cấp tốc** giữ nguyên vị trí để học tiếp; **Đặt lại tiến độ học cấp tốc** (trong mục Tùy chọn) xóa toàn bộ.
 
 ## Chế độ thi
