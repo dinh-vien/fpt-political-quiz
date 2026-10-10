@@ -170,18 +170,36 @@ button, input, select { font: inherit; }
 .exam-mode .exam-actions > .exam-btn-exit {
   position: absolute;
   z-index: 4;
-  bottom: 12px;
+  bottom: 18px;
   min-width: 108px;
   padding: 9px 13px;
   box-shadow: 0 2px 8px rgb(0 0 0 / 14%);
 }
 
-/* Chừa chỗ ở đáy để nút nổi không đè lên đáp án / ô số câu. */
-.exam-mode .left-panel,
-.exam-mode .right-panel { padding-bottom: 76px; }
-
 .exam-mode .exam-btn-submit { right: 18px; }
 .exam-mode .exam-actions > .exam-btn-exit { left: 18px; }
+
+/* Máy tính: hai nút nằm trong thanh dính ở đáy cột trái, không đè lên đáp án. */
+@media (min-width: 721px) {
+  .exam-mode .left-panel { display: flex; flex-direction: column; padding-bottom: 0; }
+  .exam-mode .left-panel > * { flex-shrink: 0; }
+  .exam-mode .exam-actions {
+    position: sticky;
+    bottom: 0;
+    z-index: 4;
+    order: 99;
+    display: flex;
+    justify-content: space-between;
+    margin: auto -48px 0 -56px;
+    padding: 10px 48px 12px 56px;
+    background: #fff;
+    border-top: 1px solid var(--line);
+  }
+  .exam-mode .exam-btn-submit,
+  .exam-mode .exam-actions > .exam-btn-exit { position: static; box-shadow: none; }
+  .exam-mode .exam-actions > .exam-btn-exit { order: 1; }
+  .exam-mode .exam-btn-submit { order: 2; }
+}
 
 .exam-mode .practice-actions,
 .exam-mode .jump-container,
