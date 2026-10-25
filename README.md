@@ -101,7 +101,7 @@ Dùng khi cần ghi nhớ nhanh một môn. Bấm **Học cấp tốc** (có th�
 
 - Câu hỏi của môn được chia thành các khối 50 câu theo thứ tự trong đề.
 - **Lượt 1:** chọn đáp án cho từng câu; có nút **Không chắc** (phím `0`) để xem ngay đáp án đúng. Câu sai hoặc không chắc được hiển thị đáp án đúng, được ghi nhận và quay lại sau 3–5 câu, lặp lại cho tới khi chọn đúng.
-- **Lượt 2:** làm lại toàn bộ khối theo thứ tự xáo trộn, cùng cơ chế quay lại với câu sai. Khối hoàn thành khi mọi câu đã được trả lời đúng ở lượt này.
+- **Lượt 2 (tuỳ chọn):** chọn "2 lượt" hoặc "1 lượt" trước khi bắt đầu một khối; với 2 lượt, làm lại toàn bộ khối theo thứ tự xáo trộn, cùng cơ chế quay lại với câu sai. Khối hoàn thành khi mọi câu đã được trả lời đúng ở lượt này.
 - Câu chỉ được coi là **đã thuộc** khi đúng ngay lần đầu ở lượt 2; câu sai ở lượt 2 trở thành câu **chưa thuộc**.
 - **Ôn dồn:** cứ sau 3 khối (và sau khối cuối cùng), hệ thống ôn lại các câu chưa thuộc của các khối trước. Câu đúng ngay lần đầu được loại khỏi danh sách chưa thuộc.
 - Không đảo thứ tự đáp án. Sau mỗi câu (đúng hay sai) cần bấm **Tiếp tục** (hoặc `Enter`, `Space`, `→`). Phím `A`, `B`, `C`… (hoặc `1`, `2`, `3`…) chọn đáp án tương ứng.

@@ -70,6 +70,8 @@ const elements = {
   resetSource: document.getElementById('resetSourceBtn'),
   rushBlock: document.getElementById('rushBlockSelect'),
   rushBlockControl: document.getElementById('rushBlockControl'),
+  rushPasses: document.getElementById('rushPassesSelect'),
+  rushPassesControl: document.getElementById('rushPassesControl'),
   rushContinue: document.getElementById('rushContinueBtn'),
   rushControls: document.getElementById('rushControls'),
   rushExit: document.getElementById('exitRushBtn'),
@@ -1044,6 +1046,7 @@ function renderRushControls() {
   const isResumable = Boolean(state.rush?.phase);
   elements.rushControls.hidden = Boolean(state.exam);
   elements.rushBlockControl.hidden = state.rushActive || isResumable;
+  elements.rushPassesControl.hidden = state.rushActive || isResumable;
   elements.rushStart.hidden = state.rushActive;
   elements.rushStart.disabled = state.allQuestions.length === 0;
   elements.rushStart.textContent = isResumable ? 'Tiếp tục học cấp tốc' : 'Học cấp tốc';
@@ -1058,7 +1061,7 @@ function renderRushStatus() {
   const remaining = getRushRemaining(phase);
   const label = phase.kind === 'review'
     ? 'Ôn dồn'
-    : `Khối ${phase.block + 1}/${getRushBlockCount(state.allQuestions.length)} · Lượt ${phase.pass}/2`;
+    : `Khối ${phase.block + 1}/${getRushBlockCount(state.allQuestions.length)} · Lượt ${phase.pass}/${phase.passes ?? 2}`;
   elements.rushStatus.textContent = `${label} · Còn ${remaining} câu`;
 
   const percent = Math.round(((phase.ids.length - remaining) / phase.ids.length) * 100);
@@ -1223,7 +1226,7 @@ function startRush() {
       rush = createRushProgress(state.sourceVersion);
       block = 0;
     }
-    rush = beginRushBlock(rush, state.allQuestions, block);
+    rush = beginRushBlock(rush, state.allQuestions, block, Math.random, Number(elements.rushPasses.value) === 1 ? 1 : 2);
   }
 
   storage.remove('practice-session');

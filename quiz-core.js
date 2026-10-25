@@ -79,7 +79,7 @@ export function getExamResults(questions, answers) {
 }
 
 // ---------------------------------------------------------------------------
-// Chế độ học cấp tốc: chia câu hỏi thành khối, mỗi khối làm hai lượt, câu sai
+// Chế độ học cấp tốc: chia câu hỏi thành khối, mỗi khối làm một hoặc hai lượt, câu sai
 // quay lại sau vài câu cho tới khi trả lời đúng, và cứ vài khối lại ôn dồn.
 // ---------------------------------------------------------------------------
 
@@ -101,12 +101,13 @@ export function getRushBlockIds(questions, blockIndex, blockSize = RUSH_BLOCK_SI
 }
 
 // Lượt 1 của khối đi theo thứ tự gốc; các lượt sau xáo trộn để không nhớ theo vị trí.
-export function createRushPhase({ kind, block = null, pass = null, ids }, random = Math.random) {
+export function createRushPhase({ kind, block = null, pass = null, passes = null, ids }, random = Math.random) {
   const keepOrder = kind === 'block' && pass === 1;
   return {
     kind,
     block,
     pass,
+    passes,
     ids: [...ids],
     queue: keepOrder ? [...ids] : shuffleQuestions(ids, random),
     attempted: [],
@@ -134,7 +135,7 @@ export function getRushRemaining(phase) {
 }
 
 export function createRushProgress(sourceVersion) {
-  return { sourceVersion, active: false, completedBlocks: [], weakIds: [], blocksSinceReview: 0, lastBlock: -1, phase: null, reveal: null };
+  return { sourceVersion, active: false, passes: 2, completedBlocks: [], weakIds: [], blocksSinceReview: 0, lastBlock: -1, phase: null, reveal: null };
 }
 
 // Khối chưa hoàn thành kế tiếp sau `after`, quay vòng về đầu nếu cần.
@@ -146,12 +147,13 @@ export function findNextRushBlock(completedBlocks, totalBlocks, after = -1) {
   return null;
 }
 
-export function beginRushBlock(progress, questions, block, random = Math.random) {
+export function beginRushBlock(progress, questions, block, random = Math.random, passes = progress.passes ?? 2) {
   return {
     ...progress,
+    passes,
     lastBlock: block,
     reveal: null,
-    phase: createRushPhase({ kind: 'block', block, pass: 1, ids: getRushBlockIds(questions, block) }, random)
+    phase: createRushPhase({ kind: 'block', block, pass: 1, passes, ids: getRushBlockIds(questions, block) }, random)
   };
 }
 
@@ -166,8 +168,8 @@ export function advanceRush(progress, questions, random = Math.random) {
     return block === null ? { ...next, phase: null } : beginRushBlock(next, questions, block, random);
   };
 
-  if (phase.kind === 'block' && phase.pass === 1) {
-    return { ...next, phase: createRushPhase({ kind: 'block', block: phase.block, pass: 2, ids: phase.ids }, random) };
+  if (phase.kind === 'block' && phase.pass === 1 && (phase.passes ?? 2) > 1) {
+    return { ...next, phase: createRushPhase({ kind: 'block', block: phase.block, pass: 2, passes: phase.passes, ids: phase.ids }, random) };
   }
 
   if (phase.kind === 'block') {
