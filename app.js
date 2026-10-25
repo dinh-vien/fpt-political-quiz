@@ -16,7 +16,7 @@ import {
   getRushRemaining,
   isQuestionCorrect,
   shuffleQuestions
-} from './quiz-core.js?v=de225c511484';
+} from './quiz-core.js?v=308b09dd6cd3';
 import { createInitialState } from './quiz-state.js?v=905b79661e1c';
 import { createQuizStorage } from './quiz-storage.js?v=442950530dff';
 
