@@ -1046,7 +1046,10 @@ function renderRushControls() {
   const isResumable = Boolean(state.rush?.phase);
   elements.rushControls.hidden = Boolean(state.exam);
   elements.rushBlockControl.hidden = state.rushActive || isResumable;
-  elements.rushPassesControl.hidden = state.rushActive || isResumable;
+  const phase = state.rush?.phase;
+  const canChangePasses = !phase || (phase.kind === 'block' && phase.pass === 1);
+  elements.rushPassesControl.hidden = !canChangePasses;
+  if (phase?.kind === 'block') elements.rushPasses.value = String(phase.passes ?? 2);
   elements.rushStart.hidden = state.rushActive;
   elements.rushStart.disabled = state.allQuestions.length === 0;
   elements.rushStart.textContent = isResumable ? 'Tiếp tục học cấp tốc' : 'Học cấp tốc';
@@ -1238,6 +1241,17 @@ function startRush() {
   renderQuestion();
 }
 
+// Đổi số lượt áp dụng cho khối đang ở lượt 1 và các khối sau.
+function changeRushPasses() {
+  const rush = state.rush;
+  if (!rush) return;
+  const passes = Number(elements.rushPasses.value) === 1 ? 1 : 2;
+  rush.passes = passes;
+  if (rush.phase?.kind === 'block' && rush.phase.pass === 1) rush.phase.passes = passes;
+  saveRush();
+  if (state.rushActive) renderRushStatus();
+}
+
 function exitRush() {
   if (state.rush) {
     state.rush.active = false;
@@ -1298,6 +1312,7 @@ function bindEvents() {
     if (action) action();
   });
   elements.jump.addEventListener('change', jumpToQuestion);
+  elements.rushPasses.addEventListener('change', changeRushPasses);
   elements.rushStart.addEventListener('click', startRush);
   elements.rushExit.addEventListener('click', exitRush);
   elements.rushContinue.addEventListener('click', continueRush);
