@@ -8,7 +8,8 @@ const sourceNames = {
     mln122: 'MLN122 - Kinh tế chính trị',
     vnr202: 'VNR202 - Lịch sử Đảng Cộng sản Việt Nam',
     mln131: 'MLN131 - Chủ nghĩa xã hội khoa học',
-    hcm202: 'HCM202 - Tư tưởng Hồ Chí Minh'
+    hcm202: 'HCM202 - Tư tưởng Hồ Chí Minh',
+    ite302c: 'ITE302c - Đạo đức trong CNTT'
 };
 
 // Nguồn bị ẩn khỏi website (vẫn giữ file .md/.js, xóa id khỏi danh sách này để hiện lại).

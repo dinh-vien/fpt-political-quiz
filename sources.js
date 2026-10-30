@@ -7,6 +7,13 @@ window.quizSourceCatalog = [
     "count": 636
   },
   {
+    "id": "ite302c",
+    "name": "ITE302c - Đạo đức trong CNTT",
+    "file": "ite302c.js",
+    "version": "8a85ed7610ab",
+    "count": 567
+  },
+  {
     "id": "mln111",
     "name": "MLN111 - Triết học Mác-Lênin",
     "file": "mln111.js",
