@@ -195,7 +195,7 @@ window.quizSources["mln131"] = {
       "options": {
         "A": "Tính chất trực tiếp của mối quan hệ sở hữu quyền lực công cộng",
         "B": "Nội hàm khái niệm nhân dân",
-        "C": "Giai Cấp tổ chức quyền lực dân chủ",
+        "C": "Giai cấp tổ chức quyền lực dân chủ",
         "D": "Tính triệt để hay không triệt để của dân chủ"
       },
       "answer": "AB",
@@ -268,12 +268,12 @@ window.quizSources["mln131"] = {
       "explanation": ""
     },
     {
-      "question": "Trong thời kì quá độ lên chủ nghĩa xã hội ở nước ta hiện nay, giai Cấp nông dân có sự biến đã theo xu hướng nào?",
+      "question": "Trong thời kì quá độ lên chủ nghĩa xã hội ở nước ta hiện nay, giai cấp nông dân có sự biến đã theo xu hướng nào?",
       "options": {
-        "A": "Giảm dân về số lượng và tỷ lệ trong cơ Cấu xã hội - giai Cấp",
-        "B": "Tăng dân vệ sở lương và tỷ lệ trong cơ Cấu xã hội - giai Cấp",
-        "C": "Giảm dần về Số lượng nhưng tăng dân Về tỷ lệ trong cơ cảu xã hội - giai Cấp",
-        "D": "Tăng dân Về SỐ lượng nhưng giảm dân Về tỷ lệ trong cơ Cấu xã hội - giai Cấp"
+        "A": "Giảm dân về số lượng và tỷ lệ trong cơ cấu xã hội - giai cấp",
+        "B": "Tăng dân vệ sở lương và tỷ lệ trong cơ cấu xã hội - giai cấp",
+        "C": "Giảm dần về Số lượng nhưng tăng dân về tỷ lệ trong cơ cảu xã hội - giai cấp",
+        "D": "Tăng dân về số lượng nhưng giảm dân về tỷ lệ trong cơ cấu xã hội - giai cấp"
       },
       "answer": "A",
       "explanation": ""
@@ -348,7 +348,7 @@ window.quizSources["mln131"] = {
       "question": "Theo chủ nghĩa Mác - Lênin, hình thái kinh tế- xã hội cộng sản chủ nghĩa có khác biệt đặc trưng nào với các hình thái kinh tế xã hội chiếm hữu nô lệ, phong kiến và tư bản chủ nghĩa?",
       "options": {
         "A": "Hình thái kinh tế- xã hội công sản chủ nghĩa là giai đoạn phát triển cao nhất và cuối cùng của lịch sử loài người",
-        "B": "Hình thái kinh tế — xã hội công sản chủ nghĩa khác biệt về chất, đó là xã hội không có giai Cấp đối kháng như các xã hội trước đó",
+        "B": "Hình thái kinh tế — xã hội công sản chủ nghĩa khác biệt về chất, đó là xã hội không có giai cấp đối kháng như các xã hội trước đó",
         "C": "Hình thái kinh tế — xã hội công sản chủ nghĩa là phiên bản điều chỉnh tốt hơn tứ tư bản chủ nghĩa",
         "D": "Hình thái kinh tế - xã hội cộng sản chủ nghĩa là quay trở lại công sản nguyên thủy"
       },
@@ -437,7 +437,7 @@ window.quizSources["mln131"] = {
       "options": {
         "A": "Chế độ ta là do nhân dân làm chủ, quyền lực thuộc vệ nhân dân",
         "B": "Chế đó ta là do Đảng Cộng sản Việt Nam làm chủ, là đai diện ý chí, nguyện vọng của nhân dân",
-        "C": "Chế đó ta là do giai Cấp công nhân làm chủ, quyền lực thuộc về giai Cấp công nhân",
+        "C": "Chế đó ta là do giai cấp công nhân làm chủ, quyền lực thuộc về giai cấp công nhân",
         "D": "Chế đó ta là do Cá nhân làm chủ, được hiện thực hóa thông qua vai trò làm chủ duy nhất của Đảng Cộng sản Việt Nam"
       },
       "answer": "A",
@@ -477,7 +477,7 @@ window.quizSources["mln131"] = {
       "explanation": ""
     },
     {
-      "question": "Phát hiện ra sự phân chia xã hội thành giai Cấp và đấu tranh giai Cấp là công lao của ai?",
+      "question": "Phát hiện ra sự phân chia xã hội thành giai cấp và đấu tranh giai cấp là công lao của ai?",
       "options": {
         "A": "Các Mác",
         "B": "V.I. Lênin",
@@ -612,7 +612,7 @@ window.quizSources["mln131"] = {
       "question": "Mức đó tác động của gia đình đối với xã hội phụ thuộc vào yếu tố nào?(Chọn 3)",
       "options": {
         "A": "Vào bản chất của từng chế độ xã hội",
-        "B": "Vào đường lối, chủ trương của giai Cấp cầm quyền",
+        "B": "Vào đường lối, chủ trương của giai cấp cầm quyền",
         "C": "Vào bản thân mô hình, kết cấu, đặc điểm của mới hình thức gia đình trong lịch sử",
         "D": "Vào ý chí, nguyện vọng của các thành viên trong gia đình"
       },
@@ -642,7 +642,7 @@ window.quizSources["mln131"] = {
       "explanation": ""
     },
     {
-      "question": "Thực chất của liên minh công - nông - tri thức ở nước ta Về nội dung kinh tế là gì?",
+      "question": "Thực chất của liên minh công - nông - tri thức ở nước ta về nội dung kinh tế là gì?",
       "options": {
         "A": "Là sự hợp tác giữa họ, đồng thời mở rộng liên kết với các lực lượng khác để xây dựng nền kinh tế mới xã hội chủ nghĩa hiện đại",
         "B": "Là sự hợp tác giữa họ, đồng thời mô rộng liên kết với các lực lượng khác để xây dựng nền kinh tế thị trường tự do hiện đại",
@@ -722,7 +722,7 @@ window.quizSources["mln131"] = {
       "question": "Theo chủ nghĩa Mác - Lênin, tính chất chính trị của tôn giáo xuất hiện từ khi nào?",
       "options": {
         "A": "Khi xã hội đã có phân chia giai cấp và đối kháng giai cấp",
-        "B": "Khi xă hội đã thủ tiêu được giai Cấp",
+        "B": "Khi xă hội đã thủ tiêu được giai cấp",
         "C": "Khi loài người bước vào đêm trường trung cổ",
         "D": "Khi chủ nghĩa Mác - Lênin ra đời"
       },
@@ -986,7 +986,7 @@ window.quizSources["mln131"] = {
       "question": "Tại sao chủ nghĩa xã hội khoa học tập trung nghiên cứu cơ cấu xã hội - giai cấp mà không phải là các cơ cấu xã hội khác?",
       "options": {
         "A": "Vì cơ cấu xã hội -giai cấp là cơ cấu phổ biến rộng rãi nhất",
-        "B": "Vì bản chất của chủ nghĩa xã hội là trấn áp giai Cấp",
+        "B": "Vì bản chất của chủ nghĩa xã hội là trấn áp giai cấp",
         "C": "Vì đó là một trong những cơ sở để nghiên cứu văn đề liên minh giai cấp - tầng lớp trong một chế độ xã hội nhất định",
         "D": "Vì đó là một trong những cơ sở để nghiên cứu văn đề phân chia quyền lực trong một Chế độ xã hội nhất định"
       },
@@ -999,7 +999,18 @@ window.quizSources["mln131"] = {
         "A": "3",
         "B": "4",
         "C": "5",
-        "D": "6 ---C (5:- KT gia trưởng- KT hàng hóa nhỏ- KT tư bản- KT tư bản nhà nước- KT xã hội chủ nghĩa) Về phương diện chính trị - xã hội, giai cấp công nhân có vị trí như thế nào? A. Là những người nắm giữ tư liệu sản xuất của xã hội tư bản chủ nghĩa, tư tổ chức sản xuất kinh doanh lớn mà không hợp tác với giai Cấp nào B. Là những người không có sở hữu tư liệu sản xuất chủ yếu của xã hội, phải bán sức lao động cho nhà tư bản và bị bóc lột giá trị thặng dư C. Là những người số hữu tư liệu sản xuất, hợp tác với nhà tư bản để kiếm sống D. Là những người có số hữu một số tư liệu sản xuất nhỏ, có thể tự sản xuất, nhưng nhỏ lẻ, để phá sản nên phải bán sức lao động cho nhà tư bản là chính"
+        "D": "6"
+      },
+      "answer": "C",
+      "explanation": ""
+    },
+    {
+      "question": "Về phương diện chính trị - xã hội, giai cấp công nhân có vị trí như thế nào?",
+      "options": {
+        "A": "Là những người nắm giữ tư liệu sản xuất của xã hội tư bản chủ nghĩa, tư tổ chức sản xuất kinh doanh lớn mà không hợp tác với giai cấp nào",
+        "B": "Là những người không có sở hữu tư liệu sản xuất chủ yếu của xã hội, phải bán sức lao động cho nhà tư bản và bị bóc lột giá trị thặng dư",
+        "C": "Là những người số hữu tư liệu sản xuất, hợp tác với nhà tư bản để kiếm sống",
+        "D": "Là những người có số hữu một số tư liệu sản xuất nhỏ, có thể tự sản xuất, nhưng nhỏ lẻ, để phá sản nên phải bán sức lao động cho nhà tư bản là chính"
       },
       "answer": "B",
       "explanation": ""
@@ -1067,7 +1078,7 @@ window.quizSources["mln131"] = {
         "C": "Các dân tộc phân bổ đồng đều",
         "D": "Các dân tộc được phân chia lãnh thổ theo vị trí địa lý và đặc điểm ra đời, phát triển của dân tộc đó"
       },
-      "answer": "D",
+      "answer": "B",
       "explanation": ""
     },
     {
@@ -1106,10 +1117,10 @@ window.quizSources["mln131"] = {
     {
       "question": "Trong hệ thống chính sách xã hội của nước ta, các chính sách liên quan đến cơ cấu xã hội nào phải được đặt lên vị trí hàng đầu?",
       "options": {
-        "A": "Cơ Cấu xã hội - giai Cấp",
+        "A": "Cơ cấu xã hội - giai cấp",
         "B": "Cơ cấu xã hội - kinh tế",
-        "C": "Cơ Cấu xã hội - nghề nghiệp",
-        "D": "Cơ Cấu xã hội - dân tộc"
+        "C": "Cơ cấu xã hội - nghề nghiệp",
+        "D": "Cơ cấu xã hội - dân tộc"
       },
       "answer": "A",
       "explanation": ""
@@ -1285,7 +1296,7 @@ window.quizSources["mln131"] = {
         "A": "Là những quy luật và tính quy luật chính trị -xã hội của quá trình phát sinh, hình thành và phát triển hình thái kinh tế - xã hội cộng sản chủ nghĩa",
         "B": "Là những quy luật hình thành, phát triển và hoàn thiện của các hình thái kinh tế - xã hội",
         "C": "Là những quy luật và tính quy luật chính trị -xã hội của quá trình phát sinh, hình thành và phát triển hình thái kinh tế - xã hội chủ nghĩa xã hội",
-        "D": "Tất Cả các đáp án đều đúng"
+        "D": "Tất cả các đáp án đều đúng"
       },
       "answer": "A",
       "explanation": ""
@@ -1434,12 +1445,23 @@ window.quizSources["mln131"] = {
       "explanation": ""
     },
     {
-      "question": "Về nội dung kinh tế, sứ mệnh lịch sử của giai Cấp công nhân được thể hiện như thế nào?",
+      "question": "Về nội dung kinh tế, sứ mệnh lịch sử của giai cấp công nhân được thể hiện như thế nào?",
       "options": {
         "A": "Giai cấp công nhân tạo tiền đề vật chất - kỹ thuật cho sự ra đời của xã hội mới",
         "B": "Tất cả các đáp án đều đúng",
         "C": "Giai cấp công nhân thực hiện tiến bộ và công bằng xã hội thông qua các nguyên tắc sở hữu. quản lí và phân phối phù hợp",
-        "D": "Giai cấp công nhân thiết lập một quan hệ sản xuất mới phù hợp với sự phát triển của lực lượng sản xuất ---B (Nếu không có Tất cả thì chọn D) Nội dung cơ bản và trực tiếp để xây dựng gia đình ở Việt Nam hiện nay là gì? A. Phát triển kinh tế - xã hội B. Xây dựng gia đình no ấm, bình đẳng, tiến bộ và hạnh phúc C. Giải phóng người phụ nữ D. Nâng cao trình độ dân trí cho nhân dân lao động"
+        "D": "Giai cấp công nhân thiết lập một quan hệ sản xuất mới phù hợp với sự phát triển của lực lượng sản xuất"
+      },
+      "answer": "B",
+      "explanation": ""
+    },
+    {
+      "question": "Nội dung cơ bản và trực tiếp để xây dựng gia đình ở Việt Nam hiện nay là gì?",
+      "options": {
+        "A": "Phát triển kinh tế - xã hội",
+        "B": "Xây dựng gia đình no ấm, bình đẳng, tiến bộ và hạnh phúc",
+        "C": "Giải phóng người phụ nữ",
+        "D": "Nâng cao trình độ dân trí cho nhân dân lao động"
       },
       "answer": "B",
       "explanation": ""
@@ -1493,7 +1515,7 @@ window.quizSources["mln131"] = {
       "options": {
         "A": "Xây dựng chủ trương, chính sách phù hợp, đúng dân, giải quyết hài hòa lợi ích của từng đã tượng liên minh cụ thể và đảm bảo lợi ích chung",
         "B": "Mọi văn đề, mọi pháp luật khi đưa ra đều phải thông qua tất cả công dân để được ban hành, đảm bảo tinh cũng thuận tuyệt đối",
-        "C": "Có chính sách gắn kết, ràng buộc lợi ích kinh tế giữa các giai Cấp, tầng lớp đã họ thông nhất ký ích kinh tế với nhau, từ đó đồng thuận và đoàn kết trong mọi Vấn đề",
+        "C": "Có chính sách gắn kết, ràng buộc lợi ích kinh tế giữa các giai cấp, tầng lớp đã họ thông nhất ký ích kinh tế với nhau, từ đó đồng thuận và đoàn kết trong mọi Vấn đề",
         "D": "Tất cả đáp án đều đúng"
       },
       "answer": "A",
@@ -1503,9 +1525,9 @@ window.quizSources["mln131"] = {
       "question": "Đâu không phải là một trong những chính sách đối với đội ngũ trí thức nhằm phát huy vai trò của tầng lớp này, trong cơ cấu xã hỏi - giai cấp ở Việt Nam hiện nay?",
       "options": {
         "A": "Tôn trong và phát huy tư do tư tường trong hoạt động nghiên cứu. sáng tạo",
-        "B": "Đảm bảo tư tường của giai Cấp công nhân giữ vị trí chủ đạo trong hoat động nghiên cứu, sáng tạo",
+        "B": "Đảm bảo tư tường của giai cấp công nhân giữ vị trí chủ đạo trong hoat động nghiên cứu, sáng tạo",
         "C": "Trong dụng trí thức trên cơ số đánh giá đúng phẩm chất, năng lưc và kết quả công hiện",
-        "D": "Bảo Vệ quyền sở hữu trí tuệ, đãi ngộ và tôn Vinh xứng đáng những cống hiến của đội ngũ trí thức"
+        "D": "Bảo vệ quyền sở hữu trí tuệ, đãi ngộ và tôn Vinh xứng đáng những cống hiến của đội ngũ trí thức"
       },
       "answer": "B",
       "explanation": ""
@@ -1544,7 +1566,7 @@ window.quizSources["mln131"] = {
       "explanation": ""
     },
     {
-      "question": "(Trong 04 chức năng cơ bản của gia đình, thì chức năng nào được xem là chức năng đặc thủ của gia đình?) Chính sách dân tộc của nước ta về chính trị hướng tới đảm bảo đại đoàn kết toàn dân tộc thống nhất vì mục tiêu chung là gì?",
+      "question": "Chính sách dân tộc của nước ta về chính trị hướng tới đảm bảo đại đoàn kết toàn dân tộc thống nhất vì mục tiêu chung là gì?",
       "options": {
         "A": "Lợi ích kinh tế",
         "B": "Điêu hòa mâu thuẫn giữa các dân tộc",
@@ -1628,7 +1650,7 @@ window.quizSources["mln131"] = {
         "C": "Tín ngưỡng và tôn giáo",
         "D": "Tôn giáo và tín ngưỡng"
       },
-      "answer": "B",
+      "answer": "C",
       "explanation": ""
     },
     {
@@ -1667,7 +1689,7 @@ window.quizSources["mln131"] = {
     {
       "question": "Quan hệ dân tộc và tôn giáo ở Việt Nam chịu sự chi phối mạnh mẽ bởi yếu tố nào?",
       "options": {
-        "A": "Yếu tố giai Cấp",
+        "A": "Yếu tố giai cấp",
         "B": "Yếu tố quản lý của Nhà nước",
         "C": "Yếu tố tín ngưỡng truyền thống",
         "D": "Tất cả các đáp án đều đúng"
@@ -1823,7 +1845,7 @@ window.quizSources["mln131"] = {
         "B": "Vận dụng sai chủ nghĩa Mác- Lênin",
         "C": "Sai lầm của chủ nghĩa Mác- Lênin"
       },
-      "answer": "C",
+      "answer": "B",
       "explanation": ""
     },
     {
@@ -1854,7 +1876,7 @@ window.quizSources["mln131"] = {
         "B": "Kinh tế",
         "C": "Chính trị"
       },
-      "answer": "B",
+      "answer": "A",
       "explanation": ""
     },
     {
@@ -1935,7 +1957,7 @@ window.quizSources["mln131"] = {
       "question": "Về mặt thực tiễn, việc nghiên cứu chủ nghĩa xã hội khoa học có ý nghĩa gì?",
       "options": {
         "A": "Thấy rõ khoảng cách giữa lý luận chủ nghĩa xã hội khoa học và thực tiễn vận dung nó",
-        "B": "Sự sụp đổ của Liên Xô và Đông Âu là do đã nhận thức và hành động trên nhiều vấn đề trái Với chủ nghĩa xã hội khoa học, trải với chủ nghĩa Mác - Lênin chủ không phải là do đi theo chủ nghĩa xã hội khoa học làm cho các nước này khủng hoảng",
+        "B": "Sự sụp đổ của Liên Xô và Đông Âu là do đã nhận thức và hành động trên nhiều vấn đề trái với chủ nghĩa xã hội khoa học, trải với chủ nghĩa Mác - Lênin chủ không phải là do đi theo chủ nghĩa xã hội khoa học làm cho các nước này khủng hoảng",
         "C": "Cần có bản lĩnh vững vàng, sáng suốt và sáng tạo trong việc vận dụng chủ nghĩa xã hội khoa học và bối cảnh lịch sử cụ thể của từng quốc gia, tránh giáo điều, bảo thủ, duy ý chí.",
         "D": "Tất cả các đáp án đều đúng"
       },
@@ -1980,7 +2002,7 @@ window.quizSources["mln131"] = {
         "A": "Gia đình là tớ ấm mang lại các giá trị hạnh phúc, sự hài hòa trong đười sóng Cả nhân của môi thành viện",
         "B": "Gia đình là cầu nối giữa cá nhân và xã hội",
         "C": "Gia đình là tế bào của xã hội",
-        "D": "Tất Cả các đáp án đều đúng"
+        "D": "Tất cả các đáp án đều đúng"
       },
       "answer": "D",
       "explanation": ""
@@ -2002,7 +2024,7 @@ window.quizSources["mln131"] = {
         "A": "Là sản phẩm của con người",
         "B": "Là do điều kiện kinh tế - xã hội sinh ra",
         "C": "Tôn giáo ra đời, tồn tại và biến đã trong một giai doan lịch sử nhất định của loài người",
-        "D": "Tôn giáo sẽ tồn tại và phát triển cùng Với sự phát triển của lịch sử nhân loại"
+        "D": "Tôn giáo sẽ tồn tại và phát triển cùng với sự phát triển của lịch sử nhân loại"
       },
       "answer": "C",
       "explanation": ""
@@ -2076,10 +2098,10 @@ window.quizSources["mln131"] = {
     {
       "question": "Nhà nước xã hội chủ nghĩa ra đời là kết quả của:",
       "options": {
-        "A": "Cuộc cách mạng do giai Cấp vô sản và nhân dân lao động tiến hành dưới sự lãnh đạo của Đảng Cộng sản",
+        "A": "Cuộc cách mạng do giai cấp vô sản và nhân dân lao động tiến hành dưới sự lãnh đạo của Đảng Cộng sản",
         "B": "Sự chuyển biến tích cực của nhà nước tư sản",
-        "C": "Cuộc cách mạng tư sản do giai Cấp tư sản và nhân dân lao động tiến hành dưới sự lãnh đạo của Đảng Cộng sản",
-        "D": "Cuộc cách mạng vô sản do giai Cấp nông nhân tiến hành"
+        "C": "Cuộc cách mạng tư sản do giai cấp tư sản và nhân dân lao động tiến hành dưới sự lãnh đạo của Đảng Cộng sản",
+        "D": "Cuộc cách mạng vô sản do giai cấp nông nhân tiến hành"
       },
       "answer": "A",
       "explanation": ""
@@ -2154,7 +2176,7 @@ window.quizSources["mln131"] = {
       "question": "Trong cơ cấu xã hội - giai cấp ở Việt Nam hiện nay, giai cấp, tầng lớp nào là lực lượng sáng tạo đặc biệt quan trọng trong tiến trình đẩy mạnh công nghiệp hóa, hiện đại hóa, xây dựng nền kinh tế tri thức?",
       "options": {
         "A": "Giai cấp công nhân",
-        "B": "Giai Cấp nông dân",
+        "B": "Giai cấp nông dân",
         "C": "Tầng lớp trí thức",
         "D": "Tầng lớp doanh nhân"
       },
@@ -2288,7 +2310,18 @@ window.quizSources["mln131"] = {
         "A": "Kinh tế, chính trị - xã hội",
         "B": "Đạo đức, lối sống",
         "C": "Tất cả các đáp án đều đúng",
-        "D": "Ngoại giao ---c (Nếu câu hỏi là phương diện trọng yếu nào ? Thì chọn câu b) Điều gì vừa là thách thức vừa tạo ra thời cơ cho Việt Nam trong thời kỳ quá độ chủ nghĩa xã hội hiện nay? A. Cuộc cách mạng khoa học công nghệ và xu thế toàn cầu hóa B. Sự trở dậy của chủ nghĩa xã hội, tiêu biểu là Trung Quốc C. Sự thay đổi trật tự thế giới D. Sự gia tăng nhanh chóng của lực lượng lao động nước ta"
+        "D": "Ngoại giao"
+      },
+      "answer": "C",
+      "explanation": ""
+    },
+    {
+      "question": "Điều gì vừa là thách thức vừa tạo ra thời cơ cho Việt Nam trong thời kỳ quá độ chủ nghĩa xã hội hiện nay?",
+      "options": {
+        "A": "Cuộc cách mạng khoa học công nghệ và xu thế toàn cầu hóa",
+        "B": "Sự trở dậy của chủ nghĩa xã hội, tiêu biểu là Trung Quốc",
+        "C": "Sự thay đổi trật tự thế giới",
+        "D": "Sự gia tăng nhanh chóng của lực lượng lao động nước ta"
       },
       "answer": "A",
       "explanation": ""
@@ -2316,7 +2349,7 @@ window.quizSources["mln131"] = {
       "explanation": ""
     },
     {
-      "question": "Những nhược điểm, hạn chế vốn có do hoàn cảnh lịch sử và nguồn gốc xã hội sinh ra của giai Cấp công nhân Việt Nam là gì?",
+      "question": "Những nhược điểm, hạn chế vốn có do hoàn cảnh lịch sử và nguồn gốc xã hội sinh ra của giai cấp công nhân Việt Nam là gì?",
       "options": {
         "A": "Tâm lý tiểu nông, thói quen, tập quán lạc hậu tứ truyền thông xã hội nông nghiệp cổ truyền",
         "B": "Tư tưởng dễ thỏa hiệp, không kiên quyết đấu tranh đến cùng",
@@ -2527,7 +2560,7 @@ window.quizSources["mln131"] = {
     {
       "question": "Căn cứ vào tính chất của quyền lực nhà nước, chức năng nào của nhà nước xã hội chủ nghĩa là quan trọng nhất, mang ý nghĩa then chốt, quyết định?",
       "options": {
-        "A": "Chức năng giai Cấp (trấn áp)",
+        "A": "Chức năng giai cấp (trấn áp)",
         "B": "Chúc năng đối nội",
         "C": "Chức năng đối ngoại",
         "D": "Chức năng xã hội (tổ chức và xây dựng)"
@@ -2569,7 +2602,7 @@ window.quizSources["mln131"] = {
       "explanation": ""
     },
     {
-      "question": "(Nếu không có a chọn c) Quá độ từ xã hội tiền tư bản chủ nghĩa phát triển lên chủ nghĩa xã hội là hình thức quá độ nào?",
+      "question": "Quá độ từ xã hội tiền tư bản chủ nghĩa phát triển lên chủ nghĩa xã hội là hình thức quá độ nào?",
       "options": {
         "A": "Quá độ gián tiếp",
         "B": "Quá độ trực tiếp",
@@ -2690,7 +2723,7 @@ window.quizSources["mln131"] = {
       "explanation": ""
     },
     {
-      "question": "Vấn đề: \"Dân chủ là quyền lực thuộc về nhân dân, nhân dân là chủ nhân của nhà nước\" được đề cập trên phương diện nào theo chủ nghĩa Mác - Lênin Về dân chủ?",
+      "question": "Vấn đề: \"Dân chủ là quyền lực thuộc về nhân dân, nhân dân là chủ nhân của nhà nước\" được đề cập trên phương diện nào theo chủ nghĩa Mác - Lênin về dân chủ?",
       "options": {
         "A": "Phương diện tổ chức và quản lý xã hội",
         "B": "Phương diện quyền lực",
@@ -2723,7 +2756,7 @@ window.quizSources["mln131"] = {
       "explanation": ""
     },
     {
-      "question": "Theo V.l.Lênin: Giai Cấp công nhân nếu không liên minh với giai cấp nào thì không thể có được chính quyền của giai cấp vô sản?",
+      "question": "Theo V.l.Lênin: Giai cấp công nhân nếu không liên minh với giai cấp nào thì không thể có được chính quyền của giai cấp vô sản?",
       "options": {
         "A": "Nông dân",
         "B": "Bóc lột",
@@ -2756,7 +2789,7 @@ window.quizSources["mln131"] = {
       "explanation": ""
     },
     {
-      "question": "(-Một là: Dân giàu, nước mạnh, dân chủ, công bằng, văn minh. -Hai là: Do nhân dân làm chủ. -Ba là: Có nền kinh tế phát triển cao dựa trên lực lượng sản xuất hiện đại vàquan hệ sản xuất tiến bộ phù hợp. -Bốn là: Có nền văn hóa tiên tiến, đậm đà bản sắc dân tộc. -Năm là: Con người có cuộc sống ấm no, tự do, hạnh phúc, có điều kiện pháttriển toàn diện. -Sáu là: Các dân tộc trong cộng đồng Việt Nam bình đẳng, đoàn kết, tôn trọngvà giúp nhau cùng phát triển. -Bảy là: Có Nhà nước pháp quyền xã hội chủ nghĩa của nhân dân, do nhân dân,vì nhân dân do Đảng Cộng sản lãnh đạo. -Tám là: Có quan hệ hữu nghị và hợp tác với các nước trên thế giớ) Nhà nước Xã hội chủ nghĩa là nhà nước của",
+      "question": "Nhà nước Xã hội chủ nghĩa là nhà nước của",
       "options": {
         "A": "Thiểu số thống trị đa Số",
         "B": "Đa số thống trị thiểu số",
@@ -3049,7 +3082,7 @@ window.quizSources["mln131"] = {
         "C": "XII",
         "D": "XIII"
       },
-      "answer": "D",
+      "answer": "C",
       "explanation": ""
     },
     {
@@ -3167,7 +3200,8 @@ window.quizSources["mln131"] = {
       "options": {
         "A": "Một quốc gia, toàn bộ nhân dân của một nước",
         "B": "Một dân tộc cụ thể cùng chung sống trong một lãnh thổ quốc gia nhất định",
-        "C": "Tất cả các quốc gia đang sinh sống trên trái đất D.Tất cả các đáp án đều đúng"
+        "C": "Tất cả các quốc gia đang sinh sống trên trái đất",
+        "D": "Tất cả các đáp án đều đúng"
       },
       "answer": "A",
       "explanation": ""
@@ -3175,9 +3209,9 @@ window.quizSources["mln131"] = {
     {
       "question": "Đâu không phải là một trong những loại của cơ cấu xã hội?",
       "options": {
-        "A": "Cơ cấu xã hội - giai Cấp",
-        "B": "Cơ Cấu xã hội - nghề nghiệp",
-        "C": "Cơ Cấu xã hội - hạ tầng",
+        "A": "Cơ cấu xã hội - giai cấp",
+        "B": "Cơ cấu xã hội - nghề nghiệp",
+        "C": "Cơ cấu xã hội - hạ tầng",
         "D": "Cơ cấu xã hội - tôn giáo"
       },
       "answer": "C",
@@ -3195,10 +3229,10 @@ window.quizSources["mln131"] = {
       "explanation": ""
     },
     {
-      "question": "Cơ Cấu xã hội - giai Cấp của nước ta trong thời kì quá độ lên chủ nghĩa xã hội hiện nay bao gồm những giai cấp, tầng lớp cơ bản nào? (chọn 3)",
+      "question": "Cơ cấu xã hội - giai cấp của nước ta trong thời kì quá độ lên chủ nghĩa xã hội hiện nay bao gồm những giai cấp, tầng lớp cơ bản nào? (chọn 3)",
       "options": {
-        "A": "Giai Cấp công nhân",
-        "B": "Giai Cấp nông dân",
+        "A": "Giai cấp công nhân",
+        "B": "Giai cấp nông dân",
         "C": "Đội ngũ trí thức và đội ngũ doanh nhân",
         "D": "Đội ngũ trí thức và đội ngũ đảng viên"
       },
@@ -3210,7 +3244,7 @@ window.quizSources["mln131"] = {
       "options": {
         "A": "Các thành tựu khoa học tự nhiên của nhân loại thế kỉ XIX",
         "B": "Sự xuất hiện của nền đại công nghiệp",
-        "C": "Sự ra đời của hai giai Cấp: giai Cấp tư sản và giai Cấp vô sản",
+        "C": "Sự ra đời của hai giai cấp: giai cấp tư sản và giai cấp vô sản",
         "D": "Phong trào đấu tranh của giai cấp vô sản chống lại sự thống trị áp bức của giai cấp tư sản"
       },
       "answer": "A",
@@ -3222,7 +3256,7 @@ window.quizSources["mln131"] = {
         "A": "Ban hành hệ thống hiến pháp và pháp luật về quyền bình đẳng giữa các dân tộc",
         "B": "Nâng cao trình độ dân trí, văn hoá cho động bảo",
         "C": "Chống tư tưởng phân biệt chủng tộc, kì thị và chia rẽ dân tộc",
-        "D": "Xoá bỏ dần sư chênh lệch Về mọi mặt giữa các dân tộc do lịch sử đế lại"
+        "D": "Xoá bỏ dần sư chênh lệch về mọi mặt giữa các dân tộc do lịch sử đế lại"
       },
       "answer": "D",
       "explanation": ""
@@ -3233,7 +3267,7 @@ window.quizSources["mln131"] = {
         "A": "Xu hướng sử dụng hàng hóa, dịch vụ của phúc lợi Nhà nước",
         "B": "Xu hướng tiêu dùng sản phẩm do người khác làm ra",
         "C": "Xu hướng tiêu dùng sản phẩm nước ngoài",
-        "D": "Tất Cả các đáp án đều đúng"
+        "D": "Tất cả các đáp án đều đúng"
       },
       "answer": "B",
       "explanation": ""
@@ -3250,11 +3284,11 @@ window.quizSources["mln131"] = {
       "explanation": ""
     },
     {
-      "question": "Tai sao trong thời gian đầu, giai Cấp công nhân Việt Nam chậm phát triển?",
+      "question": "Tai sao trong thời gian đầu, giai cấp công nhân Việt Nam chậm phát triển?",
       "options": {
         "A": "Vi sinh ra và lớn lên ở một nước thuộc địa, nứa phong kiến dưới ách thống trị của thưc dân Pháp",
         "B": "Vì lưc lượng không thưc sự đông đảo",
-        "C": "Vì không có tinh thần kỷ luật và cách mạng triệt đế như đặc điếm chung của giai Cấp công nhân các nước tư bản phát triễn",
+        "C": "Vì không có tinh thần kỷ luật và cách mạng triệt đế như đặc điếm chung của giai cấp công nhân các nước tư bản phát triễn",
         "D": "Vì chưa có tinh thần đấu tranh giai cấp, đấu tranh giải phóng dân tộc"
       },
       "answer": "A",
@@ -3272,12 +3306,12 @@ window.quizSources["mln131"] = {
       "explanation": ""
     },
     {
-      "question": "Khác biệt Về sự ra đời của hình thái kinh tế - xã hội cộng sản chủ nghĩa với sự ra đời của các hình thái kinh tế-xã hội trước đây là gì?",
+      "question": "Khác biệt về sự ra đời của hình thái kinh tế - xã hội cộng sản chủ nghĩa với sự ra đời của các hình thái kinh tế-xã hội trước đây là gì?",
       "options": {
         "A": "Phải được thực hiện thông qua cuộc cách mạng vô sản",
         "B": "Phải được thưc hiện thông qua cuộc cách mạng tư sản",
         "C": "Phải được thưc hiện thông qua một sự cải biến sâu sắc về trình độ phát triển của công nghiệp và người lao động",
-        "D": "Phải có sự hội tụ đầy đủ các yếu tố Về kinh tế và chính trị"
+        "D": "Phải có sự hội tụ đầy đủ các yếu tố về kinh tế và chính trị"
       },
       "answer": "A",
       "explanation": ""
@@ -3327,12 +3361,12 @@ window.quizSources["mln131"] = {
       "explanation": ""
     },
     {
-      "question": "Trong thời đại hiện nay, sứ mệnh lịch sử của giai Cấp công nhân trong lĩnh vực văn hóa, tư tưởng là gì?",
+      "question": "Trong thời đại hiện nay, sứ mệnh lịch sử của giai cấp công nhân trong lĩnh vực văn hóa, tư tưởng là gì?",
       "options": {
-        "A": "Đấu tranh bảo Vệ nền tảng tư tưởng của Đảng Cộng sản, giáo dục nhận thức và cũng có nẽm tin khoa học đoi vôi lí tưởng, muc tiêu của chủ nghĩa xã hội",
+        "A": "Đấu tranh bảo vệ nền tảng tư tưởng của Đảng Cộng sản, giáo dục nhận thức và cũng có nẽm tin khoa học đoi vôi lí tưởng, muc tiêu của chủ nghĩa xã hội",
         "B": "Tuyên truyền cho quần chúng lao động vệ hệ tư tướng Mác - Lênin đê tiến đến chủ nghĩa cộng sản",
         "C": "Xét lại, bổ sung chủ nghĩa Mác - Lênin để dung hợp với các học thuyết tư sản mới",
-        "D": "Tất Cả các đáp án đều đúng"
+        "D": "Tất cả các đáp án đều đúng"
       },
       "answer": "A",
       "explanation": ""
@@ -3384,10 +3418,10 @@ window.quizSources["mln131"] = {
     {
       "question": "Đâu không phải là một trong những nhiệm vụ của các chính sách liên quan đến cơ cấu xã hội giai cấp?",
       "options": {
-        "A": "Giải quyết tốt các mối quan hệ nội bộ từng giai Cấp",
-        "B": "Hướng tới đảm bảo công bằng Xã hội, thu hẹp dần khoảng cách phát triển và sự phân hóa giàu nghèo giữa các giai Cấp, tầng lớp",
-        "C": "Giải quyết tốt các mối quan hệ giữa giai Cấp, tầng lớp này với giai Cấp, tầng lớp khác",
-        "D": "Tạo điều kiện thuận lợi để các giai Cấp công nhân có thể cạnh tranh tốt trên tất cả các lĩnh vực của đời sống xã hội"
+        "A": "Giải quyết tốt các mối quan hệ nội bộ từng giai cấp",
+        "B": "Hướng tới đảm bảo công bằng Xã hội, thu hẹp dần khoảng cách phát triển và sự phân hóa giàu nghèo giữa các giai cấp, tầng lớp",
+        "C": "Giải quyết tốt các mối quan hệ giữa giai cấp, tầng lớp này với giai cấp, tầng lớp khác",
+        "D": "Tạo điều kiện thuận lợi để các giai cấp công nhân có thể cạnh tranh tốt trên tất cả các lĩnh vực của đời sống xã hội"
       },
       "answer": "D",
       "explanation": ""
@@ -3404,7 +3438,7 @@ window.quizSources["mln131"] = {
       "explanation": ""
     },
     {
-      "question": "Trong thời đại hiện nay, hao phí lao động chủ yếu của giai Cấp công nhân đã biến đổi như thế nào?",
+      "question": "Trong thời đại hiện nay, hao phí lao động chủ yếu của giai cấp công nhân đã biến đổi như thế nào?",
       "options": {
         "A": "Giảm bớt hao phí sức lực cơ bắp, gia tăng hao phí về trí lực",
         "B": "Đồng thời gia tăng cả hao phí sức lực và trí lực",
@@ -3417,7 +3451,7 @@ window.quizSources["mln131"] = {
     {
       "question": "Trong cơ cấu xã hội - giai cấp ở Việt Nam hiện nay, giai cấp, tầng lớp nào có nhiệm vụ phát huy bản sắc văn hóa dân tộc và bảo vệ môi trường sinh thái?",
       "options": {
-        "A": "Giai Cấp công nhân",
+        "A": "Giai cấp công nhân",
         "B": "Giai cấp nông dân",
         "C": "Tầng lớp trí thức",
         "D": "Đội ngũ doanh nhân"
@@ -3530,7 +3564,18 @@ window.quizSources["mln131"] = {
         "A": "Nền kinh tế phát triển cao dựa trên lực lượng sản xuất hiện đại",
         "B": "Chế độ công hữu vẽ tư liệu sản xuất chủ yếu",
         "C": "Nên kinh tế phát triển cao dựa trên lực lượng sản xuất công nghiệp cơ khí",
-        "D": "Chế độ sở hữu tập thể, hỗn hợp của tư nhân và công cộng ---AB (Nếu chọn 1 thì chọn A) Nội dung cơ bản của dân chủ về phương diện quyền lực là gì? A. Là quyền lực thuộc về nhân dân, nhân dân là chủ nhân của nhà nước B. Là một hình thái nhà nước C. Là một nguyên tắc tố chức xã hội D. Là quyền thống trị của nhân dân trong lĩnh vực kinh tế"
+        "D": "Chế độ sở hữu tập thể, hỗn hợp của tư nhân và công cộng"
+      },
+      "answer": "AB",
+      "explanation": ""
+    },
+    {
+      "question": "Nội dung cơ bản của dân chủ về phương diện quyền lực là gì?",
+      "options": {
+        "A": "Là quyền lực thuộc về nhân dân, nhân dân là chủ nhân của nhà nước",
+        "B": "Là một hình thái nhà nước",
+        "C": "Là một nguyên tắc tố chức xã hội",
+        "D": "Là quyền thống trị của nhân dân trong lĩnh vực kinh tế"
       },
       "answer": "A",
       "explanation": ""
@@ -3851,7 +3896,7 @@ window.quizSources["mln131"] = {
         "C": "Tinh thần học tập không ngừng",
         "D": "Hiếu thảo với ông bà cha mẹ"
       },
-      "answer": "A",
+      "answer": "B",
       "explanation": ""
     },
     {
@@ -4058,9 +4103,9 @@ window.quizSources["mln131"] = {
         "A": "Cuộc cách mạng của giai cấp nông dân và nhân dân lao động dưới sự lãnh đạo của Đảng Cộng sản, được thực hiện bằng con đường bạo lực cách mạng nhằm lật đổ chế độ tư bản chủ nghĩa, thiết lập nhà nước chuyên chính vô sản",
         "B": "Cuộc cách mạng của giai cấp công nhân và nhân dân lao động dưới sự lãnh đạo của Đảng Cộng sản, trên thực tế được thực hiện bằng con đường tuyên truyền giáo dục nhằm lật đổ chế độ tư bản chủ nghĩa, thiết lập nhà nước chuyển chính vô sản",
         "C": "Cuộc cách mạng của giai cấp công nhân và nhân dân lao động dưới sự lãnh đạo của Đảng Cộng sản, trên thực tế được thực hiện bằng con đường bạo lực cách mạng nhằm lật đổ chế độ phong kiến, thiết lập nhà nước chuyên chính vô sản",
-        "D": "Cuộc cách mạng của giai cấp công nhân và nhân dân lao động dưới sự lãnh đạo của Đảng Cộng sản, được thực hiện bằng con đường bạo lực cách mạng nhằm lật đổ chế độ tư bản chủ nghĩa, thiết lập nhà nước chuyên chính vô"
+        "D": "Cuộc cách mạng của giai cấp công nhân và nhân dân lao động dưới sự lãnh đạo của Đảng Cộng sản, được thực hiện bằng con đường bạo lực cách mạng nhằm lật đổ chế độ tư bản chủ nghĩa, thiết lập nhà nước chuyên chính vô sản"
       },
-      "answer": "A",
+      "answer": "D",
       "explanation": ""
     },
     {
@@ -4412,7 +4457,7 @@ window.quizSources["mln131"] = {
         "C": "5",
         "D": "6"
       },
-      "answer": "A",
+      "answer": "B",
       "explanation": ""
     },
     {
@@ -4434,7 +4479,7 @@ window.quizSources["mln131"] = {
         "C": "3",
         "D": "4"
       },
-      "answer": "D",
+      "answer": "C",
       "explanation": ""
     },
     {
