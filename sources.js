@@ -31,7 +31,7 @@ window.quizSourceCatalog = [
     "id": "mln131",
     "name": "MLN131 - Chủ nghĩa xã hội khoa học",
     "file": "mln131.js",
-    "version": "a52bac4a8e76",
+    "version": "73712e98465c",
     "count": 418
   },
   {

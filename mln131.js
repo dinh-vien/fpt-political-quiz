@@ -1166,7 +1166,7 @@ window.quizSources["mln131"] = {
         "C": "Giao thông và kiến trúc thượng tầng, xóa đói giảm nghèo",
         "D": "Giao thông và cơ sở hạ tầng, y tế, giáo dục"
       },
-      "answer": "B",
+      "answer": "A",
       "explanation": ""
     },
     {
@@ -1650,7 +1650,7 @@ window.quizSources["mln131"] = {
         "C": "Tín ngưỡng và tôn giáo",
         "D": "Tôn giáo và tín ngưỡng"
       },
-      "answer": "C",
+      "answer": "B",
       "explanation": ""
     },
     {
