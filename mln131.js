@@ -363,7 +363,7 @@ window.quizSources["mln131"] = {
         "C": "Tất cả các đáp án đều đúng",
         "D": "Do việc làm và lao động vẫn là nhân tố quyết định mức thu nhập và đời sống của công nhân"
       },
-      "answer": "A",
+      "answer": "C",
       "explanation": ""
     },
     {
@@ -4358,7 +4358,7 @@ window.quizSources["mln131"] = {
         "C": "Tư duy",
         "D": "Khoa học kỹ thuật"
       },
-      "answer": "A",
+      "answer": "B",
       "explanation": ""
     },
     {
