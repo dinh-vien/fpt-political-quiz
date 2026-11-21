@@ -206,9 +206,8 @@ button, input, select { font: inherit; }
 .exam-mode .rush-actions { display: none; }
 .exam-mode .practice-only { display: none; }
 
-/* Trong lúc thi, nguồn câu hỏi đã bị khóa; thu gọn cột trái để đáp án hiện đủ mà không phải cuộn. */
+/* Trong lúc thi, thu gọn danh sách câu để đáp án hiện đủ mà không phải cuộn. */
 @media (min-width: 721px) {
-  .exam-mode .source-container { display: none; }
   .exam-mode .question-map-grid { max-height: 124px; }
 }
 
