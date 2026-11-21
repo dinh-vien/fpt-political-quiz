@@ -17,7 +17,7 @@ window.quizSourceCatalog = [
     "id": "mln111",
     "name": "MLN111 - Triết học Mác-Lênin",
     "file": "mln111.js",
-    "version": "dae60f2d36c0",
+    "version": "5b123e8c5415",
     "count": 548
   },
   {
@@ -31,7 +31,7 @@ window.quizSourceCatalog = [
     "id": "mln131",
     "name": "MLN131 - Chủ nghĩa xã hội khoa học",
     "file": "mln131.js",
-    "version": "9d5bc19c4b7b",
+    "version": "06993fa22bd4",
     "count": 418
   },
   {

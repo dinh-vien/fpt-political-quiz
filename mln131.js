@@ -1415,7 +1415,7 @@ window.quizSources["mln131"] = {
       "question": "Một trong ba phát kiến vĩ đại của C.Mác và Ph.Ăngghen là gì?",
       "options": {
         "A": "Ủng hộ nhân dân lao động",
-        "B": "A và B đều đúng",
+        "B": "A và  đều đúng",
         "C": "Thành lập quốc tế cộng sản",
         "D": "Học thuyết về sứ mệnh lịch sử toàn thế giới của giai cấp công nhân"
       },
@@ -2598,7 +2598,7 @@ window.quizSources["mln131"] = {
         "C": "Thực hiện bình đẳng trong gia đình, giải phóng phụ nữ",
         "D": "Hạn chế các tệ nạn xã hội như mại dâm, bạo lực gia đình e.Đảm bảo hiệu quả cho sự quản lý nhà nước về gia đình"
       },
-      "answer": "A",
+      "answer": "C",
       "explanation": ""
     },
     {
