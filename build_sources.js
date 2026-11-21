@@ -17,7 +17,8 @@ const hiddenSources = new Set([
     'pmg201c',
     'pmg201c_true_false_questions',
     'pmg_questions_without_true_false',
-    'pru213'
+    'pru213',
+    'tr_c_nghi_m_mln131_ch_ng_2_3_4_5'
 ]);
 
 function parseMarkdown(markdown) {
