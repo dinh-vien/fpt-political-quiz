@@ -17,7 +17,7 @@ window.quizSourceCatalog = [
     "id": "mln111",
     "name": "MLN111 - Triết học Mác-Lênin",
     "file": "mln111.js",
-    "version": "5b123e8c5415",
+    "version": "7bdcadab5cac",
     "count": 548
   },
   {
@@ -33,6 +33,34 @@ window.quizSourceCatalog = [
     "file": "mln131.js",
     "version": "06993fa22bd4",
     "count": 418
+  },
+  {
+    "id": "prm393",
+    "name": "PRM393 - Lập trình Flutter",
+    "file": "prm393.js",
+    "version": "8280cf3a0fac",
+    "count": 355
+  },
+  {
+    "id": "prm393_fe",
+    "name": "PRM393 - FE (QuizApp)",
+    "file": "prm393_fe.js",
+    "version": "8ecbcc81b84e",
+    "count": 96
+  },
+  {
+    "id": "prm393_flutter_mcq",
+    "name": "PRM393 - Flutter MCQ (QuizApp)",
+    "file": "prm393_flutter_mcq.js",
+    "version": "66cd75a8b5e0",
+    "count": 150
+  },
+  {
+    "id": "prm393_pt1",
+    "name": "PRM393 - PT1",
+    "file": "prm393_pt1.js",
+    "version": "ff0708fb9248",
+    "count": 60
   },
   {
     "id": "vnr202",

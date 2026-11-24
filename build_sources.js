@@ -9,7 +9,11 @@ const sourceNames = {
     vnr202: 'VNR202 - Lịch sử Đảng Cộng sản Việt Nam',
     mln131: 'MLN131 - Chủ nghĩa xã hội khoa học',
     hcm202: 'HCM202 - Tư tưởng Hồ Chí Minh',
-    ite302c: 'ITE302c - Đạo đức trong CNTT'
+    ite302c: 'ITE302c - Đạo đức trong CNTT',
+    prm393: 'PRM393 - Lập trình Flutter',
+    prm393_fe: 'PRM393 - FE (QuizApp)',
+    prm393_flutter_mcq: 'PRM393 - Flutter MCQ (QuizApp)',
+    prm393_pt1: 'PRM393 - PT1'
 };
 
 // Nguồn bị ẩn khỏi website (vẫn giữ file .md/.js, xóa id khỏi danh sách này để hiện lại).
